@@ -4,7 +4,7 @@ export function getAllProducts() {
     return produtos;
 }
 
-type Product = {
+export type Product = {
     name: string
     price: number
     sellingPrice: number

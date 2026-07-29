@@ -1,0 +1,46 @@
+[
+  {
+    "id": "b1",
+    "title": "Tudo para o seu pet",
+    "subtitle": "Até 30% off em rações premium selecionadas",
+    "cta": "Ver ofertas",
+    "href": "/produtos",
+    "image": "https://dummyimage.com/2400x1000/1f3a5f/ffffff",
+    "alt": "Cachorro golden retriever ao lado de um saco de ração premium",
+    "width": 2400,
+    "height": 1000
+  },
+  {
+    "id": "b2",
+    "title": "Filhotes crescem rápido",
+    "subtitle": "Linha completa com DHA para os primeiros meses",
+    "cta": "Conhecer a linha",
+    "href": "/produtos",
+    "image": "https://dummyimage.com/2400x1000/2e8b57/ffffff",
+    "alt": "Filhotes de cachorro brincando sobre um tapete",
+    "width": 2400,
+    "height": 1000
+  },
+  {
+    "id": "b3",
+    "title": "Semana do gato",
+    "subtitle": "Areia, arranhadores e petiscos com frete grátis",
+    "cta": "Aproveitar",
+    "href": "/produtos",
+    "image": "https://dummyimage.com/2400x1000/6b3410/ffffff",
+    "alt": "Gato cinza deitado próximo a um arranhador",
+    "width": 2400,
+    "height": 1000
+  },
+  {
+    "id": "b4",
+    "title": "Brinquedos a partir de R$ 19,90",
+    "subtitle": "Diversão que dura, mordida após mordida",
+    "cta": "Comprar agora",
+    "href": "/produtos",
+    "image": "https://dummyimage.com/2400x1000/8b1a4b/ffffff",
+    "alt": "Bolinhas e cordas coloridas de brinquedo para pets",
+    "width": 2400,
+    "height": 1000
+  }
+]
