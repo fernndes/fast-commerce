@@ -19,6 +19,14 @@
   }
 }
 
+/* Carrosséis usam scroll nativo; a barra some, as setas/dots ficam. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
