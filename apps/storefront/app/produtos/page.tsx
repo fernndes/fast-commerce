@@ -1,12 +1,12 @@
-export const revalidate = 60 * 5; // 5 min
+import { getAllProducts } from '@/lib/products';
+
+export const revalidate = 300;
 
 export default async function Products() {
-  const produtos = await fetch('https://api.exemplo/produtos', {
-  }).then(r => r.json());
-
+  const produtos = getAllProducts();
   return (
     <ul>
-      {produtos.map((p: any) => <li key={p.id}>{p.nome} — R$ {p.preco}</li>)}
+      {produtos.map(p => <li key={p.id}>{p.name} — R$ {p.sellingPrice}</li>)}
     </ul>
   );
 }
