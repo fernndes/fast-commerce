@@ -59,7 +59,7 @@ export default async function Home() {
       <BannerSection
         id="marcas-parceiras"
         title="Marcas e campanhas"
-        href="/lp/marcas-premium"
+        href="/produtos?minPrice=15000&sort=price-desc"
         banners={getPromoBanners('marcas-parceiras')}
         columns={2}
       />
