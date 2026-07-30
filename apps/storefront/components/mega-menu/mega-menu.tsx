@@ -28,8 +28,8 @@ import { getCategoryTree } from '@/lib/categories';
  * antes de qualquer JS. Por isso também não há `aria-expanded` aqui — não existe
  * estado que o servidor possa declarar com honestidade no HTML.
  */
-export function MegaMenu() {
-  const departamentos = getCategoryTree();
+export async function MegaMenu() {
+  const departamentos = await getCategoryTree();
 
   return (
     // `hidden lg:block`: hover só faz sentido onde há mouse. No mobile o mesmo

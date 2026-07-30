@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
  * Você passa `href` e o filho — o filho decide a aparência, o LinkBox só cuida
  * de ser um link decente.
  *
- *   <LinkBox href="/categorias/gatos">
+ *   <LinkBox href="/categorias/alimentacao">
  *     <Image ... />
  *   </LinkBox>
  *

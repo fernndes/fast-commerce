@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { CarouselArrows } from '@/components/carousel/carousel-arrows';
 import { Carousel, CarouselItem } from '@/components/carousel/carousel';
 import { ProductCard } from '@/components/shelf/product-card';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/lib/catalog';
 
 type ShelfProps = {
   id: string;
@@ -56,7 +56,9 @@ export function Shelf({ id, title, products, href }: ShelfProps) {
         scrollerClassName="gap-4 px-4 scroll-px-4 sm:gap-6 sm:px-6 sm:scroll-px-6"
       >
         {products.map((product) => (
-          <CarouselItem key={product.id} className="w-[60%] sm:w-[38%] lg:w-[23%]">
+          // `key` pelo slug, não pelo `id`: o `big.json` tem 59 ids repetidos
+          // em 10.000 produtos, e só o slug é único.
+          <CarouselItem key={product.slug} className="w-[60%] sm:w-[38%] lg:w-[23%]">
             <ProductCard product={product} />
           </CarouselItem>
         ))}

@@ -14,8 +14,8 @@ import { getFeaturedCategories } from '@/lib/categories';
  * são justamente as rotas mais prováveis do site. É o inverso do painel do mega
  * menu, onde ~30 links com prefetch viravam 30 requests inúteis por página.
  */
-export function CategoryLinks({ className = '' }: { className?: string }) {
-  const categorias = getFeaturedCategories();
+export async function CategoryLinks({ className = '' }: { className?: string }) {
+  const categorias = await getFeaturedCategories();
 
   return (
     <nav aria-label="Categorias em destaque">

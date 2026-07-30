@@ -24,7 +24,7 @@ export const revalidate = 300;
  * isso, uma página com ~60 links viraria uma tempestade de requests durante a
  * rolagem e derrubaria o orçamento de performance do `lighthouserc.js`.
  */
-export default function Home() {
+export default async function Home() {
   return (
     <main className="flex flex-1 flex-col gap-12 pb-16">
       <h1 className="sr-only">Fast Commerce — tudo para o seu pet</h1>
@@ -33,8 +33,8 @@ export default function Home() {
 
       <CategoryTiles title="Navegue por categoria" banners={getPromoBanners('atalhos')} />
 
-      <Shelf {...getHomeShelf('mais-vendidos')} />
-      <Shelf {...getHomeShelf('ofertas')} />
+      <Shelf {...(await getHomeShelf('mais-vendidos'))} />
+      <Shelf {...(await getHomeShelf('ofertas'))} />
 
       <BannerSection
         id="ofertas-por-categoria"
@@ -43,8 +43,8 @@ export default function Home() {
         columns={3}
       />
 
-      <Shelf {...getHomeShelf('alimentacao')} />
-      <Shelf {...getHomeShelf('gatos')} />
+      <Shelf {...(await getHomeShelf('alimentacao'))} />
+      <Shelf {...(await getHomeShelf('farmacia'))} />
 
       {/* Faixa larga, banner único: o respiro visual do meio da página. */}
       <BannerSection
@@ -53,8 +53,8 @@ export default function Home() {
         columns={1}
       />
 
-      <Shelf {...getHomeShelf('caes')} />
-      <Shelf {...getHomeShelf('higiene')} />
+      <Shelf {...(await getHomeShelf('lancamentos'))} />
+      <Shelf {...(await getHomeShelf('higiene'))} />
 
       <BannerSection
         id="marcas-parceiras"
@@ -64,8 +64,8 @@ export default function Home() {
         columns={2}
       />
 
-      <Shelf {...getHomeShelf('passeio')} />
-      <Shelf {...getHomeShelf('casa')} />
+      <Shelf {...(await getHomeShelf('passeio'))} />
+      <Shelf {...(await getHomeShelf('casa'))} />
 
       <BannerSection
         id="colecoes"
@@ -74,13 +74,13 @@ export default function Home() {
         columns={4}
       />
 
-      <Shelf {...getHomeShelf('ate-50')} />
-      <Shelf {...getHomeShelf('brincar')} />
+      <Shelf {...(await getHomeShelf('ate-50'))} />
+      <Shelf {...(await getHomeShelf('brincar'))} />
 
       <BannerSection id="clube" banners={getPromoBanners('clube')} columns={1} />
 
-      <Shelf {...getHomeShelf('premium')} />
-      <Shelf {...getHomeShelf('frete-gratis')} />
+      <Shelf {...(await getHomeShelf('premium'))} />
+      <Shelf {...(await getHomeShelf('frete-gratis'))} />
 
       <BannerSection
         id="campanhas"
@@ -89,8 +89,8 @@ export default function Home() {
         columns={3}
       />
 
-      <Shelf {...getHomeShelf('ultimas-unidades')} />
-      <Shelf {...getHomeShelf('novidades')} />
+      <Shelf {...(await getHomeShelf('ultimas-unidades'))} />
+      <Shelf {...(await getHomeShelf('novidades'))} />
 
       <Highlights />
     </main>

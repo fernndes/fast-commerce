@@ -12,8 +12,8 @@ export const metadata = {
  * "Todas as categorias" (onde não há hover) e o que o crawler encontra ao
  * seguir aquele link — a árvore inteira em HTML, num só lugar.
  */
-export default function Categorias() {
-  const departamentos = getCategoryTree();
+export default async function Categorias() {
+  const departamentos = await getCategoryTree();
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6">

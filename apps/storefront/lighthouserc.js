@@ -5,7 +5,7 @@ module.exports = {
       url: [
         'http://localhost:3000/',
         'http://localhost:3000/produtos',
-        'http://localhost:3000/produtos/racao-golden-adulto',
+        'http://localhost:3000/produtos/elegant-gold-shirt',
       ],
       numberOfRuns: 3, // média de 3 execuções — reduz ruído
     },

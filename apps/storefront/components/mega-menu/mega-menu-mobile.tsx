@@ -20,8 +20,8 @@ const ID = 'mega-menu-mobile';
  *
  * A única parcela de JS é o `<CloseOnNavigate>`, que não renderiza markup nenhum.
  */
-export function MegaMenuMobile() {
-  const departamentos = getCategoryTree();
+export async function MegaMenuMobile() {
+  const departamentos = await getCategoryTree();
 
   return (
     <details id={ID} className="group lg:hidden">

@@ -1,12 +1,17 @@
+import { SearchSuggestions } from '@/components/header/search-suggestions';
+
 /**
  * Busca sem JS: um `<form method="get">` apontando para a rota `/busca`. O
- * browser monta `?q=...` e navega sozinho — nenhum `useState`, nenhum
- * `onSubmit`, nenhum `router.push`.
+ * browser monta `?q=...` e navega sozinho — nenhum `onSubmit`, nenhum
+ * `router.push`.
  *
- * Trade-off assumido: é um navegação completa, não uma transição client-side.
+ * Trade-off assumido: é uma navegação completa, não uma transição client-side.
  * Para uma busca isso é aceitável — o destino é uma página, não um estado de UI.
- * Autocomplete, quando existir, será uma ilha client separada montada em volta
- * deste input, sem transformar o header inteiro em client.
+ *
+ * O autocomplete chegou e cumpriu o que este comentário prometia: é a ilha
+ * `<SearchSuggestions>`, que envolve SÓ o `<input>`. Este componente continua
+ * server, o `<form>` continua HTML puro, e a busca continua funcionando com o
+ * JS desligado — a sugestão é enfeite, não o mecanismo.
  */
 export function SearchForm({ className = '' }: { className?: string }) {
   return (
@@ -21,13 +26,7 @@ export function SearchForm({ className = '' }: { className?: string }) {
           <path d="M10.5 10.5L14 14" strokeLinecap="round" />
         </svg>
         <span className="sr-only">Buscar produtos</span>
-        <input
-          type="search"
-          name="q"
-          placeholder="Buscar produtos"
-          autoComplete="off"
-          className="w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-zinc-500"
-        />
+        <SearchSuggestions className="w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-zinc-500" />
       </label>
     </form>
   );

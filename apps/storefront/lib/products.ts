@@ -1,24 +1,16 @@
-import produtosJSON from '@/data/products.json';
+/**
+ * Ponte fina para `lib/catalog.ts`.
+ *
+ * Antes este arquivo era a camada de dados: `import produtosJSON from
+ * '@/data/products.json'` e uma constante de módulo. Com 10.000 produtos isso
+ * deixou de ser viável — o catálogo agora é lido do disco e indexado em
+ * `lib/catalog.ts`, e este módulo existe só para os imports antigos
+ * (`@/lib/products`) continuarem resolvendo.
+ *
+ * `getAllProducts()` NÃO foi mantido de propósito: devolver 10.000 produtos de
+ * uma vez é exatamente o que esta migração veio eliminar. Quem chamava passou
+ * a usar `listProducts`, que pagina.
+ */
 
-export function getAllProducts() {
-    return produtos;
-}
-
-export type Product = {
-    name: string
-    price: number
-    sellingPrice: number
-    thumb_image: string
-    images: string[]
-    description: string
-    categories: string[]
-    stock: number
-    id: string
-    slug: string
-};
-
-const produtos: Product[] = produtosJSON;
-
-export function getProductBySlug(slug: string) {
-    return produtos?.find(p => p?.slug === slug) ?? null;
-}
+export { getProductBySlug, listProducts, searchProducts } from '@/lib/catalog';
+export type { Offer, Page, Product, ProductQuery, Sku, SortKey } from '@/lib/catalog';
