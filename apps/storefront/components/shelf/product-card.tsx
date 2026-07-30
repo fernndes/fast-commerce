@@ -13,7 +13,7 @@ import { toBRL, toPercent } from '@/lib/format';
  * `items[].offer`. Por isso o prefixo "A partir de" aparece quando o produto
  * tem mais de um SKU; sem ele o número seria uma meia-verdade.
  */
-export function ProductCard({ product, index }: { product: Product, index: number }) {
+export function ProductCard({ product, index }: { product: Product, index?: number }) {
   const discount = discountOf(product);
   const multiSku = product.items.length > 1;
 
@@ -28,7 +28,7 @@ export function ProductCard({ product, index }: { product: Product, index: numbe
           alt={product.name}
           width={600}
           height={600}
-          priority={index < 4}
+          priority={index !== undefined && index < 4}
           // Casa com as larguras de slide definidas no Shelf, para o browser
           // não baixar um 600px onde cabe um 240px.
           sizes="(min-width: 1024px) 23vw, (min-width: 640px) 38vw, 60vw"
