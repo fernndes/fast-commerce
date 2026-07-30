@@ -10,10 +10,10 @@ export type Banner = {
     image: string
     alt: string
     /**
-     * Dimensões intrínsecas — usadas para reservar espaço e zerar CLS.
-     * Todos os banners do hero precisam ter a MESMA proporção: a altura do
-     * carrossel vem do slide renderizado, e uma proporção diferente empurra
-     * o conteúdo abaixo dele.
+     * Dimensões intrínsecas da arte. Quem reserva o espaço no hero é a
+     * proporção do container (responsiva, ver `Hero`), então esses valores
+     * servem para escolher/validar o asset — a arte deve ser panorâmica e ter
+     * o essencial no centro, porque no mobile as laterais são cortadas.
      */
     width: number
     height: number
