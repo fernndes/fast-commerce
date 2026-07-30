@@ -73,9 +73,15 @@ const pickCategory = () => {
   return CATEGORIES[0];
 };
 
+const randomColor = (id, i) => {
+  // cor derivada de id+i => mesma imagem, mesma cor (thumb === images[0]) e dataset reprodutível
+  let h = 0;
+  for (const ch of `${id}/${i}`) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return (h % 0xffffff).toString(16).padStart(6, "0");
+};
+
 const cdnImage = (id, i) =>
-  // troque o host pelo seu S3/CloudFront quando tiver. Placeholder por enquanto.
-  `https://images.fast-commerce.example/produtos/${id}/${i}.jpg`;
+  `https://dummyimage.com/600x600/${randomColor(id, i)}/ffffff`;
 
 const usedSlugs = new Set();
 const uniqueSlug = (base) => {
