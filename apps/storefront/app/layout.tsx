@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { Header } from "@/components/header/header";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,7 +32,19 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <a
+          href="#conteudo"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-md focus:bg-[var(--background)] focus:px-4 focus:py-2 focus:outline-2"
+        >
+          Pular para o conteúdo
+        </a>
+        <Header />
+        {/* Alvo do skip link: o header tem ~40 links antes do conteúdo. */}
+        <div id="conteudo" className="flex flex-1 flex-col">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
