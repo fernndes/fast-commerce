@@ -11,10 +11,10 @@ import type { Product } from '@/lib/catalog';
 export function ProductGrid({ products }: { products: Product[] }) {
   return (
     <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
-      {products.map((product) => (
+      {products.map((product, index) => (
         // `key` pelo slug: o `id` do `big.json` repete em 59 produtos.
         <li key={product.slug}>
-          <ProductCard product={product} />
+          <ProductCard product={product} index={index} />
         </li>
       ))}
     </ul>
