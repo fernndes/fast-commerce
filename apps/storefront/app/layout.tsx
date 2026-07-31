@@ -5,6 +5,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 
 import "./globals.css";
 
+import { Footer } from "@/components/footer/footer";
 import { Header } from "@/components/header/header";
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
         <div id="conteudo" className="flex flex-1 flex-col">
           {children}
         </div>
+        <Footer />
         <SpeedInsights />
       </body>
     </html>
