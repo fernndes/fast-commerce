@@ -47,7 +47,7 @@ export function BannerSection({ id, banners, columns = 3, title, href }: BannerS
   return (
     <section
       aria-labelledby={title ? `${id}-title` : undefined}
-      className="flex flex-col gap-4 px-4 sm:px-6"
+      className="page-px flex flex-col gap-4"
     >
       {title && (
         <div className="flex items-center justify-between gap-4">

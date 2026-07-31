@@ -32,7 +32,7 @@ export function Header() {
     // mega menu e do menu mobile — por isso eles ancoram no header, não nos
     // wrappers internos.
     <header className="sticky top-0 z-40 border-b border-black/10 bg-[var(--background)]/90 backdrop-blur dark:border-white/15">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:gap-5 sm:px-6">
+      <div className="page-shell flex items-center gap-3 py-3 sm:gap-5">
         <MegaMenuMobile />
 
         <Link
@@ -42,7 +42,9 @@ export function Header() {
           fast<span className="font-normal text-zinc-500">commerce</span>
         </Link>
 
-        <SearchForm className="max-w-xl" />
+        {/* Sem teto de largura: a busca é quem estica para o header ocupar
+            toda a largura útil do trilho de 80rem. */}
+        <SearchForm />
 
         <nav aria-label="Conta e carrinho" className="flex shrink-0 items-center gap-1">
           {/* TODO: rotas /conta e /carrinho ainda não existem. */}
@@ -88,7 +90,7 @@ export function Header() {
       </div>
 
       {/* Segunda linha, só desktop: o mega menu e os atalhos de categoria. */}
-      <div className="mx-auto hidden max-w-7xl items-center gap-6 px-4 pb-3 sm:px-6 lg:flex">
+      <div className="page-shell hidden items-center gap-6 pb-3 lg:flex">
         <MegaMenu />
         <CategoryLinks />
       </div>

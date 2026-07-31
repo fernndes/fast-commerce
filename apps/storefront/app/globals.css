@@ -19,6 +19,39 @@
   }
 }
 
+/*
+ * Gabarito de página. Uma única fonte para a largura (80rem) e para a calha
+ * lateral (1rem, 1.5rem a partir de `sm`) — mudar aqui muda o site inteiro.
+ *
+ * `page-shell`  wrapper padrão de página: centraliza, limita e afasta das bordas.
+ * `page-width`  só o trilho, sem calha — para páginas cujos blocos internos
+ *               sangram até a borda (carrosséis da home).
+ * `page-px`     só a calha — usada por esses blocos para alinhar o conteúdo
+ *               com o resto da página sem cortar o scroll horizontal.
+ */
+@utility page-width {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+}
+
+@utility page-px {
+  padding-inline: 1rem;
+  @variant sm {
+    padding-inline: 1.5rem;
+  }
+}
+
+@utility page-shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+  @variant sm {
+    padding-inline: 1.5rem;
+  }
+}
+
 /* Carrosséis usam scroll nativo; a barra some, as setas/dots ficam. */
 @utility no-scrollbar {
   scrollbar-width: none;

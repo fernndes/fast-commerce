@@ -26,7 +26,9 @@ export const revalidate = 300;
  */
 export default async function Home() {
   return (
-    <main className="flex flex-1 flex-col gap-12 pb-16">
+    // `page-width` e não `page-shell`: a calha é aplicada bloco a bloco, porque
+    // os carrosséis precisam sangrar até a borda do trilho para rolar.
+    <main className="page-width flex flex-1 flex-col gap-12 pb-16">
       <h1 className="sr-only">Fast Commerce — tudo para o seu pet</h1>
 
       <Hero banners={getHeroBanners()} />

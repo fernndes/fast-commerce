@@ -54,7 +54,7 @@ export default async function Categoria({ params, searchParams }: PageProps<'/ca
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-10 sm:px-6">
+    <main className="page-shell flex flex-1 flex-col gap-6 py-10">
       <header className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">{categoria.name}</h1>
 

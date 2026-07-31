@@ -32,7 +32,7 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
   // Busca sem termo não é erro nem tela em branco: é o convite para buscar.
   if (!termo) {
     return (
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 py-10 sm:px-6">
+      <main className="page-shell flex flex-1 flex-col gap-4 py-10">
         <h1 className="text-2xl font-semibold tracking-tight">Busca</h1>
         <p className="text-sm text-zinc-500">
           Digite o que você procura no campo acima, ou{' '}
@@ -48,7 +48,7 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
   const page = await searchProducts(termo, query);
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-10 sm:px-6">
+    <main className="page-shell flex flex-1 flex-col gap-6 py-10">
       <header className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">
           Resultados para <span className="text-zinc-500">“{termo}”</span>

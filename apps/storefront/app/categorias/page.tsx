@@ -16,7 +16,7 @@ export default async function Categorias() {
   const departamentos = await getCategoryTree();
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-10 sm:px-6">
+    <main className="page-shell flex flex-1 flex-col gap-8 py-10">
       <h1 className="text-2xl font-semibold tracking-tight">Todas as categorias</h1>
       <CategoryColumns departments={departamentos} className="sm:grid-cols-2 lg:grid-cols-3" />
     </main>

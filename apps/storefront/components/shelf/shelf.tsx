@@ -27,7 +27,7 @@ export function Shelf({ id, title, products, href }: ShelfProps) {
 
   return (
     <section aria-labelledby={`${id}-title`} className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="page-px flex items-center justify-between gap-4">
         <h2
           id={`${id}-title`}
           className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
@@ -53,7 +53,7 @@ export function Shelf({ id, title, products, href }: ShelfProps) {
       <Carousel
         id={id}
         label={title}
-        scrollerClassName="gap-4 px-4 scroll-px-4 sm:gap-6 sm:px-6 sm:scroll-px-6"
+        scrollerClassName="page-px gap-4 scroll-px-4 sm:gap-6 sm:scroll-px-6"
       >
         {products.map((product) => (
           // `key` pelo slug, não pelo `id`: o `big.json` tem 59 ids repetidos

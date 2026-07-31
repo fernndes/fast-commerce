@@ -55,7 +55,7 @@ export default async function Product({ params }: PageProps<'/produtos/[slug]'>)
   ]);
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-10 px-4 py-10 sm:px-6">
+    <main className="page-shell flex flex-1 flex-col gap-10 py-10">
       <nav aria-label="Trilha" className="flex flex-wrap items-center gap-1 text-sm text-zinc-500">
         <Link href="/produtos" className="hover:underline">
           Produtos

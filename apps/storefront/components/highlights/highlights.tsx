@@ -33,7 +33,7 @@ const ITEMS = [
 
 export function Highlights() {
   return (
-    <section aria-label="Vantagens de comprar na Fast Commerce" className="px-4 sm:px-6">
+    <section aria-label="Vantagens de comprar na Fast Commerce" className="page-px">
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {ITEMS.map((item) => (
           <li key={item.href}>

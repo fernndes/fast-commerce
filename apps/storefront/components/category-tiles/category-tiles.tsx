@@ -25,7 +25,7 @@ export function CategoryTiles({ banners, title }: { banners: PromoBanner[]; titl
     <section aria-labelledby={`${TILES_ID}-title`} className="flex flex-col gap-4">
       <h2
         id={`${TILES_ID}-title`}
-        className="px-4 text-lg font-semibold tracking-tight text-zinc-950 sm:px-6 dark:text-zinc-50"
+        className="page-px text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
       >
         {title}
       </h2>
@@ -33,7 +33,7 @@ export function CategoryTiles({ banners, title }: { banners: PromoBanner[]; titl
       <Carousel
         id={TILES_ID}
         label={title}
-        scrollerClassName="gap-4 px-4 scroll-px-4 sm:gap-6 sm:px-6 sm:scroll-px-6"
+        scrollerClassName="page-px gap-4 scroll-px-4 sm:gap-6 sm:scroll-px-6"
       >
         {banners.map((banner) => (
           <CarouselItem key={banner.id} className="w-24 sm:w-28">
