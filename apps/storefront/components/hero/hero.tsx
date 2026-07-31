@@ -78,7 +78,7 @@ function HeroSlide({ banner, index, total }: { banner: Banner; index: number; to
           // combinado ao preconnect da CDN no layout, o cano já está aberto.
           // (Em Next 16 `priority` foi depreciado em favor de `preload`, e
           // `preload` + `loading="lazy"` no mesmo Image agora lança erro.)
-          {...(isFirst ? { preload: true } : { loading: 'lazy' as const })}
+          {...(isFirst ? { preload: true, fetchPriority: "high" } : { loading: 'lazy' as const })}
         />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
