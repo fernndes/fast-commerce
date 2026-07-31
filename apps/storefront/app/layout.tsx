@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleTagManager } from '@next/third-parties/google'
+
 import "./globals.css";
 
 import { Header } from "@/components/header/header";
@@ -30,6 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <GoogleTagManager gtmId="GTM-W48GGZQP" />
       <head>
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
       </head>
