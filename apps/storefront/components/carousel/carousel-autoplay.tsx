@@ -110,7 +110,7 @@ export function CarouselAutoplay({
   if (!hydrated || count < 2) return null;
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 p-4 sm:justify-start sm:px-6">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 p-4 sm:justify-start sm:px-6">
       {/* WCAG 2.2.2: conteúdo que se move sozinho precisa de um pause explícito. */}
       <button
         type="button"
@@ -122,6 +122,8 @@ export function CarouselAutoplay({
           {playing ? <path d="M4 2h3v12H4zM9 2h3v12H9z" /> : <path d="M4 2l10 6-10 6z" />}
         </svg>
       </button>
+      {/* WCAG 2.5.8: o botão é o alvo de 24x24px; a barrinha visual vive no
+          span interno, para o alvo crescer sem engordar o desenho. */}
       {Array.from({ length: count }, (_, i) => (
         <button
           key={i}
@@ -129,10 +131,15 @@ export function CarouselAutoplay({
           onClick={() => goTo(i)}
           aria-label={slideLabels?.[i] ?? `Ir para o slide ${i + 1}`}
           aria-current={i === index}
-          className={`pointer-events-auto h-2 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-            i === index ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
-          }`}
-        />
+          className="group pointer-events-auto grid size-6 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          <span
+            aria-hidden="true"
+            className={`block h-2 rounded-full transition-all ${
+              i === index ? 'w-6 bg-white' : 'w-2 bg-white/50 group-hover:bg-white/80'
+            }`}
+          />
+        </button>
       ))}
     </div>
   );

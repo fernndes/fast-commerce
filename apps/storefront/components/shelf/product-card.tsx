@@ -35,8 +35,8 @@ export function ProductCard({ product, index }: { product: Product, index?: numb
           className="h-auto w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
         />
         {discount > 0 && (
-          <span className="absolute top-2 left-2 rounded-md bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">
-            -{toPercent(discount)}%
+          <span className="absolute top-2 left-2 rounded-md bg-emerald-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+            -{toPercent(discount)}%<span className="sr-only"> de desconto</span>
           </span>
         )}
         {!product.inStock && (

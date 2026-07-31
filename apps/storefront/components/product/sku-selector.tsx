@@ -80,8 +80,8 @@ export function SkuSelector({ items, tipoOpcao }: { items: Sku[]; tipoOpcao: str
             {toBRL(price)}
           </span>
           {discount > 0 && (
-            <span className="rounded-md bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">
-              -{toPercent(discount)}%
+            <span className="rounded-md bg-emerald-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+              -{toPercent(discount)}%<span className="sr-only"> de desconto</span>
             </span>
           )}
         </p>
