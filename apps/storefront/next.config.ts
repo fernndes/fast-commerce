@@ -48,21 +48,17 @@ const nextConfig: NextConfig = {
     '/**': ['./data/big.json'],
   },
 
-  experimental: {
-    sri: {
-      algorithm: 'sha256',
-    },
-  },
+  // experimental: {
+  //   sri: {
+  //     algorithm: 'sha256',
+  //   },
+  // },
 
   async headers() {
     return [{
       source: '/:path*',
       headers: [
-        ...securityHeaders,
-        {
-          key: 'Content-Security-Policy-Report-Only', // trocar p/ enforcing só depois de limpar as violações
-          value: cspHeader.replace(/\s{2,}/g, ' ').trim(),
-        },
+        ...securityHeaders
       ],
     }];
   },
