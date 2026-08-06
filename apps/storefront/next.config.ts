@@ -74,7 +74,7 @@ const nextConfig: NextConfig = {
       headers: [
         ...securityHeaders,
         {
-          key: 'Content-Security-Policy-Report-Only', // trocar p/ enforcing só depois de limpar as violações
+          key: 'Content-Security-Policy',
           value: cspHeader.replace(/\s{2,}/g, ' ').trim(),
         },
       ],
