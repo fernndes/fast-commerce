@@ -33,8 +33,8 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <GoogleTagManager gtmId="GTM-W48GGZQP" />
       <head>
-        <GoogleTagManager gtmId="GTM-W48GGZQP" />
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
       </head>
       <body className="min-h-full flex flex-col">
