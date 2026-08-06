@@ -84,7 +84,7 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
- // For all available options, see:
+ // For all available options, see 2:
  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
  org: "gabriel-j0",
