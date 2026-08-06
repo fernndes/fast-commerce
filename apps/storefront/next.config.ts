@@ -48,11 +48,11 @@ const nextConfig: NextConfig = {
     '/**': ['./data/big.json'],
   },
 
-  // experimental: {
-  //   sri: {
-  //     algorithm: 'sha256',
-  //   },
-  // },
+  experimental: {
+    sri: {
+      algorithm: 'sha256',
+    },
+  },
 
   async headers() {
     return [{
