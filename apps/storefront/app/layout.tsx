@@ -34,6 +34,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <GoogleTagManager gtmId="GTM-W48GGZQP" />
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
       </head>
       <body className="min-h-full flex flex-col">
@@ -49,7 +50,6 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
-        <GoogleTagManager gtmId="GTM-W48GGZQP" />
         <SpeedInsights />
       </body>
     </html>
