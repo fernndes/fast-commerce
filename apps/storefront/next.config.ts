@@ -37,7 +37,7 @@ const isDev = process.env.NODE_ENV === 'development'
  */
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ''};
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ''};
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://dummyimage.com https://*.googletagmanager.com https://*.google-analytics.com;
     connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms;
