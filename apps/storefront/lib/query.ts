@@ -39,7 +39,7 @@ const MAX_QUERY_LENGTH = 100;
  * de controle/invisíveis, colapsa espaços e limita o tamanho, para não
  * arrastar lixo para logs, URLs de paginação e a linha "Resultados para".
  */
-function sanitizeSearchTerm(raw: string): string | undefined {
+export function sanitizeSearchTerm(raw: string): string | undefined {
   const cleaned = raw
     .replace(/[\p{Cc}\p{Cf}]/gu, '')
     .replace(/\s+/g, ' ')
