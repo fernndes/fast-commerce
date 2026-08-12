@@ -8,20 +8,8 @@ import { findCategory } from '@/lib/categories';
 
 export const revalidate = 3600;
 
-/**
- * Lista VAZIA de propósito: nenhuma PDP é gerada no build, e cada uma é
- * renderizada e cacheada na primeira visita (ISR sob demanda), respeitando o
- * `revalidate` acima.
- *
- * Antes isto devolvia `getAllProducts().map(...)` — com 10.000 produtos seriam
- * 10.000 páginas no build, minutos de compilação e um `.next` gigante para
- * atender uma cauda que quase ninguém acessa. A documentação do Next é
- * explícita: para renderizar todos os caminhos em runtime, retorne `[]`
- * (remover a função não é a mesma coisa).
- *
- * Se um dia houver sinal de popularidade, o meio-termo é devolver aqui os ~50
- * slugs mais vistos e deixar o resto sob demanda.
- */
+// Lista vazia de propósito (ISR sob demanda, não geração no build) — ver ADR 0008
+// (adr/0008-pdp-generatestaticparams-vazio-isr-sob-demanda.md).
 export async function generateStaticParams() {
   return [];
 }
@@ -42,8 +30,7 @@ export default async function Product({ params }: PageProps<'/produtos/[slug]'>)
   const { slug } = await params;
   const produto = await getProductBySlug(slug);
 
-  // 404 de verdade, não um `<h1>` de desculpa com status 200: um slug que não
-  // existe precisa dizer isso ao browser e ao crawler.
+  // 404 real, não um `<h1>` de desculpa com status 200 — ver ADR 0008.
   if (!produto) notFound();
 
   // A trilha mostra o RÓTULO editorial ("Ração úmida"), não o slug cru
@@ -77,8 +64,7 @@ export default async function Product({ params }: PageProps<'/produtos/[slug]'>)
             alt={produto.name}
             width={600}
             height={600}
-            // A imagem principal da PDP é o LCP da rota: é a única do site,
-            // fora do slide 0 do hero, que vale priorizar.
+            // Imagem principal é o LCP da rota — ver ADR 0008.
             priority
             sizes="(min-width: 1024px) 45vw, 100vw"
             className="h-auto w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
@@ -110,11 +96,7 @@ export default async function Product({ params }: PageProps<'/produtos/[slug]'>)
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{produto.name}</h1>
           </header>
 
-          {/*
-            Preço, estoque e botão vivem no seletor: eles pertencem ao SKU
-            escolhido, não ao produto. A página não exibe `priceFrom` — aqui
-            existe uma variação selecionada, e ela tem preço próprio.
-          */}
+          {/* Preço/estoque vivem no seletor, não em `priceFrom` — ver ADR 0005 e ADR 0009. */}
           <SkuSelector items={produto.items} tipoOpcao={produto.tipoOpcao} />
 
           {produto.description && (

@@ -45,7 +45,7 @@ export default function RootLayout({
           Pular para o conteúdo
         </a>
         <Header />
-        {/* Alvo do skip link: o header tem ~40 links antes do conteúdo. */}
+        {/* Alvo do skip link — ver ADR 0009 (adr/0009-fronteira-server-client-e-acessibilidade.md). */}
         <div id="conteudo" className="flex flex-1 flex-col">
           {children}
         </div>

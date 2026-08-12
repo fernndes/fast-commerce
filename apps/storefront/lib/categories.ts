@@ -6,22 +6,10 @@ import {
   type ProductQuery,
 } from '@/lib/catalog';
 
-/**
- * Camada de navegação. Header e footer aparecem em TODA página, então a árvore
- * é montada uma vez por processo (promise memoizada sobre o catálogo já
- * indexado) e compartilhada por todas as rotas.
- *
- * A hierarquia agora VEM DOS DADOS: `product.categories` é o par
- * `[departamento, subcategoria]`, e `catalog.byDept`/`bySub` já são o índice.
- * O que sobrou aqui é só a camada editorial — rótulo, ordem e destaques —,
- * que não se deriva de dado nenhum porque é decisão de negócio.
- */
+// Camada de navegação: hierarquia vem dos dados, rótulo/ordem são editoriais.
+// Ver ADR 0010 (adr/0010-navegacao-e-curadoria-editorial-fail-loud.md).
 
-/**
- * Rótulo de cada slug que existe nos dados. Esta lista é editorial e é a
- * VÁLVULA da navegação: uma categoria nova no catálogo sem rótulo aqui
- * simplesmente não aparece no menu, em vez de vazar um slug cru pro usuário.
- */
+// Rótulo editorial: sem entrada aqui, a categoria não aparece no menu. Ver ADR 0010.
 const LABELS: Record<string, string> = {
   // departamentos
   alimentacao: 'Alimentação',
@@ -91,9 +79,7 @@ export const categoryHref = (slug: string) => `/categorias/${slug}`;
 async function buildTree(): Promise<Department[]> {
   const { byDept, bySub, deptCounts, subCounts } = await getCatalog();
 
-  // Departamento e subcategoria dividem a rota `/categorias/[slug]`: um slug
-  // que fosse os dois resolveria duas páginas diferentes na mesma URL. Nos
-  // dados atuais não há colisão — a checagem existe para o dia em que houver.
+  // Guarda contra slug que seria departamento E subcategoria — ver ADR 0010.
   for (const slug of byDept.keys()) {
     if (bySub.has(slug)) {
       throw new Error(
@@ -178,15 +164,8 @@ export async function findCategory(slug: string): Promise<Category | null> {
   return null;
 }
 
-/**
- * Produtos de uma categoria, PAGINADOS. `listProducts` já resolve departamento
- * e subcategoria pelo índice, então este wrapper só repassa — mas mantém o
- * nome que os consumidores já usam.
- *
- * O `slug` vem DEPOIS do spread de propósito: a categoria é a do path, e um
- * `?category=` na query string não pode sobrescrevê-la. A regra fica aqui, num
- * lugar só, em vez de cada página ter que lembrar de limpar o campo.
- */
+// `slug` vem DEPOIS do spread de propósito: `?category=` não sobrescreve a
+// categoria do path. Ver ADR 0010.
 export function getProductsByCategory(
   slug: string,
   query: ProductQuery = {},
@@ -194,14 +173,7 @@ export function getProductsByCategory(
   return listProducts({ ...query, category: slug });
 }
 
-/**
- * Todos os slugs navegáveis, departamentos e subcategorias.
- *
- * Sem consumidor no momento: alimentava o `generateStaticParams` de
- * `/categorias/[slug]`, que foi removido quando o build mostrou que a rota é
- * dinâmica (ela lê `searchParams`). Fica porque é a lista que um `sitemap.ts`
- * precisa — é a próxima coisa que vai querer enumerar as categorias.
- */
+// Sem consumidor ativo hoje; mantida para um futuro `sitemap.ts`. Ver ADR 0010.
 export async function getAllCategorySlugs(): Promise<string[]> {
   const tree = await getCategoryTree();
   return tree.flatMap((dept) => [dept.slug, ...dept.children.map((child) => child.slug)]);

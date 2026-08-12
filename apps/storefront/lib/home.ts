@@ -1,19 +1,7 @@
 import { listProducts, type Product, type ProductQuery } from '@/lib/catalog';
 
-/**
- * Curadoria da home. As prateleiras são conteúdo editorial — quais existem, em
- * que ordem e com que nome é decisão de negócio, não algo que se derive do
- * catálogo. Por isso ficam declaradas aqui, e não espalhadas pelo JSX da página.
- *
- * `app/page.tsx` só decide o ARRANJO (o que vem antes, onde entra banner). Se
- * amanhã "Mais vendidos" passar a vir de um endpoint de telemetria, muda o
- * `query` daquela spec e mais nada — a página não sabe a diferença.
- *
- * Cada recorte agora é uma CONSULTA paginada (`listProducts`), não um
- * `.filter()` sobre o catálogo inteiro: com 10.000 produtos, montar 14
- * prateleiras varrendo tudo 14 vezes seria o trabalho mais caro da rota mais
- * acessada do site.
- */
+// Curadoria da home: prateleiras são spec editorial, `app/page.tsx` só decide o
+// arranjo. Ver ADR 0010 (adr/0010-navegacao-e-curadoria-editorial-fail-loud.md).
 
 export type HomeShelf = {
   id: string;
@@ -42,8 +30,7 @@ const SPECS: ShelfSpec[] = [
     id: 'mais-vendidos',
     title: 'Mais vendidos',
     href: '/produtos?sort=stock',
-    // Não há telemetria de vendas no mock: estoque alto é a melhor proxy de
-    // giro que os dados oferecem. Ponto de troca óbvio quando houver API.
+    // Proxy de "mais vendidos" (sem telemetria no mock) — ver ADR 0010.
     query: { sort: 'stock' },
   },
   {
@@ -118,8 +105,7 @@ const SPECS: ShelfSpec[] = [
     id: 'ultimas-unidades',
     title: 'Últimas unidades',
     href: '/produtos?inStock=true&sort=stock-asc',
-    // Pouco estoque MAS ainda comprável: sem o `inStock`, a régua encheria de
-    // produto esgotado, que é o oposto de "corra que está acabando".
+    // Pouco estoque MAS ainda comprável — ver ADR 0010.
     query: { inStock: true, sort: 'stock-asc' },
   },
   {
@@ -139,8 +125,7 @@ async function buildShelf(spec: ShelfSpec): Promise<HomeShelf> {
     return { id, title, href, products: items };
   }
 
-  // Uma consulta por categoria, cada uma já limitada a MAX_ITEMS — a união de
-  // duas categorias nunca precisa de mais itens do que a régua mostra.
+  // Uma consulta por categoria, cada uma já limitada a MAX_ITEMS — ver ADR 0010.
   const pages = await Promise.all(
     spec.categories.map((category) => listProducts({ ...base, category })),
   );
@@ -149,7 +134,7 @@ async function buildShelf(spec: ShelfSpec): Promise<HomeShelf> {
   const seen = new Set<string>();
   for (const page of pages) {
     for (const product of page.items) {
-      // Dedup por slug: o `id` do `big.json` repete (59 colisões em 10.000).
+      // Dedup por slug — ver ADR 0005.
       if (seen.has(product.slug)) continue;
       seen.add(product.slug);
       products.push(product);
@@ -161,15 +146,8 @@ async function buildShelf(spec: ShelfSpec): Promise<HomeShelf> {
 
 let cache: Promise<Map<string, HomeShelf>> | null = null;
 
-/**
- * As 14 prateleiras, montadas UMA vez por processo. Memoizado na promise: a
- * home chama `getHomeShelf` 14 vezes e todas compartilham a mesma montagem,
- * em vez de disparar 14 pipelines concorrentes no primeiro request.
- *
- * Antes isso era um `new Map(...)` no topo do módulo. Não dá mais: montar a
- * prateleira agora depende de I/O (a leitura do `big.json`), e I/O no corpo
- * de um módulo é feito no import — travando o boot em vez do primeiro uso.
- */
+// Memoizado na promise, não mais um `Map` de topo de módulo (I/O travaria o boot).
+// Ver ADR 0010.
 function getShelves(): Promise<Map<string, HomeShelf>> {
   cache ??= Promise.all(SPECS.map(buildShelf)).then(
     (shelves) => new Map(shelves.map((shelf) => [shelf.id, shelf])),
@@ -177,11 +155,7 @@ function getShelves(): Promise<Map<string, HomeShelf>> {
   return cache;
 }
 
-/**
- * Uma prateleira pelo id. Lança em id desconhecido — é typo de quem monta a
- * página, e o build é a hora certa de descobrir. Prateleira que ficou sem
- * produto não lança: o `<Shelf>` simplesmente não renderiza.
- */
+// Lança em id desconhecido (fail-loud); sem produto, só não renderiza. Ver ADR 0010.
 export async function getHomeShelf(id: string): Promise<HomeShelf> {
   const shelves = await getShelves();
   const shelf = shelves.get(id);

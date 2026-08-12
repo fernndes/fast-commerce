@@ -1,18 +1,7 @@
 import { SearchSuggestions } from '@/components/header/search-suggestions';
 
-/**
- * Busca sem JS: um `<form method="get">` apontando para a rota `/busca`. O
- * browser monta `?q=...` e navega sozinho — nenhum `onSubmit`, nenhum
- * `router.push`.
- *
- * Trade-off assumido: é uma navegação completa, não uma transição client-side.
- * Para uma busca isso é aceitável — o destino é uma página, não um estado de UI.
- *
- * O autocomplete chegou e cumpriu o que este comentário prometia: é a ilha
- * `<SearchSuggestions>`, que envolve SÓ o `<input>`. Este componente continua
- * server, o `<form>` continua HTML puro, e a busca continua funcionando com o
- * JS desligado — a sugestão é enfeite, não o mecanismo.
- */
+// Busca sem JS: `<form method="get">` puro. Ver ADR 0009
+// (adr/0009-fronteira-server-client-e-acessibilidade.md).
 export function SearchForm({ className = '' }: { className?: string }) {
   return (
     <form action="/busca" method="get" role="search" className={`min-w-0 flex-1 ${className}`}>

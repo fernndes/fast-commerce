@@ -9,12 +9,7 @@ export type Banner = {
     href: string
     image: string
     alt: string
-    /**
-     * Dimensões intrínsecas da arte. Quem reserva o espaço no hero é a
-     * proporção do container (responsiva, ver `Hero`), então esses valores
-     * servem para escolher/validar o asset — a arte deve ser panorâmica e ter
-     * o essencial no centro, porque no mobile as laterais são cortadas.
-     */
+    // Dimensões intrínsecas da arte — orientam o asset, não o layout (ver `Hero`).
     width: number
     height: number
 };
@@ -25,21 +20,8 @@ export function getHeroBanners() {
     return banners;
 }
 
-/**
- * Banner de conteúdo — a peça editorial que aparece FORA do hero: atalho de
- * categoria, faixa de campanha, card de coleção.
- *
- * Difere do `Banner` do hero em dois pontos, e os dois são de propósito:
- * - a copy inteira é opcional. Um atalho de categoria é só arte + nome, e uma
- *   faixa pode já trazer o texto embutido na imagem; inventar subtítulo só
- *   para satisfazer o tipo polui os dados.
- * - a proporção NÃO precisa ser igual entre banners de seções diferentes. Só
- *   dentro da mesma seção, senão a grade fica com cards de alturas distintas.
- *
- * `alt` é o único campo textual obrigatório: toda imagem precisa de descrição.
- * Quando há copy sobreposta é ela que nomeia o link, e a imagem passa a
- * decorativa — quem decide isso é o componente, não os dados.
- */
+// Banner de conteúdo (fora do hero): copy inteira é opcional, de propósito.
+// Ver ADR 0010 (adr/0010-navegacao-e-curadoria-editorial-fail-loud.md).
 export type PromoBanner = {
     id: string
     title?: string
@@ -55,11 +37,7 @@ export type PromoBanner = {
 
 const promos: Record<string, PromoBanner[]> = promosJSON;
 
-/**
- * Uma seção do `data/promo-banners.json`. O erro é intencionalmente barulhento:
- * um id de seção errado é typo de quem monta a página, e falhar no build é bem
- * melhor do que uma faixa sumir silenciosamente da home em produção.
- */
+// Erro intencionalmente barulhento em seção inexistente — ver ADR 0010.
 export function getPromoBanners(section: string): PromoBanner[] {
     const banners = promos[section];
     if (!banners) {

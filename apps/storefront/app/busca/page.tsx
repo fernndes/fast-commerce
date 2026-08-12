@@ -6,19 +6,7 @@ import { SortSelect } from '@/components/product-grid/sort-select';
 import { searchProducts } from '@/lib/catalog';
 import { parseProductQuery, toURLSearchParams } from '@/lib/query';
 
-/**
- * Resultados da busca.
- *
- * Esta página buscava `https://api.exemplo/busca` — um host que não existe,
- * então a rota quebrava em toda visita. Agora ela consulta o catálogo pela
- * camada de dados, no mesmo processo: `searchProducts` casa o termo contra
- * nome, marca e categorias, normalizando acento e caixa, e pontua o que casa
- * no INÍCIO do nome acima do que casa no meio.
- *
- * A rota é dinâmica por natureza (depende de `?q=`), o que o `searchParams`
- * já garante — sem `force-dynamic`, que aqui só repetiria o que a leitura de
- * `searchParams` produz.
- */
+// Resultados da busca — ver ADR 0007 (adr/0007-busca-parser-unico-ranking-e-correcao-do-host-externo.md).
 export const metadata = {
   title: 'Busca — Fast Commerce',
 };
@@ -29,7 +17,7 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
   const query = parsed.ok ? parsed.query : {};
   const termo = query.q ?? '';
 
-  // Busca sem termo não é erro nem tela em branco: é o convite para buscar.
+  // Busca sem termo é convite para buscar, não erro — ver ADR 0007.
   if (!termo) {
     return (
       <main className="page-shell flex flex-1 flex-col gap-4 py-10">

@@ -3,24 +3,8 @@ import Link from 'next/link';
 import { CategoryColumns } from '@/components/mega-menu/category-columns';
 import { getCategoryTree } from '@/lib/categories';
 
-/**
- * Footer — Server Component, zero JS, em toda página.
- *
- * A regra do header vale aqui igual: o rodapé é renderizado em TODA rota, então
- * qualquer byte de JS embarcado é imposto pago no site inteiro. Tudo aqui sai
- * como `<a href>` no HTML servido.
- *
- * A árvore de categorias é a MESMA do mega menu — `getCategoryTree()` é uma
- * promise memoizada por processo, então repetir a chamada não relê o catálogo.
- * E `<CategoryColumns>` é reaproveitado em vez de duplicar a marcação: um só
- * lugar decide como um link de categoria se parece.
- *
- * O bloco de categorias fica dentro de um `<details>` no mobile (nativo, sem
- * JS): são ~30 links que, abertos, empurrariam o resto do rodapé para longe
- * demais no dedo. No desktop o `<details>` é neutralizado por CSS
- * (`lg:[&>summary]:hidden` + `open` forçado via `lg:[&]:block` no conteúdo) —
- * ver o comentário no próprio bloco.
- */
+// Footer — Server Component, zero JS, em toda página. Ver ADR 0009
+// (adr/0009-fronteira-server-client-e-acessibilidade.md).
 
 /** Colunas institucionais. Rotas que ainda não existem estão marcadas. */
 const COLUNAS = [
@@ -81,12 +65,7 @@ export async function Footer() {
     // encosta embaixo em vez de flutuar no meio da tela.
     <footer className="mt-auto border-t border-black/10 dark:border-white/15">
       <div className="page-shell flex flex-col gap-10 py-10">
-        {/*
-          `<details>` nativo: no mobile abre e fecha sem JS. No desktop o
-          `summary` some e o conteúdo volta a ser `block`, então o estado
-          fechado do elemento deixa de ter efeito visual — o painel fica sempre
-          aberto sem precisar de `open` vindo do servidor.
-        */}
+        {/* `<details>` nativo, neutralizado por CSS no desktop — ver ADR 0009. */}
         <details className="group border-b border-black/10 pb-6 lg:border-0 lg:pb-0 dark:border-white/15">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-md py-1 text-sm font-semibold text-zinc-950 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden dark:text-zinc-50">
             Navegue por categoria
@@ -122,11 +101,7 @@ export async function Footer() {
               <ul className="flex flex-col gap-2">
                 {coluna.links.map((link) => (
                   <li key={link.href + link.label}>
-                    {/*
-                      `prefetch={false}` em todo o rodapé: são dezenas de links
-                      no fim de toda página, quase todos de baixa intenção.
-                      Prefetchar isso é banda gasta em rota que ninguém abre.
-                    */}
+                    {/* `prefetch={false}`: links de baixa intenção — ver ADR 0011. */}
                     <Link href={link.href} prefetch={false} className={linkClasses}>
                       {link.label}
                     </Link>

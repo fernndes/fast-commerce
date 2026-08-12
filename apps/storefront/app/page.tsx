@@ -8,22 +8,8 @@ import { getHomeShelf } from '@/lib/home';
 
 export const revalidate = 300;
 
-/**
- * Home — só ARRANJO. Quais produtos entram em cada prateleira mora em
- * `lib/home.ts`; qual arte e para onde cada banner leva, em
- * `data/promo-banners.json`. Aqui fica a única decisão que é de fato desta
- * página: a ordem em que as coisas aparecem.
- *
- * O ritmo é o de home de varejo: blocos de duas ou três prateleiras cortados
- * por uma faixa editorial, para a rolagem não virar uma esteira de cards. As
- * primeiras prateleiras são as de maior intenção (mais vendidos, ofertas); as
- * de garimpo (últimas unidades, novidades) ficam no fim.
- *
- * Tudo abaixo do hero é lazy — imagem de banner e de card só baixa ao chegar
- * perto da viewport, e os `<Link>` de banner vão com `prefetch={false}`. Sem
- * isso, uma página com ~60 links viraria uma tempestade de requests durante a
- * rolagem e derrubaria o orçamento de performance do `lighthouserc.js`.
- */
+// Home — só ARRANJO (prateleiras em `lib/home.ts`). Lazy abaixo do hero,
+// `prefetch={false}` nos banners. Ver ADR 0010 e ADR 0011.
 export default async function Home() {
   return (
     // `page-width` e não `page-shell`: a calha é aplicada bloco a bloco, porque

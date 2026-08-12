@@ -4,14 +4,7 @@ import { getSuggestions } from '@/lib/catalog';
 import { sanitizeSearchTerm } from '@/lib/query';
 import { checkRateLimit } from '@/lib/rate-limit';
 
-/**
- * Autocomplete do campo de busca do header. O consumidor é a ilha client
- * `<SearchSuggestions>` — é o único jeito de o browser alcançar o catálogo,
- * que só existe no servidor.
- *
- * `force-dynamic` pelo mesmo motivo de `/api/produtos`: a resposta é função da
- * query string. Sem `revalidate` no arquivo — os dois não convivem.
- */
+// Autocomplete do header. `force-dynamic` pelo mesmo motivo de `/api/produtos` — ver ADR 0006.
 export const dynamic = 'force-dynamic';
 
 const LIMIT = 8;
@@ -25,9 +18,7 @@ export async function GET(request: NextRequest) {
   const raw = request.nextUrl.searchParams.get('q');
   const q = raw ? (sanitizeSearchTerm(raw) ?? '') : '';
 
-  // `q` ausente, vazio ou de 1 letra devolve lista vazia, não 400: digitar a
-  // primeira letra é estado NORMAL de um autocomplete, não erro do cliente. O
-  // corte por tamanho mínimo vive em `getSuggestions`, junto com a busca.
+  // `q` curto/ausente devolve lista vazia, não 400 — ver ADR 0004.
   const suggestions = await getSuggestions(q, LIMIT);
 
   return Response.json({ suggestions }, { headers });

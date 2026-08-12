@@ -5,21 +5,10 @@ import { useState } from 'react';
 import type { Sku } from '@/lib/catalog';
 import { toBRL, toPercent } from '@/lib/format';
 
-/**
- * Seletor de variação da PDP — a ÚNICA ilha client da página.
- *
- * É client porque escolher um SKU muda preço, disponibilidade e o que vai pro
- * carrinho sem sair da rota; isso é estado de UI, não navegação. O resto da
- * PDP (galeria, descrição, ficha) continua Server Component.
- *
- * Preço e estoque saem SEMPRE de `item.offer`. O `priceFrom` do produto é
- * campo de listagem e não tem nada a fazer aqui: na PDP existe um SKU
- * selecionado, e ele tem preço próprio.
- */
+// Seletor de variação da PDP — a única ilha client da página. Ver ADR 0009
+// (adr/0009-fronteira-server-client-e-acessibilidade.md).
 export function SkuSelector({ items, tipoOpcao }: { items: Sku[]; tipoOpcao: string }) {
-  // Abre no SKU disponível mais barato — é o que o card prometeu com o
-  // "a partir de". Se nenhum tem estoque, cai no primeiro para a página não
-  // renderizar sem seleção.
+  // Abre no SKU disponível mais barato; sem estoque, cai no primeiro. Ver ADR 0009.
   const [selectedId, setSelectedId] = useState(() => {
     const comprável = items.filter((item) => item.offer.availableQuantity > 0);
     const pool = comprável.length > 0 ? comprável : items;
@@ -59,9 +48,7 @@ export function SkuSelector({ items, tipoOpcao }: { items: Sku[]; tipoOpcao: str
                   value={item.itemId}
                   checked={ativo}
                   onChange={() => setSelectedId(item.itemId)}
-                  // `sr-only` e não `hidden`: o input precisa continuar
-                  // focável e anunciável — quem navega por teclado troca de
-                  // variação com as setas, como em qualquer radio group.
+                  // `sr-only`, não `hidden`: input continua focável/anunciável. Ver ADR 0009.
                   className="sr-only"
                 />
                 {item.opcao}

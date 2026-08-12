@@ -10,17 +10,8 @@ type PaginationProps = {
   page: Pick<Page<unknown>, 'page' | 'totalPages' | 'total'>;
 };
 
-/**
- * Paginação em `<a href>` — Server Component, zero JS.
- *
- * Com 10.000 produtos são até 417 páginas: numerar todas é impossível, então a
- * régua mostra uma JANELA em volta da atual, mais a primeira e a última. É o
- * mesmo desenho de qualquer PLP de varejo, e cada item é um link real —
- * rastreável, abrível em nova aba e funcional sem JS.
- *
- * `prefetch={false}`: são até 9 links por página, para rotas que o usuário
- * provavelmente não vai visitar. Mesmo raciocínio do painel do mega menu.
- */
+// Paginação em `<a href>` — Server Component, zero JS. `prefetch={false}`: ver
+// ADR 0011 (adr/0011-convencao-prefetch-false-em-links-de-baixa-intencao.md).
 export function Pagination({ basePath, params, page }: PaginationProps) {
   if (page.totalPages <= 1) return null;
 
@@ -29,8 +20,7 @@ export function Pagination({ basePath, params, page }: PaginationProps) {
     for (const [key, value] of Object.entries(params)) {
       if (value !== undefined && value !== '' && key !== 'page') query.set(key, value);
     }
-    // Página 1 fica sem `?page=` — a URL canônica da listagem é a limpa,
-    // senão `/produtos` e `/produtos?page=1` viram conteúdo duplicado.
+    // Página 1 sem `?page=` — evita conteúdo duplicado. Ver ADR 0011.
     if (target > 1) query.set('page', String(target));
 
     const qs = query.toString();

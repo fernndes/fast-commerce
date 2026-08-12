@@ -1,19 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-/**
- * Camada de dados do catálogo. Única porta de entrada para `data/big.json`
- * (10.000 produtos / 29.112 SKUs / ~13 MB).
- *
- * O arquivo NUNCA é importado: um `import` de JSON entra no bundle e vira
- * constante de módulo — 13 MB no servidor e, pior, um dado que o Next tenta
- * serializar. Aqui ele é lido com `fs` uma vez por processo e indexado em
- * memória; o custo é pago no primeiro request depois do boot, não por request.
- *
- * Server Components chamam estas funções DIRETO — mesmo processo, sem hop de
- * rede. As rotas em `app/api/*` são cascas finas sobre esta camada e existem
- * só para quem roda no browser.
- */
+// Camada de dados do catálogo. Ver ADR 0005 (adr/0005-camada-de-dados-do-catalogo-leitura-via-fs.md).
 
 // ---------------------------------------------------------------- shape cru
 
@@ -54,16 +42,8 @@ export type RawProduct = {
 
 // -------------------------------------------------------- shape normalizado
 
-/**
- * O produto que a UI consome.
- *
- * Os campos `priceFrom` / `listPriceFrom` / `inStock` são **de exibição em
- * listagem**: o "a partir de" que um card mostra quando o produto tem 4 SKUs
- * com 4 preços. O nome é deliberado — chamar de `price` recriaria a confusão
- * de preço-no-produto que o novo shape justamente eliminou.
- *
- * PDP e carrinho leem SEMPRE `items[].offer`. Nunca estes campos.
- */
+// `priceFrom`/`listPriceFrom`/`inStock` são de exibição em listagem — PDP e carrinho
+// leem sempre `items[].offer`. Ver ADR 0005 (adr/0005-camada-de-dados-do-catalogo-leitura-via-fs.md).
 export type Product = {
   id: string;
   slug: string;
@@ -140,8 +120,7 @@ function toProduct(raw: RawProduct): Product {
     images: raw.images,
     tipoOpcao: raw.tipoOpcao,
     items: raw.items,
-    // Produto sem SKU não deveria existir, mas se existir não pode derrubar a
-    // listagem inteira: cai como indisponível e com preço zero.
+    // Produto sem SKU: cai como indisponível/preço zero. Ver ADR 0005.
     priceFrom: cheapest?.offer.price ?? 0,
     listPriceFrom: cheapest?.offer.listPrice ?? 0,
     inStock: totalAvailable > 0,
@@ -151,9 +130,7 @@ function toProduct(raw: RawProduct): Product {
 }
 
 async function load(): Promise<Catalog> {
-  // `process.cwd()` é a raiz do projeto em dev, build e start. O arquivo
-  // precisa estar no trace do servidor — ver `outputFileTracingIncludes`
-  // em `next.config.ts`, senão some no deploy.
+  // `outputFileTracingIncludes` em `next.config.ts` depende deste caminho. Ver ADR 0005.
   const file = path.join(process.cwd(), 'data', 'big.json');
   const raw: RawProduct[] = JSON.parse(await readFile(file, 'utf8'));
 
@@ -164,9 +141,7 @@ async function load(): Promise<Catalog> {
   const bySub = new Map<string, Product[]>();
 
   for (const product of products) {
-    // O slug é a chave de identidade, não o `id`: `big.json` tem 59 ids
-    // repetidos em 10.000 produtos (o gerador sorteia o id) e apenas os slugs
-    // são únicos. Por isso o slug também é a `key` do React nas listagens.
+    // Slug, não `id`, é a chave de identidade — ver ADR 0005.
     bySlug.set(product.slug, product);
 
     const dept = byDept.get(product.department);
@@ -193,11 +168,7 @@ async function load(): Promise<Catalog> {
 
 let cache: Promise<Catalog> | null = null;
 
-/**
- * O catálogo indexado. Memoizado na PROMISE, não no resultado: dois requests
- * concorrentes no boot compartilham a mesma leitura em vez de abrirem dois
- * `readFile` de 13 MB.
- */
+// Memoizado na PROMISE, não no resultado — ver ADR 0005.
 export function getCatalog(): Promise<Catalog> {
   cache ??= load();
   return cache;
@@ -256,11 +227,7 @@ export const discountOf = (product: Product) =>
     ? (product.listPriceFrom - product.priceFrom) / product.listPriceFrom
     : 0;
 
-/**
- * Pontuação de relevância. Casar no começo do nome vale mais que casar no
- * meio, e nome vale mais que marca ou categoria — quem digita "hat" quer
- * "Hat Ergonômico" antes de "Bola da marca Hatfield".
- */
+// Pontuação de relevância por token — ver ADR 0007 (adr/0007-busca-parser-unico-ranking-e-correcao-do-host-externo.md).
 function score(product: Product, tokens: string[]): number {
   let total = 0;
 
@@ -311,8 +278,7 @@ function applyFilters(catalog: Catalog, query: ProductQuery): Product[] {
 }
 
 function applySort(list: Product[], sort: SortKey, q?: string): Product[] {
-  // `list` pode ser o array indexado do catálogo — copiar antes de ordenar,
-  // senão a ordenação de um request bagunça o índice compartilhado.
+  // Copiar antes de ordenar: `list` pode ser o array indexado do catálogo. Ver ADR 0007.
   const items = [...list];
   const tokens = q ? tokenize(q) : [];
 
@@ -330,8 +296,7 @@ function applySort(list: Product[], sort: SortKey, q?: string): Product[] {
     case 'name':
       return items.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
     case 'newest':
-      // Sem campo de data no mock, e o `id` é sorteado — a ordem do arquivo é
-      // a única ordem de entrada que existe. O mais novo é o último.
+      // Sem campo de data no mock: ordem do arquivo é a ordem de entrada. Ver ADR 0007.
       return items.reverse();
     case 'relevance':
       // Sem termo de busca, "relevância" é a ordem do catálogo: qualquer
@@ -345,8 +310,7 @@ function applySort(list: Product[], sort: SortKey, q?: string): Product[] {
 function paginate<T>(list: T[], page: number, perPage: number): Page<T> {
   const total = list.length;
   const totalPages = Math.max(1, Math.ceil(total / perPage));
-  // Página fora da faixa cai na última em vez de devolver vazio: `?page=9999`
-  // digitado na mão vira a última página, não uma tela em branco.
+  // Página fora da faixa cai na última, não vazia. Ver ADR 0007.
   const current = Math.min(Math.max(page, 1), totalPages);
   const start = (current - 1) * perPage;
 
@@ -409,8 +373,7 @@ export async function getSuggestions(q: string, limit = 8): Promise<string[]> {
       brands.add(product.brand);
     }
 
-    // Corte cedo: com 10.000 produtos não faz sentido varrer o catálogo
-    // inteiro para devolver 8 strings.
+    // Corte cedo — ver ADR 0007.
     if (prefix.length >= limit) break;
   }
 
@@ -422,11 +385,7 @@ export type Facets = {
   subcategories: { value: string; count: number }[];
 };
 
-/**
- * Contagens do resultado ATUAL, para os filtros da PLP. As marcas são o
- * problema aqui: são 8.361 no catálogo, então só as mais frequentes do
- * recorte viram filtro — uma lista de 8 mil checkboxes não é um filtro.
- */
+// Contagens do resultado atual, limitadas às marcas mais frequentes — ver ADR 0007.
 export async function getFacets(query: ProductQuery = {}, limit = 12): Promise<Facets> {
   const catalog = await getCatalog();
   const list = applyFilters(catalog, query);
