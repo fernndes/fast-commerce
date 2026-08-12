@@ -30,6 +30,30 @@ function stringParam(params: URLSearchParams, key: string): string | undefined {
   return raw ? raw : undefined;
 }
 
+/** Nenhuma busca legítima no catálogo precisa de mais que isso. */
+const MAX_QUERY_LENGTH = 100;
+
+/**
+ * `q` é busca livre digitada por gente: em vez de recusar um valor
+ * "estranho" (política do resto do arquivo), normaliza — remove caracteres
+ * de controle/invisíveis, colapsa espaços e limita o tamanho, para não
+ * arrastar lixo para logs, URLs de paginação e a linha "Resultados para".
+ */
+export function sanitizeSearchTerm(raw: string): string | undefined {
+  const cleaned = raw
+    .replace(/[\p{Cc}\p{Cf}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, MAX_QUERY_LENGTH);
+
+  return cleaned ? cleaned : undefined;
+}
+
+function searchTermParam(params: URLSearchParams, key: string): string | undefined {
+  const raw = params.get(key);
+  return raw ? sanitizeSearchTerm(raw) : undefined;
+}
+
 export function parseProductQuery(params: URLSearchParams): ParseResult {
   const sort = stringParam(params, 'sort');
   if (sort !== undefined && !isSortKey(sort)) {
@@ -60,7 +84,7 @@ export function parseProductQuery(params: URLSearchParams): ParseResult {
   return {
     ok: true,
     query: {
-      q: stringParam(params, 'q'),
+      q: searchTermParam(params, 'q'),
       category: stringParam(params, 'category'),
       brand: stringParam(params, 'brand'),
       minPrice,

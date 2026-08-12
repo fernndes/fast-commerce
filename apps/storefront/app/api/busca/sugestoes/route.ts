@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { getSuggestions } from '@/lib/catalog';
+import { sanitizeSearchTerm } from '@/lib/query';
 import { checkRateLimit } from '@/lib/rate-limit';
 
 /**
@@ -21,7 +22,8 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: 'Rate limit exceeded' }, { status: 429, headers });
   }
 
-  const q = request.nextUrl.searchParams.get('q') ?? '';
+  const raw = request.nextUrl.searchParams.get('q');
+  const q = raw ? (sanitizeSearchTerm(raw) ?? '') : '';
 
   // `q` ausente, vazio ou de 1 letra devolve lista vazia, não 400: digitar a
   // primeira letra é estado NORMAL de um autocomplete, não erro do cliente. O
