@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { getSuggestions } from '@/lib/catalog';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 /**
  * Autocomplete do campo de busca do header. O consumidor é a ilha client
@@ -15,6 +16,11 @@ export const dynamic = 'force-dynamic';
 const LIMIT = 8;
 
 export async function GET(request: NextRequest) {
+  const { rateLimited, headers } = await checkRateLimit(request);
+  if (rateLimited) {
+    return Response.json({ error: 'Rate limit exceeded' }, { status: 429, headers });
+  }
+
   const q = request.nextUrl.searchParams.get('q') ?? '';
 
   // `q` ausente, vazio ou de 1 letra devolve lista vazia, não 400: digitar a
@@ -22,5 +28,5 @@ export async function GET(request: NextRequest) {
   // corte por tamanho mínimo vive em `getSuggestions`, junto com a busca.
   const suggestions = await getSuggestions(q, LIMIT);
 
-  return Response.json({ suggestions });
+  return Response.json({ suggestions }, { headers });
 }

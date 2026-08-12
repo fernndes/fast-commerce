@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 
 import { listProducts, type Product } from '@/lib/catalog';
 import { parseProductQuery } from '@/lib/query';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 /**
  * Listagem paginada para quem roda no BROWSER — o windowing / "carregar mais"
@@ -52,13 +53,20 @@ const toListItem = (product: Product): ListItem => ({
 });
 
 export async function GET(request: NextRequest) {
+  // Primeiro de tudo, antes de qualquer parse ou I/O: um flood de requests
+  // inválidos ainda pagaria CPU se o 400 viesse antes.
+  const { rateLimited, headers } = await checkRateLimit(request);
+  if (rateLimited) {
+    return Response.json({ error: 'Rate limit exceeded' }, { status: 429, headers });
+  }
+
   const parsed = parseProductQuery(request.nextUrl.searchParams);
 
   if (!parsed.ok) {
-    return Response.json({ error: parsed.error }, { status: 400 });
+    return Response.json({ error: parsed.error }, { status: 400, headers });
   }
 
   const page = await listProducts(parsed.query);
 
-  return Response.json({ ...page, items: page.items.map(toListItem) });
+  return Response.json({ ...page, items: page.items.map(toListItem) }, { headers });
 }
