@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
 
   // Evita colisão de `/_next/` entre as duas zonas sob o mesmo domínio: os
   // assets do blog saem sob `/blog-static/_next/...`. Ver Blog-0001.
-  assetPrefix: '/blog-static',
+  // assetPrefix: '/blog-static',
 
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'dummyimage.com' }],

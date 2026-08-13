@@ -64,7 +64,7 @@ const nextConfig: NextConfig = {
     return [
       { source: '/blog', destination: `${blog}/blog` },
       { source: '/blog/:path*', destination: `${blog}/blog/:path*` },
-      { source: '/blog-static/:path*', destination: `${blog}/blog-static/:path*` },
+      // { source: '/blog-static/:path*', destination: `${blog}/blog-static/:path*` },
     ];
   },
 
