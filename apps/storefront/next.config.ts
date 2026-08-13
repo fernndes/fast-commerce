@@ -54,19 +54,17 @@ const nextConfig: NextConfig = {
    * só redeployar o blog.
    */
   async rewrites() {
-    const blog = process.env.BLOG_ZONE_URL;
+  const blog = process.env.BLOG_ZONE_URL;
+  if (!blog) return { beforeFiles: [] };
 
-    // Sem a variável, nenhum rewrite: `/blog` cai no 404 do storefront em vez de
-    // apontar para `undefined/blog`. Falha visível, não uma URL quebrada servida
-    // com cara de válida — o mesmo fail-loud do ADR 0010.
-    if (!blog) return [];
-
-    return [
+  return {
+    beforeFiles: [
       { source: '/blog', destination: `${blog}/blog` },
-      { source: '/blog/:path*', destination: `${blog}/blog/:path*` },
-      { source: '/blog-static/:path*', destination: `${blog}/blog-static/:path*` },
-    ];
-  },
+      { source: '/blog/:path+', destination: `${blog}/blog/:path+` },
+      { source: '/blog-static/:path+', destination: `${blog}/blog-static/:path+` },
+    ],
+  };
+},
 
   async headers() {
     return [{
