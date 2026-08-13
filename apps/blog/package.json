@@ -1,0 +1,37 @@
+{
+  "name": "blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run generate:posts && npm run verify:posts && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "generate:posts": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-posts.ts",
+    "verify:posts": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-posts.ts"
+  },
+  "dependencies": {
+    "@next/third-parties": "16.3.0",
+    "@tanstack/react-virtual": "3.14.9",
+    "@vercel/speed-insights": "2.0.0",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "10.5.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.0",
+    "rehype-sanitize": "6.0.0",
+    "rehype-stringify": "10.0.1",
+    "remark-parse": "11.0.0",
+    "remark-rehype": "11.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "unified": "11.0.5"
+  }
+}

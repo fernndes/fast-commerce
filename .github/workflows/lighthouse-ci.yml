@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   lighthouse:
+    name: Lighthouse (storefront)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -15,5 +16,32 @@ jobs:
           cache: 'npm'
           cache-dependency-path: apps/storefront/package-lock.json
       - run: npm ci
+      - run: npm run build
+      - run: npx @lhci/cli autorun
+
+  # A zona blog builda e é medida de forma INDEPENDENTE — dois projetos de
+  # deploy, dois jobs, sem `needs` entre eles. Um quebrar não derruba o outro:
+  # é o "blast radius" que a separação de projeto promete. Ver Blog-0001.
+  lighthouse-blog:
+    name: Lighthouse (blog)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/blog
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          # Node 24: `scripts/*.ts` roda direto, sem passo de compilação. É o
+          # type-stripping nativo que dispensa um bundler só para o script de
+          # geração de conteúdo.
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: apps/blog/package-lock.json
+      - run: npm ci
+      # `npm run build` encadeia `generate:posts` e `verify:posts`: o conteúdo é
+      # gerado pela seed fixa e VERIFICADO (slugs únicos, índice íntegro,
+      # sanitização ativa) antes do `next build`. Se um vetor de XSS sobreviver à
+      # sanitização, o job falha aqui. Ver Blog-0003 e Blog-0004.
       - run: npm run build
       - run: npx @lhci/cli autorun

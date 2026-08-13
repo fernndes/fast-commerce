@@ -15,3 +15,22 @@ updates:
         dependency-type: "development"
       production-dependencies:
         dependency-type: "production"
+
+  # A zona blog tem lockfile PRÓPRIO (os dois apps instalam de forma
+  # independente; não há workspace na raiz), então precisa da própria entrada —
+  # o bloco acima não a alcança.
+  #
+  # Isto não é burocracia: o blog é justamente o app que depende de
+  # `@faker-js/faker`, a lib do episódio de supply-chain que motivou este
+  # arquivo. Versão pinada no `package.json`, travada no lockfile, e o Dependabot
+  # vigiando. Ver Blog-0003.
+  - package-ecosystem: "npm"
+    directory: "/apps/blog"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
