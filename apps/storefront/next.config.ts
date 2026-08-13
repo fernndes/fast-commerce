@@ -39,6 +39,35 @@ const nextConfig: NextConfig = {
     '/**': ['./data/big.json'],
   },
 
+  /*
+   * Multi-Zones: o storefront é o HOST do domínio e proxeia a zona blog.
+   * Ver Blog-0001 (apps/blog/adr/0001-multi-zones-assetprefix-rewrites-e-navegacao.md).
+   *
+   * `rewrites()` estático em vez de `proxy()`: o destino é fixo, então não há o
+   * que decidir por request — o rewrite evita o hop extra de function por
+   * request. `proxy()` só se justificaria com decisão dinâmica (feature flag
+   * escolhendo a rota, migração parcial).
+   *
+   * ATENÇÃO — acoplamento de build: `rewrites()` roda durante `next build` para
+   * gerar o manifest de rotas, então `BLOG_ZONE_URL` é resolvida em BUILD TIME,
+   * não por request. Trocar o domínio do blog exige REBUILDAR o storefront, não
+   * só redeployar o blog.
+   */
+  async rewrites() {
+    const blog = process.env.BLOG_ZONE_URL;
+
+    // Sem a variável, nenhum rewrite: `/blog` cai no 404 do storefront em vez de
+    // apontar para `undefined/blog`. Falha visível, não uma URL quebrada servida
+    // com cara de válida — o mesmo fail-loud do ADR 0010.
+    if (!blog) return [];
+
+    return [
+      { source: '/blog', destination: `${blog}/blog` },
+      { source: '/blog/:path*', destination: `${blog}/blog/:path*` },
+      { source: '/blog-static/:path*', destination: `${blog}/blog-static/:path*` },
+    ];
+  },
+
   async headers() {
     return [{
       source: '/:path*',
