@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  margin-top: auto;
+  color: #18181b;
+  font-family:
+    var(--font-geist-sans),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.shell {
+  border-top: 1px solid rgba(24, 24, 27, 0.12);
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: min(100%, 80rem);
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  color: #18181b;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a,
+li {
+  color: #52525b;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: #18181b;
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid #18181b;
+  outline-offset: 2px;
+}
+
+.legal {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid rgba(24, 24, 27, 0.12);
+  padding-top: 1.5rem;
+  color: #71717a;
+  font-size: 0.75rem;
+}
+
+.legal p {
+  margin: 0;
+}
+
+.legal nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.legal a {
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .legal {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    color: #fafafa;
+  }
+
+  .shell,
+  .legal {
+    border-color: rgba(250, 250, 250, 0.16);
+  }
+
+  h2,
+  a:hover {
+    color: #fafafa;
+  }
+
+  a,
+  li,
+  .legal {
+    color: #a1a1aa;
+  }
+}

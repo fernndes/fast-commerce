@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "npm --prefix ../.. run build:shell",
     "dev": "next dev",
+    "dev:local-components": "npm --prefix ../.. run build:shell && npm --prefix ../.. run copy:app-components && next dev",
+    "prebuild": "npm --prefix ../.. run build:shell",
     "build": "npm run generate:posts && npm run verify:posts && next build",
     "start": "next start",
     "lint": "eslint",
@@ -12,7 +15,9 @@
   },
   "dependencies": {
     "@next/third-parties": "16.3.0",
+    "@repo/app-shell": "file:../../packages/app-shell",
     "@tanstack/react-virtual": "3.14.9",
+    "@stencil/react-output-target": "^1.4.2",
     "@vercel/speed-insights": "2.0.0",
     "next": "16.3.0",
     "react": "19.2.8",

@@ -1,0 +1,41 @@
+name: Publish app shell bundle
+
+on:
+  push:
+    branches: [main]
+    # Só o pacote-fonte da casca. Não inclua `apps/app-components/**` nem os
+    # manifests da raiz: mexer ali passaria a disparar publicação de componente
+    # sem que nenhum componente tenha mudado.
+    paths:
+      - 'packages/app-shell/**'
+      - '.github/workflows/publish-shell.yml'
+
+# Um deploy por vez no projeto de assets. `cancel-in-progress: false` porque
+# cancelar perderia uma publicação — a fila é o comportamento correto aqui.
+concurrency:
+  group: app-components-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build:shell
+      # Copia o DIRETÓRIO inteiro de `dist/app-shell` (loader + chunks `p-*.js`)
+      # para `public/shell/latest` e `public/shell/v/{versão}`. Ver o comentário
+      # em packages/app-shell/scripts/copy-client-bundle.mjs.
+      - run: npm run copy:app-components
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_APP_COMPONENTS_PROJECT_ID }}
+          working-directory: apps/app-components
+          vercel-args: '--prod'

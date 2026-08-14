@@ -1,0 +1,21 @@
+{
+  "name": "fast-commerce-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/app-components",
+    "apps/blog",
+    "apps/storefront",
+    "packages/app-shell"
+  ],
+  "scripts": {
+    "build:shell": "npm run build --workspace=@repo/app-shell",
+    "build:app-components": "npm run build --workspace=app-components",
+    "copy:app-components": "npm run copy:client --workspace=@repo/app-shell",
+    "dev:app-components": "npm run dev --workspace=app-components"
+  },
+  "devDependencies": {
+    "@stencil/core": "^4.38.3",
+    "@stencil/react-output-target": "^1.4.2"
+  }
+}

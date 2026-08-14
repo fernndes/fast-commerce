@@ -1,0 +1,59 @@
+{
+  "name": "@repo/app-shell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "scripts": {
+    "build": "stencil build",
+    "copy:client": "node scripts/copy-client-bundle.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./react/components.server.ts",
+      "react-server": "./react/components.server.ts",
+      "import": "./react/components.ts",
+      "default": "./react/components.ts"
+    },
+    "./react/client": {
+      "types": "./react/components.ts",
+      "import": "./react/components.ts",
+      "default": "./react/components.ts"
+    },
+    "./hydrate": {
+      "types": "./dist/hydrate/index.d.ts",
+      "import": "./dist/hydrate/index.mjs",
+      "require": "./dist/hydrate/index.js",
+      "default": "./dist/hydrate/index.mjs"
+    },
+    "./dist/components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./dist/components/*": {
+      "import": "./dist/components/*",
+      "require": "./dist/components/*",
+      "default": "./dist/components/*"
+    },
+    "./loader": {
+      "import": "./dist/loader/index.js",
+      "default": "./dist/loader/index.js"
+    }
+  },
+  "dependencies": {
+    "@stencil/core": "^4.38.3"
+  },
+  "devDependencies": {
+    "@stencil/react-output-target": "^1.4.2",
+    "typescript": "^5"
+  }
+}
