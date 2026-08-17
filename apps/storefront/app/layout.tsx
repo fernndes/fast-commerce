@@ -9,6 +9,16 @@ import "./globals.css";
 import { ShellBoundary } from "@/components/shell/shell-boundary";
 import { FallbackFooter, FallbackHeader } from "@/components/shell/shell-fallback";
 import { appComponentScriptSrc } from "@/lib/app-components";
+import { type Category, getCategoryTree, getFeaturedCategories } from "@/lib/categories";
+
+/*
+ * O header recebe os dados por prop, e prop de Client Component atravessa no
+ * payload RSC — ou seja, tudo que for passado é serializado em TODA página,
+ * além de já estar no HTML do menu. `count` é o único campo que o header não
+ * lê (ele serve para a curadoria, em `lib/categories.ts`), então cortá-lo aqui
+ * tira ~34 campos do payload de cada página sem mudar nada na tela.
+ */
+const semContagem = ({ slug, name, href }: Category) => ({ slug, name, href });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +35,34 @@ export const metadata: Metadata = {
   description: "Loja de e-commerce otimizada para performance",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /*
+   * A navegação por categorias é dado do catálogo DESTA zona, e o `<AppHeader>`
+   * é compartilhado com o blog — ele não pode buscá-la. Então quem busca é o
+   * layout, e o header recebe pronto. Ver ADR 0003.
+   *
+   * `Promise.all` porque as duas leituras são independentes; as duas caem no
+   * mesmo cache de módulo de `lib/categories.ts`, então isto não dobra trabalho.
+   *
+   * Sem `try/catch` de propósito: sem categorias não existe storefront
+   * navegável, e mascarar a falha aqui esconderia um catálogo quebrado atrás de
+   * um header pela metade. Fail loud — ver ADR 0010. (O `ShellBoundary` cobre
+   * outra coisa: falha ao RENDERIZAR a casca compartilhada.)
+   */
+  const [arvore, destaques] = await Promise.all([
+    getCategoryTree(),
+    getFeaturedCategories(),
+  ]);
+
+  const departamentos = arvore.map((dept) => ({
+    ...semContagem(dept),
+    children: dept.children.map(semContagem),
+  }));
+
   return (
     <html
       lang="pt-BR"
@@ -68,7 +101,11 @@ export default function RootLayout({
           Pular para o conteúdo
         </a>
         <ShellBoundary label="header" fallback={<FallbackHeader />}>
-          <AppHeader activeZone="storefront" />
+          <AppHeader
+            activeZone="storefront"
+            departments={departamentos}
+            featuredCategories={destaques.map(semContagem)}
+          />
         </ShellBoundary>
         {/* Alvo do skip link — ver ADR 0009 (adr/0009-fronteira-server-client-e-acessibilidade.md). */}
         <div id="conteudo" className="flex flex-1 flex-col">

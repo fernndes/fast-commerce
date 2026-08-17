@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ShellCategory, ShellDepartment } from "./components/app-header/types";
+export { ShellCategory, ShellDepartment } from "./components/app-header/types";
 export namespace Components {
     interface AppFooter {
         /**
@@ -13,11 +15,38 @@ export namespace Components {
          */
         "year": number;
     }
+    /**
+     * Header compartilhado pelas duas zonas. Ele tem DOIS modos, decididos pelos
+     * dados que a zona passa — não por um flag:
+     * - Com `departments`, monta a casca completa do storefront: segunda linha com
+     *   mega menu (desktop), barra de categorias em destaque e menu de disclosure
+     *   no mobile.
+     * - Sem `departments` (o blog), fica na barra única com o nav simples.
+     * Por que os dados vêm por prop: a árvore de categorias é do catálogo do
+     * storefront (`lib/categories.ts`), e o pacote não pode buscá-la — ele roda
+     * igual nas duas zonas e não conhece a origem dos dados. A zona busca no
+     * server e passa pronto. Como o SSR aqui é execução real de JS (hydrate app do
+     * Stencil, ver ADR 0003), array de objeto atravessa como valor, sem virar
+     * string de atributo.
+     * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`), não estado: o
+     * painel existe no HTML servido em toda página, e é justamente por isso que os
+     * links de categoria são rastreáveis. O menu mobile é `<details>` nativo.
+     */
     interface AppHeader {
         /**
           * @default 'storefront'
          */
         "activeZone": 'storefront' | 'blog';
+        /**
+          * Árvore completa de departamentos → subcategorias. Vazio = modo simples.
+          * @default []
+         */
+        "departments": ShellDepartment[];
+        /**
+          * Atalhos da barra horizontal. O link do Blog é acrescentado no fim.
+          * @default []
+         */
+        "featuredCategories": ShellCategory[];
         /**
           * @default false
          */
@@ -31,6 +60,23 @@ declare global {
         prototype: HTMLAppFooterElement;
         new (): HTMLAppFooterElement;
     };
+    /**
+     * Header compartilhado pelas duas zonas. Ele tem DOIS modos, decididos pelos
+     * dados que a zona passa — não por um flag:
+     * - Com `departments`, monta a casca completa do storefront: segunda linha com
+     *   mega menu (desktop), barra de categorias em destaque e menu de disclosure
+     *   no mobile.
+     * - Sem `departments` (o blog), fica na barra única com o nav simples.
+     * Por que os dados vêm por prop: a árvore de categorias é do catálogo do
+     * storefront (`lib/categories.ts`), e o pacote não pode buscá-la — ele roda
+     * igual nas duas zonas e não conhece a origem dos dados. A zona busca no
+     * server e passa pronto. Como o SSR aqui é execução real de JS (hydrate app do
+     * Stencil, ver ADR 0003), array de objeto atravessa como valor, sem virar
+     * string de atributo.
+     * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`), não estado: o
+     * painel existe no HTML servido em toda página, e é justamente por isso que os
+     * links de categoria são rastreáveis. O menu mobile é `<details>` nativo.
+     */
     interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {
     }
     var HTMLAppHeaderElement: {
@@ -50,11 +96,38 @@ declare namespace LocalJSX {
          */
         "year"?: number;
     }
+    /**
+     * Header compartilhado pelas duas zonas. Ele tem DOIS modos, decididos pelos
+     * dados que a zona passa — não por um flag:
+     * - Com `departments`, monta a casca completa do storefront: segunda linha com
+     *   mega menu (desktop), barra de categorias em destaque e menu de disclosure
+     *   no mobile.
+     * - Sem `departments` (o blog), fica na barra única com o nav simples.
+     * Por que os dados vêm por prop: a árvore de categorias é do catálogo do
+     * storefront (`lib/categories.ts`), e o pacote não pode buscá-la — ele roda
+     * igual nas duas zonas e não conhece a origem dos dados. A zona busca no
+     * server e passa pronto. Como o SSR aqui é execução real de JS (hydrate app do
+     * Stencil, ver ADR 0003), array de objeto atravessa como valor, sem virar
+     * string de atributo.
+     * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`), não estado: o
+     * painel existe no HTML servido em toda página, e é justamente por isso que os
+     * links de categoria são rastreáveis. O menu mobile é `<details>` nativo.
+     */
     interface AppHeader {
         /**
           * @default 'storefront'
          */
         "activeZone"?: 'storefront' | 'blog';
+        /**
+          * Árvore completa de departamentos → subcategorias. Vazio = modo simples.
+          * @default []
+         */
+        "departments"?: ShellDepartment[];
+        /**
+          * Atalhos da barra horizontal. O link do Blog é acrescentado no fim.
+          * @default []
+         */
+        "featuredCategories"?: ShellCategory[];
         /**
           * @default false
          */
@@ -79,6 +152,23 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "app-footer": LocalJSX.IntrinsicElements["app-footer"] & JSXBase.HTMLAttributes<HTMLAppFooterElement>;
+            /**
+             * Header compartilhado pelas duas zonas. Ele tem DOIS modos, decididos pelos
+             * dados que a zona passa — não por um flag:
+             * - Com `departments`, monta a casca completa do storefront: segunda linha com
+             *   mega menu (desktop), barra de categorias em destaque e menu de disclosure
+             *   no mobile.
+             * - Sem `departments` (o blog), fica na barra única com o nav simples.
+             * Por que os dados vêm por prop: a árvore de categorias é do catálogo do
+             * storefront (`lib/categories.ts`), e o pacote não pode buscá-la — ele roda
+             * igual nas duas zonas e não conhece a origem dos dados. A zona busca no
+             * server e passa pronto. Como o SSR aqui é execução real de JS (hydrate app do
+             * Stencil, ver ADR 0003), array de objeto atravessa como valor, sem virar
+             * string de atributo.
+             * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`), não estado: o
+             * painel existe no HTML servido em toda página, e é justamente por isso que os
+             * links de categoria são rastreáveis. O menu mobile é `<details>` nativo.
+             */
             "app-header": LocalJSX.IntrinsicElements["app-header"] & JSXBase.HTMLAttributes<HTMLAppHeaderElement>;
         }
     }
