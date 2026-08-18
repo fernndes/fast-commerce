@@ -1,0 +1,20 @@
+{
+  "name": "@repo/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./brand": "./src/brand/index.tsx",
+    "./icon": "./src/icon/index.tsx",
+    "./nav-list": "./src/nav-list/index.tsx",
+    "./search-form": "./src/search-form/index.tsx",
+    "./tokens": "./src/tokens/index.ts"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

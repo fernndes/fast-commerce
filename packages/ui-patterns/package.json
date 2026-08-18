@@ -1,0 +1,21 @@
+{
+  "name": "@repo/ui-patterns",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./app-header": "./src/app-header/index.tsx",
+    "./app-footer": "./src/app-footer/index.tsx",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@repo/ui": "*"
+  },
+  "peerDependencies": {
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

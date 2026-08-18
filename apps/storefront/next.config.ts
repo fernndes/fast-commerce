@@ -7,7 +7,7 @@ const isDev = process.env.NODE_ENV === 'development'
 // (adr/0002-csp-por-origem-sem-nonce-nem-sri.md).
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://fast-commerce-app-components.vercel.app https://www.googletagmanager.com https://*.clarity.ms${isDev ? " 'unsafe-eval' http://localhost:4300 https://va.vercel-scripts.com" : ''};
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.clarity.ms${isDev ? " 'unsafe-eval' https://va.vercel-scripts.com" : ''};
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://dummyimage.com https://*.googletagmanager.com https://*.google-analytics.com;
     connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms;
@@ -30,20 +30,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   /*
-   * Os wrappers React de `@repo/app-shell` são publicados como `.ts`
-   * cru (ver o campo `exports` dos pacotes), então precisam passar pelo
-   * compilador do Next.
-   *
-   * NÃO existe plugin de SSR aqui de propósito. O SSR com Declarative Shadow DOM
-   * vem do `@stencil/react-output-target`: o `stencil.config.ts` de cada pacote
-   * declara `hydrateModule` + `serializeShadowRoot`, o gerador emite
-   * `react/components.server.ts`, e a export condition `react-server` roteia o
-   * Server Component para lá. `@stencil/ssr/next` seria um SEGUNDO mecanismo
-   * sobre o mesmo problema — e quebra o build, porque registra um loader webpack
-   * `enforce: 'post'` que re-parseia a saída do `next-swc-loader`, incluindo os
-   * imports virtuais de `next/font`. Ver ADR 0003.
+   * Os pacotes da casca exportam TSX cru — sem `dist`, sem step de build (ver o
+   * campo `exports` de cada um). É o compilador desta zona que os transpila, e
+   * é isso que permite `AppHeader`/`AppFooter` serem Server Components de
+   * verdade: eles são compilados no mesmo grafo do app, sob a mesma fronteira
+   * server/client. Ver ADR 0004.
    */
-  transpilePackages: ['@repo/app-shell'],
+  transpilePackages: ['@repo/ui', '@repo/ui-patterns'],
 
   images: {
     remotePatterns: [

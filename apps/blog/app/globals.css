@@ -1,14 +1,31 @@
 @import "tailwindcss";
 
 /*
+ * A casca (header/footer) vem de `@repo/ui-patterns`, e o Tailwind só gera as
+ * classes que ENCONTRA. A detecção automática de fontes não atravessa para
+ * dentro de `node_modules`, que é onde os symlinks de workspace resolvem —
+ * então os dois pacotes entram à mão.
+ *
+ * Omitir isto não quebra o `dev` (onde a purga é frouxa): quebra o BUILD, e o
+ * sintoma é a casca sem estilo só em produção. Ver ADR 0004.
+ */
+@source "../../../packages/ui/src";
+@source "../../../packages/ui-patterns/src";
+
+/*
  * Tokens e gabarito COPIADOS do storefront (`apps/storefront/app/globals.css`),
  * valor por valor. A fronteira de deploy tem que ser invisível: se o cinza de
  * borda ou a largura do trilho divergirem, o usuário sente a travessia mesmo
  * sem saber nomear o que mudou.
  *
  * Isto é duplicação consciente, não descuido — ver Blog-0006, que registra por
- * que um `packages/ui` compartilhado não é viável hoje (os dois apps instalam
- * dependências de forma independente, sem workspaces) e o que fazer quando for.
+ * que um `packages/ui` compartilhado não era viável quando os dois apps
+ * instalavam dependências de forma independente.
+ *
+ * ATUALIZAÇÃO: o monorepo agora TEM workspaces, e `packages/ui` existe — mas
+ * ele carrega as primitivas da CASCA, não estes tokens de página. Mover
+ * `--background`/`--foreground` e as utilities `page-*` para lá é o próximo
+ * passo natural, e continua pendente. Ver ADR 0004.
  */
 
 :root {

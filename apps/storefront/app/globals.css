@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/*
+ * A casca (header/footer) vem de `@repo/ui-patterns`, e o Tailwind só gera as
+ * classes que ENCONTRA. A detecção automática de fontes não atravessa para
+ * dentro de `node_modules`, que é onde os symlinks de workspace resolvem —
+ * então os dois pacotes entram à mão.
+ *
+ * Omitir isto não quebra o `dev` (onde a purga é frouxa): quebra o BUILD, e o
+ * sintoma é a casca sem estilo só em produção. Ver ADR 0004.
+ */
+@source "../../../packages/ui/src";
+@source "../../../packages/ui-patterns/src";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

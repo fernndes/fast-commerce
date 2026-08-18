@@ -2,9 +2,17 @@
 
 ## Status
 
-Aceito. Revisado apos a primeira implementacao: as decisoes sobre o mecanismo de
-SSR e sobre o numero de pacotes mudaram — as duas escolhas originais nao
-funcionavam. Ver "Alternativas descartadas".
+SUPERSEDIDO pela ADR 0004 (`0004-casca-como-componentes-react-em-workspace.md`).
+
+A casca nao usa mais Stencil, Web Components, Shadow DOM nem o bundle publicado
+em CDN. `packages/app-shell` e `apps/app-components` foram removidos. O texto
+abaixo fica como registro do desenho anterior e das razoes que levaram a ele —
+varias continuam validas (o `ShellBoundary`, os dados por prop, nao renderizar
+conteudo gerado por usuario na casca) e estao reafirmadas na 0004.
+
+Historico anterior: aceito e revisado apos a primeira implementacao — as
+decisoes sobre o mecanismo de SSR e sobre o numero de pacotes mudaram, porque as
+duas escolhas originais nao funcionavam. Ver "Alternativas descartadas".
 
 ## Contexto
 

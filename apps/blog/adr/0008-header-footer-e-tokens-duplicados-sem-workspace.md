@@ -1,6 +1,17 @@
 # Blog-0008 — Header, footer e tokens duplicados na zona, em vez de `packages/ui`
 
-- **Status:** aceito
+- **Status:** superado para HEADER/FOOTER; ainda vigente para os TOKENS.
+
+  O gatilho que esta ADR listou aconteceu — "o repositório adotar npm workspaces
+  por outra razão" —, e a casca migrou. Header e footer vivem hoje em
+  `packages/ui` + `packages/ui-patterns` e são Server Components (ver
+  `docs/adr/0004-casca-como-componentes-react-em-workspace.md`); a previsão de
+  que "o mega menu é CSS puro e Server Component, então atravessaria para o
+  pacote sem arrastar JS" se confirmou palavra por palavra.
+
+  O que NÃO migrou: os tokens de página (`--background`/`--foreground`) e as
+  utilities `page-*` do `globals.css`, que continuam duplicados entre as zonas. O
+  `packages/config` previsto aqui continua sendo o caminho, e continua pendente.
 - **Data:** 2026-08-13
 - **Contexto:** `apps/blog` — `components/header`, `components/footer`, `app/globals.css`
 

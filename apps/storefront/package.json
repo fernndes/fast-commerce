@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm --prefix ../.. run build:shell",
-    "dev": "next dev",
-    "dev:local-components": "npm --prefix ../.. run build:shell && npm --prefix ../.. run copy:app-components && next dev",
-    "prebuild": "npm --prefix ../.. run build:shell",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,9 +11,9 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.2.12",
-    "@repo/app-shell": "file:../../packages/app-shell",
+    "@repo/ui": "*",
+    "@repo/ui-patterns": "*",
     "@sentry/nextjs": "^10.69.0",
-    "@stencil/react-output-target": "^1.4.2",
     "@vercel/speed-insights": "^2.0.0",
     "next": "^16.2.12",
     "react": "19.2.4",

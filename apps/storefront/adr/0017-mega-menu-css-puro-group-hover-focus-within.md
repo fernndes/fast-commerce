@@ -1,8 +1,15 @@
 # ADR 0017 — Mega menu CSS puro: `group-hover`/`group-focus-within` sem Client Component
 
-- **Status:** aceito
+- **Status:** aceito — e VIGENTE, embora o código tenha mudado de casa duas vezes.
 - **Data:** 2026-08-12
-- **Contexto:** `apps/storefront`
+- **Contexto:** `apps/storefront`, hoje `packages/ui-patterns/src/app-header/`
+
+  A decisão desta ADR — abrir/fechar em CSS, sem Client Component — sobreviveu
+  intacta à extração para Web Component (`docs/adr/0003`) e ao retorno para
+  React (`docs/adr/0004`). O mega menu voltou a ser exatamente
+  `group-hover`/`group-focus-within` do Tailwind, agora com grupo nomeado
+  (`group/mega`), e o `@media (hover: hover)` que esta ADR escrevia à mão passou
+  a vir de graça: o Tailwind v4 já emite o variante `hover` dentro dele.
 
 ## Contexto
 

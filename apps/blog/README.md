@@ -14,30 +14,36 @@ header, o mesmo consent, a mesma CSP e os mesmos Web Vitals.
 
 ## Como rodar
 
-```bash
-npm install
-npm run generate:posts   # gera data/posts.json + public/blog-data/posts-index.json
-npm run dev              # :3000 por padrão; use -p 3001 junto com o storefront
-```
-
-`npm run build` já encadeia `generate:posts` e `verify:posts` antes do
-`next build` — o conteúdo não é versionado, é regenerado (a seed fixa garante o
-mesmo resultado byte a byte).
-
-### Rodando as duas zonas juntas
+O repositório é um workspace npm. **O jeito normal é subir as duas zonas juntas,
+a partir da raiz:**
 
 ```bash
-# terminal 1 — a zona blog
-cd apps/blog && npm run dev -- -p 3001
-
-# terminal 2 — o host, que proxeia /blog
-cd apps/storefront
-echo 'BLOG_ZONE_URL=http://localhost:3001' >> .env.local
-npm run dev
+npm install                # uma vez, na raiz — instala os dois apps e os pacotes
+npm run dev                # turbo: storefront em :3000 e blog em :3001
 ```
 
 Depois disso, `http://localhost:3000/blog` serve a zona blog de forma
-transparente. **É assim que se testa de verdade** — ver as ressalvas abaixo.
+transparente, pelo rewrite do host. **É assim que se testa de verdade** — ver as
+ressalvas abaixo. Abrir `http://localhost:3001/blog` direto funciona, mas pula o
+host, então não exercita a travessia entre zonas.
+
+As portas são fixas nos scripts (`next dev -p 3000` / `-p 3001`) porque o
+`BLOG_ZONE_URL` do `.env.local` do storefront aponta para a 3001 — deixá-las ao
+acaso faz o Next escolher a próxima porta livre e o rewrite passa a apontar para
+o nada.
+
+Só esta zona, isolada:
+
+```bash
+cd apps/blog
+npm run generate:posts   # gera data/posts.json + public/blog-data/posts-index.json
+npm run dev              # :3001
+```
+
+`generate:posts` só é necessário na primeira vez (ou depois de limpar): o
+conteúdo não é versionado. `npm run build` já encadeia `generate:posts` e
+`verify:posts` antes do `next build`, e a seed fixa garante o mesmo resultado
+byte a byte.
 
 ## Scripts
 

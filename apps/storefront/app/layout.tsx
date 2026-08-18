@@ -2,23 +2,32 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleTagManager } from '@next/third-parties/google'
-import { AppFooter, AppHeader } from '@repo/app-shell/react';
+import { AppFooter } from '@repo/ui-patterns/app-footer';
+import { AppHeader } from '@repo/ui-patterns/app-header';
 
 import "./globals.css";
 
-import { ShellBoundary } from "@/components/shell/shell-boundary";
-import { FallbackFooter, FallbackHeader } from "@/components/shell/shell-fallback";
-import { appComponentScriptSrc } from "@/lib/app-components";
-import { type Category, getCategoryTree, getFeaturedCategories } from "@/lib/categories";
+import { getCategoryTree, getFeaturedCategories } from "@/lib/categories";
 
 /*
- * O header recebe os dados por prop, e prop de Client Component atravessa no
- * payload RSC — ou seja, tudo que for passado é serializado em TODA página,
- * além de já estar no HTML do menu. `count` é o único campo que o header não
- * lê (ele serve para a curadoria, em `lib/categories.ts`), então cortá-lo aqui
- * tira ~34 campos do payload de cada página sem mudar nada na tela.
+ * Aqui existia um `semContagem()` que removia o campo `count` de ~34 categorias
+ * antes de passá-las ao header. Ele foi REMOVIDO junto com o Stencil (ADR 0004),
+ * e o motivo é a diferença central do novo desenho.
+ *
+ * O `<AppHeader>` era Client Component, e prop de Client Component atravessa
+ * SERIALIZADA no payload RSC — tudo que fosse passado ia no payload de toda
+ * página, além de já estar no HTML do menu. Cortar `count` (que o header não lê)
+ * era como se pagava menos por isso.
+ *
+ * Como Server Component, os dados são consumidos NO SERVIDOR e nunca são
+ * serializados. Não há payload a economizar, e a árvore vai inteira — inclusive
+ * o `count`, que o header continua ignorando.
+ *
+ * A condição para isso continuar verdadeiro: as colunas de categoria chegam ao
+ * único Client Component da casca (`MobileMenuAutoClose`) como `children`, não
+ * como prop de dados. Passá-las como prop traria a árvore de volta ao payload,
+ * silenciosamente.
  */
-const semContagem = ({ slug, name, href }: Category) => ({ slug, name, href });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,25 +52,28 @@ export default async function RootLayout({
   /*
    * A navegação por categorias é dado do catálogo DESTA zona, e o `<AppHeader>`
    * é compartilhado com o blog — ele não pode buscá-la. Então quem busca é o
-   * layout, e o header recebe pronto. Ver ADR 0003.
+   * layout, e o header recebe pronto. Ver ADR 0004.
    *
    * `Promise.all` porque as duas leituras são independentes; as duas caem no
    * mesmo cache de módulo de `lib/categories.ts`, então isto não dobra trabalho.
    *
    * Sem `try/catch` de propósito: sem categorias não existe storefront
    * navegável, e mascarar a falha aqui esconderia um catálogo quebrado atrás de
-   * um header pela metade. Fail loud — ver ADR 0010. (O `ShellBoundary` cobre
-   * outra coisa: falha ao RENDERIZAR a casca compartilhada.)
+   * um header pela metade. Fail loud — ver ADR 0010.
+   *
+   * Aqui existia um `ShellBoundary` em volta do header e do footer. Ele foi
+   * REMOVIDO porque não fazia o que prometia: error boundary é mecanismo de
+   * cliente, e `<AppHeader>` é Server Component — o throw acontece no passe RSC,
+   * que termina antes de o boundary existir. Medido: rota estática quebrava o
+   * build, rota dinâmica devolvia 500 com `<body>` vazio, COM o boundary no
+   * lugar. Pior, os fallbacks eram props de Client Component e iam serializados
+   * no payload de toda página. Quem cobre este caso hoje é o
+   * `app/global-error.tsx`. Ver ADR 0004.
    */
-  const [arvore, destaques] = await Promise.all([
+  const [departamentos, destaques] = await Promise.all([
     getCategoryTree(),
     getFeaturedCategories(),
   ]);
-
-  const departamentos = arvore.map((dept) => ({
-    ...semContagem(dept),
-    children: dept.children.map(semContagem),
-  }));
 
   return (
     <html
@@ -72,26 +84,11 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
         {/*
-          Bundle client da casca (header + footer), servido por `apps/app-components`
-          em runtime — é o que permite a plataforma publicar uma versão nova sem
-          redeploy desta zona. Ver ADR 0003.
-
-          `crossOrigin="anonymous"`: `type="module"` é SEMPRE buscado em modo
-          CORS, então a origem precisa responder `Access-Control-Allow-Origin`
-          (configurado em `apps/app-components/vercel.json`). Declarar explícito
-          evita falha silenciosa e dá erro legível no console.
-
-          A regra `no-sync-scripts` não se aplica aqui: `type="module"` é adiado
-          por especificação (equivale a `defer`), então não bloqueia o parser.
-          Carregar via `next/script` traria o script para dentro do bundle da
-          zona — exatamente o acoplamento que este desenho existe para evitar.
+          A casca NÃO carrega mais script nenhum. Header e footer são Server
+          Components de `@repo/ui-patterns`: chegam como HTML, sem runtime, sem
+          bundle em CDN e sem a exceção de `script-src` que isso exigia na CSP.
+          Ver ADR 0004.
         */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script
-          type="module"
-          crossOrigin="anonymous"
-          src={appComponentScriptSrc('/shell/latest/app-shell.esm.js')}
-        />
       </head>
       <body className="min-h-full flex flex-col">
         <a
@@ -100,20 +97,16 @@ export default async function RootLayout({
         >
           Pular para o conteúdo
         </a>
-        <ShellBoundary label="header" fallback={<FallbackHeader />}>
-          <AppHeader
-            activeZone="storefront"
-            departments={departamentos}
-            featuredCategories={destaques.map(semContagem)}
-          />
-        </ShellBoundary>
+        <AppHeader
+          activeZone="storefront"
+          departments={departamentos}
+          featuredCategories={destaques}
+        />
         {/* Alvo do skip link — ver ADR 0009 (adr/0009-fronteira-server-client-e-acessibilidade.md). */}
         <div id="conteudo" className="flex flex-1 flex-col">
           {children}
         </div>
-        <ShellBoundary label="footer" fallback={<FallbackFooter />}>
-          <AppFooter />
-        </ShellBoundary>
+        <AppFooter />
         <SpeedInsights />
       </body>
     </html>
