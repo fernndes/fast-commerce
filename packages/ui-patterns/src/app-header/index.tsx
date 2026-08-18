@@ -5,7 +5,6 @@ import { SearchForm } from '@repo/ui/search-form';
 import {
   barBg,
   border,
-  currentBg,
   fgText,
   fgTextHover,
   focusRing,
@@ -22,21 +21,18 @@ import { CategoryColumns } from './category-columns';
 import { MobileMenuAutoClose } from './mobile-menu-auto-close';
 
 /**
- * Header compartilhado pelas duas zonas. Ele tem DOIS modos, decididos pelos
- * dados que a zona passa — não por um flag:
+ * Header compartilhado pelas duas zonas — UM header, não dois. O modo simples
+ * que o blog usava (barra única com nav de três links) foi removido: as zonas
+ * dividem o mesmo domínio e a mesma marca, e duas cascas diferentes faziam a
+ * travessia storefront → blog parecer troca de site.
  *
- * - Com `departments`, monta a casca completa do storefront: segunda linha com
- *   mega menu (desktop), barra de categorias em destaque e menu de disclosure
- *   no mobile.
- * - Sem `departments` (o blog), fica na barra única com o nav simples.
- *
- * Por que os dados vêm por prop: a árvore de categorias é do catálogo do
- * storefront (`lib/categories.ts`), e o pacote não pode buscá-la — ele roda
- * igual nas duas zonas e não conhece a origem dos dados. A zona busca no
- * server e passa pronto. Como isto é um Server Component (ver ADR 0004), os
- * dados são consumidos NO SERVIDOR e nunca são serializados para o cliente —
- * é por isso que a zona pode passar a árvore inteira, com `count` e tudo, sem
- * custo de payload.
+ * Por consequência, `departments`/`featuredCategories` são OBRIGATÓRIOS. Os
+ * dados vêm por prop porque o pacote não pode buscá-los — ele roda igual nas
+ * duas zonas e não conhece a origem. Quem busca é o layout de cada zona, via
+ * `@repo/nav`, que é a fonte única de navegação das duas. Como isto é um
+ * Server Component (ver ADR 0004), os dados são consumidos NO SERVIDOR e nunca
+ * são serializados para o cliente — é por isso que a zona pode passar a árvore
+ * inteira, com `count` e tudo, sem custo de payload.
  *
  * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`, aqui como
  * `group-hover:` / `group-focus-within:`), não estado: o painel existe no HTML
@@ -46,21 +42,18 @@ import { MobileMenuAutoClose } from './mobile-menu-auto-close';
 export function AppHeader({
   activeZone = 'storefront',
   userLoggedIn = false,
-  departments = [],
-  featuredCategories = [],
+  departments,
+  featuredCategories,
 }: {
   activeZone?: NavZone;
   userLoggedIn?: boolean;
-  /** Árvore completa de departamentos → subcategorias. Vazio = modo simples. */
-  departments?: NavDepartment[];
+  /** Árvore completa de departamentos → subcategorias. */
+  departments: NavDepartment[];
   /** Atalhos da barra horizontal. O link do Blog é acrescentado no fim. */
-  featuredCategories?: NavCategory[];
+  featuredCategories: NavCategory[];
 }) {
-  const hasMenu = departments.length > 0;
-  const hasFeatured = featuredCategories.length > 0;
   const isActive = (zone: NavZone) => activeZone === zone;
 
-  const simpleNavLink = `rounded-md px-[0.6rem] py-[0.45rem] text-sm leading-[1.2] whitespace-nowrap ${mutedText} ${fgTextHover} ${hoverBg} ${currentBg} aria-[current=page]:text-[#18181b] dark:aria-[current=page]:text-[#fafafa]`;
   const featuredLink = `text-sm whitespace-nowrap hover:underline aria-[current=page]:underline ${mutedText} ${fgTextHover} aria-[current=page]:text-[#18181b] dark:aria-[current=page]:text-[#fafafa]`;
   const actionButton = `grid h-9 w-9 place-items-center rounded-md ${hoverBg} ${focusRing}`;
 
@@ -79,55 +72,35 @@ export function AppHeader({
       <div
         className={`flex flex-wrap items-center gap-4 px-4 py-3 max-[760px]:gap-y-3 ${railWidth}`}
       >
-        {hasMenu && (
-          /*
-           * `group/menu` é o que permite ao ícone (em `@repo/ui`) alternar
-           * hambúrguer/X a partir de `[open]` sem JS — `group-open/menu:*`.
-           */
-          <details className="group/menu lg:hidden">
-            <summary
-              aria-label="Abrir menu de categorias"
-              className={`grid h-9 w-9 cursor-pointer list-none place-items-center rounded-md [&::-webkit-details-marker]:hidden ${hoverBg} ${focusRing}`}
-            >
-              <MenuToggleIcon />
-            </summary>
+        {/*
+         * `group/menu` é o que permite ao ícone (em `@repo/ui`) alternar
+         * hambúrguer/X a partir de `[open]` sem JS — `group-open/menu:*`.
+         */}
+        <details className="group/menu lg:hidden">
+          <summary
+            aria-label="Abrir menu de categorias"
+            className={`grid h-9 w-9 cursor-pointer list-none place-items-center rounded-md [&::-webkit-details-marker]:hidden ${hoverBg} ${focusRing}`}
+          >
+            <MenuToggleIcon />
+          </summary>
 
-            {/* Ancora no `<header>`, não no `<details>`: ocupa a largura toda. */}
-            <MobileMenuAutoClose
-              aria-label="Todas as categorias"
-              className={`absolute inset-x-0 top-full z-50 box-border max-h-[calc(100dvh-100%)] overflow-y-auto border-b px-4 py-5 ${border} ${surfaceBg} ${panelShadow}`}
-            >
-              <CategoryColumns departments={departments} variant="mobile" />
+          {/* Ancora no `<header>`, não no `<details>`: ocupa a largura toda. */}
+          <MobileMenuAutoClose
+            aria-label="Todas as categorias"
+            className={`absolute inset-x-0 top-full z-50 box-border max-h-[calc(100dvh-100%)] overflow-y-auto border-b px-4 py-5 ${border} ${surfaceBg} ${panelShadow}`}
+          >
+            <CategoryColumns departments={departments} variant="mobile" />
 
-              <a
-                href="/categorias"
-                className={`mt-6 inline-block text-sm font-semibold underline ${focusRing}`}
-              >
-                Ver todas as categorias
-              </a>
-            </MobileMenuAutoClose>
-          </details>
-        )}
+            <a
+              href="/categorias"
+              className={`mt-6 inline-block text-sm font-semibold underline ${focusRing}`}
+            >
+              Ver todas as categorias
+            </a>
+          </MobileMenuAutoClose>
+        </details>
 
         <Brand />
-
-        {/* Modo simples (blog): sem árvore de categorias, o nav é a navegação. */}
-        {!hasMenu && (
-          <nav
-            aria-label="Seções principais"
-            className="flex-[0_1_auto] max-[760px]:order-3 max-[760px]:basis-full max-[760px]:overflow-x-auto"
-          >
-            <NavList
-              className="flex items-center gap-1"
-              linkClassName={simpleNavLink}
-              items={[
-                { href: '/produtos', label: 'Produtos', current: isActive('storefront') },
-                { href: '/categorias', label: 'Categorias' },
-                { href: '/blog', label: 'Blog', current: isActive('blog') },
-              ]}
-            />
-          </nav>
-        )}
 
         <SearchForm className="flex-[1_1_13rem] max-[760px]:order-4 max-[760px]:basis-full" />
 
@@ -157,35 +130,32 @@ export function AppHeader({
       </div>
 
       {/* Segunda linha, só desktop. */}
-      {(hasMenu || hasFeatured) && (
-        <div className={`hidden items-center gap-6 px-4 pb-3 lg:flex ${railWidth}`}>
-          {hasMenu && <MegaMenu departments={departments} />}
-          {hasFeatured && (
-            <nav aria-label="Categorias em destaque">
-              <NavList
-                className="flex items-center gap-5"
-                linkClassName={featuredLink}
-                items={featuredCategories.map((categoria) => ({
-                  key: categoria.slug,
-                  href: categoria.href,
-                  label: categoria.name,
-                }))}
+      <div className={`hidden items-center gap-6 px-4 pb-3 lg:flex ${railWidth}`}>
+        <MegaMenu departments={departments} />
+
+        <nav aria-label="Categorias em destaque">
+          <NavList
+            className="flex items-center gap-5"
+            linkClassName={featuredLink}
+            items={featuredCategories.map((categoria) => ({
+              key: categoria.slug,
+              href: categoria.href,
+              label: categoria.name,
+            }))}
+          >
+            {/* Cruza zona (storefront → blog): sempre navegação de página inteira. */}
+            <li>
+              <a
+                href="/blog"
+                aria-current={isActive('blog') ? 'page' : undefined}
+                className={`${featuredLink} ${focusRing}`}
               >
-                {/* Cruza zona (storefront → blog): sempre navegação de página inteira. */}
-                <li>
-                  <a
-                    href="/blog"
-                    aria-current={isActive('blog') ? 'page' : undefined}
-                    className={`${featuredLink} ${focusRing}`}
-                  >
-                    Blog
-                  </a>
-                </li>
-              </NavList>
-            </nav>
-          )}
-        </div>
-      )}
+                Blog
+              </a>
+            </li>
+          </NavList>
+        </nav>
+      </div>
     </header>
   );
 }

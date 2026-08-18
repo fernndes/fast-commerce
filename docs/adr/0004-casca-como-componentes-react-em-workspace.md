@@ -53,11 +53,13 @@ pelos workspaces, no modelo do monorepo do Supabase:
 
 - **`packages/ui`** — primitivas sem conhecimento de dominio: `Brand`, os icones,
   `NavList`, `SearchForm`, e os tokens de cor como constantes de classe.
-- **`packages/ui-patterns`** — composicoes que conhecem o dominio: `AppHeader`
-  (os dois modos), `AppFooter`, e os tipos `ShellCategory`/`ShellDepartment`.
+- **`packages/ui-patterns`** — composicoes que conhecem o dominio: `AppHeader`,
+  `AppFooter`, e os tipos `ShellCategory`/`ShellDepartment`.
+- **`packages/nav`** — a navegacao por categorias como DADO, compartilhada pelas
+  duas zonas. Ver a correcao "um header so" no fim deste ADR.
 
-`ui-patterns` depende de `ui`; nunca o contrario. Nenhum dos dois depende de uma
-zona.
+`ui-patterns` depende de `ui`; nunca o contrario. `nav` nao depende de nenhum dos
+dois — e dado, nao UI. Nenhum dos tres depende de uma zona.
 
 Os pacotes NAO tem step de build: exportam TSX cru (`"exports": { ".":
 "./src/index.ts" }`, sem `main`/`module`/`types`/`dist`), e o Next de cada zona
@@ -162,17 +164,19 @@ Os tipos passaram de `ShellCategory`/`ShellDepartment`/`ShellZone` para
 `NavCategory`/`NavDepartment`/`NavZone` — eles descrevem navegacao, que e o que
 sao, independente de quem os consome.
 
-**O que o export dedicado NAO entregou.** A expectativa era que o blog, que roda
-o header em modo simples, deixasse de carregar o codigo do mega menu. Medido no
-build de producao: **nao deixou**. O `MegaMenu` e definido DENTRO de
+**O que o export dedicado NAO entregou.** A expectativa era que o blog, que
+rodava o header em modo simples, deixasse de carregar o codigo do mega menu.
+Medido no build de producao: **nao deixou**. O `MegaMenu` e definido DENTRO de
 `app-header/index.tsx`, que importa `CategoryColumns` e `MobileMenuAutoClose` no
 topo do modulo; o blog puxa os tres, e o chunk cliente do
 `MobileMenuAutoClose` e referenciado no HTML servido do blog. Granularidade de
 export separa `app-header` de `app-footer`, nao `AppHeader` do proprio mega menu
-— `hasMenu` e decisao de RUNTIME, invisivel para o bundler. Separar de verdade
-exigiria dois componentes exportados (um simples, um de catalogo), o que e outra
-decisao. O ganho que o export dedicado de fato entrega e o de FRONTEIRA
-EXPLICITA: nenhuma zona depende por acidente do que nao importou de proposito.
+— `hasMenu` era decisao de RUNTIME, invisivel para o bundler. O ganho que o
+export dedicado de fato entrega e o de FRONTEIRA EXPLICITA: nenhuma zona depende
+por acidente do que nao importou de proposito.
+
+Essa medicao deixou de ser um custo a lamentar: como o blog agora renderiza o
+mega menu de verdade (proxima secao), ele ja pagava por codigo que agora usa.
 
 ## CORRECAO — o `ShellBoundary` NAO sobrevive
 
@@ -232,3 +236,53 @@ arquivos, fundir e a decisao certa.
 
 **Dropar o `closeMobileMenu` e ter zero JS.** Ver acima — foi uma escolha real,
 nao um esquecimento.
+
+## CORRECAO — um header so, e `packages/nav` como fonte da navegacao
+
+O `AppHeader` tinha DOIS modos, decididos pelos dados que a zona passava: com
+`departments`, a casca completa do storefront; sem, uma barra unica com um nav de
+tres links, que era o que o blog renderizava. **O modo simples foi removido.**
+
+O motivo nao e de codigo, e de produto: as duas zonas vivem no MESMO dominio e
+sob a mesma marca, e a travessia `/produtos` → `/blog` e hard navigation. Duas
+cascas diferentes faziam essa travessia parecer troca de site. Manter o modo
+simples tambem nao economizava bundle — a medicao acima mostra que o blog ja
+baixava o codigo do mega menu de qualquer forma.
+
+Isso criou o problema real: `departments`/`featuredCategories` passaram a ser
+props OBRIGATORIAS, e **o blog nao tem catalogo**. A arvore vinha de
+`apps/storefront/lib/categories.ts`, derivada de `data/big.json` — 13 MB lidos
+por `fs` — e nada disso pode virar dependencia da zona blog para desenhar ~30
+links.
+
+A saida foi `packages/nav`: uma PROJECAO da navegacao, materializada em build
+time por `scripts/generate-categories.mjs` a partir do dump do catalogo, e
+consumida pelas duas zonas via import estatico de `data/categories.json`. No
+mundo real esses dados viriam de uma base comum aos dois apps; o pacote e o
+equivalente honesto disso aqui.
+
+Tres consequencias que valem registro:
+
+- **Import estatico, nao `fs`.** O grafo do bundler enxerga o JSON, entao nao ha
+  `outputFileTracingIncludes` a manter em cada zona (a pegadinha do ADR 0005 e do
+  Blog-0003) e nao ha I/O em runtime. So se paga porque a projecao e pequena —
+  alguns KB, contra os 13 MB do catalogo, que continua so no storefront.
+- **A curadoria editorial mudou de lugar, nao de regra.** `LABELS`, `DEPT_ORDER`
+  e `FEATURED` foram para o gerador. As invariantes do ADR 0010 do storefront
+  seguem valendo e seguem fail loud — slug que e departamento E subcategoria, ou
+  destaque que nao existe na arvore, quebram a GERACAO em vez de quebrarem o
+  build de cada zona.
+- **As funcoes ficaram sincronas.** `getCategoryTree`/`getFeaturedCategories`/
+  `findCategory` nao retornam mais Promise. Os `await` nos call sites do
+  storefront foram MANTIDOS de proposito: nao custam nada e deixam a porta aberta
+  para a origem voltar a ser assincrona (um endpoint, um cache remoto) sem tocar
+  em nenhuma pagina.
+
+`apps/storefront/lib/categories.ts` sobreviveu como fachada: reexporta o pacote e
+mantem `getProductsByCategory`, que e consulta de PRODUTO e precisa mesmo do
+catalogo.
+
+**O preco.** A projecao e um snapshot: mexer em `big.json` sem rodar
+`npm run generate:categories` deixa o menu defasado. E o mesmo contrato do
+`data/posts.json` do blog, e por isso o gerador esta no `build` do pacote — com
+`dependsOn: ["^build"]` no turbo, ele roda antes das duas zonas.

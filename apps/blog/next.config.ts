@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
    * verdade: eles são compilados no mesmo grafo do app, sob a mesma fronteira
    * server/client. Ver ADR 0004.
    */
-  transpilePackages: ['@repo/ui', '@repo/ui-patterns'],
+  transpilePackages: ['@repo/nav', '@repo/ui', '@repo/ui-patterns'],
 
   // Toda rota do blog vive sob `/blog/*`. O `app/page.tsx` deste projeto
   // responde em `/blog`, NÃO em `/blog/blog` — o Next aplica o prefixo sozinho.

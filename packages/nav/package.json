@@ -1,0 +1,16 @@
+{
+  "name": "@repo/nav",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "node scripts/generate-categories.mjs",
+    "generate:categories": "node scripts/generate-categories.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -9,6 +9,13 @@
   que "o mega menu é CSS puro e Server Component, então atravessaria para o
   pacote sem arrastar JS" se confirmou palavra por palavra.
 
+  A ressalva que esta ADR registrava — "o mega menu não existe na zona blog: a
+  navegação do header é reduzida a links diretos" — também caiu. O `AppHeader`
+  tinha um modo simples para o blog, e ele foi REMOVIDO: hoje as duas zonas
+  renderizam o mesmo header, com mega menu e barra de destaques. A árvore de
+  categorias, que o blog não tem como derivar (não há catálogo aqui), vem de
+  `packages/nav` — a fonte única de navegação das duas zonas.
+
   O que NÃO migrou: os tokens de página (`--background`/`--foreground`) e as
   utilities `page-*` do `globals.css`, que continuam duplicados entre as zonas. O
   `packages/config` previsto aqui continua sendo o caminho, e continua pendente.
@@ -72,8 +79,10 @@ Então o que foi feito:
   identidade visual no storefront precisa ser replicada aqui **à mão**, e nada
   avisa se não for.
 - Os tokens de `globals.css` estão duplicados, com o mesmo risco.
-- O mega menu (ADR 0017) não existe na zona blog: a navegação do header é
-  reduzida a links diretos. A travessia é visualmente contínua, mas não idêntica.
+- ~~O mega menu (ADR 0017) não existe na zona blog: a navegação do header é
+  reduzida a links diretos. A travessia é visualmente contínua, mas não
+  idêntica.~~ Resolvido — ver o Status: o modo simples do header foi removido e
+  as duas zonas renderizam o mesmo mega menu, alimentado por `packages/nav`.
 
 ## Quando reverter
 

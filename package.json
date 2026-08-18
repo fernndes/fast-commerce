@@ -5,6 +5,7 @@
   "workspaces": [
     "apps/blog",
     "apps/storefront",
+    "packages/nav",
     "packages/ui",
     "packages/ui-patterns"
   ],

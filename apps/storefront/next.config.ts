@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
    * verdade: eles são compilados no mesmo grafo do app, sob a mesma fronteira
    * server/client. Ver ADR 0004.
    */
-  transpilePackages: ['@repo/ui', '@repo/ui-patterns'],
+  transpilePackages: ['@repo/nav', '@repo/ui', '@repo/ui-patterns'],
 
   images: {
     remotePatterns: [

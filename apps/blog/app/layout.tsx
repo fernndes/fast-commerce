@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { AppFooter } from '@repo/ui-patterns/app-footer';
 import { AppHeader } from '@repo/ui-patterns/app-header';
+import { getCategoryTree, getFeaturedCategories } from '@repo/nav';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import './globals.css';
@@ -76,7 +77,21 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         >
           Pular para o conteúdo
         </a>
-        <AppHeader activeZone="blog" />
+        {/*
+          O header é o MESMO do storefront, com mega menu e barra de destaques —
+          não existe mais uma versão reduzida para o blog. Ele exige a navegação
+          por categorias, e o blog não tem catálogo: quem serve os dois é
+          `@repo/nav`, a fonte única de navegação (ver ADR 0004).
+
+          Isto NÃO faz o blog carregar o catálogo. `@repo/nav` é uma projeção
+          pequena, materializada em build time a partir do dump de produtos —
+          import estático, sem `fs` e sem os 13 MB de `big.json`.
+        */}
+        <AppHeader
+          activeZone="blog"
+          departments={getCategoryTree()}
+          featuredCategories={getFeaturedCategories()}
+        />
         {/* Alvo do skip link — ver ADR 0009 do storefront. */}
         <div id="conteudo" className="flex flex-1 flex-col">
           {children}

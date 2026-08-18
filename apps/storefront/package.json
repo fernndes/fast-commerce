@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.2.12",
+    "@repo/nav": "*",
     "@repo/ui": "*",
     "@repo/ui-patterns": "*",
     "@sentry/nextjs": "^10.69.0",

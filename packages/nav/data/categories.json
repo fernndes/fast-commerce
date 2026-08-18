@@ -1,0 +1,236 @@
+{
+  "departments": [
+    {
+      "slug": "alimentacao",
+      "name": "Alimentação",
+      "href": "/categorias/alimentacao",
+      "count": 3470,
+      "children": [
+        {
+          "slug": "petiscos",
+          "name": "Petiscos",
+          "href": "/categorias/petiscos",
+          "count": 881
+        },
+        {
+          "slug": "racao-seca",
+          "name": "Ração seca",
+          "href": "/categorias/racao-seca",
+          "count": 881
+        },
+        {
+          "slug": "racao-umida",
+          "name": "Ração úmida",
+          "href": "/categorias/racao-umida",
+          "count": 849
+        },
+        {
+          "slug": "suplementos",
+          "name": "Suplementos",
+          "href": "/categorias/suplementos",
+          "count": 859
+        }
+      ]
+    },
+    {
+      "slug": "brinquedos",
+      "name": "Brinquedos",
+      "href": "/categorias/brinquedos",
+      "count": 1917,
+      "children": [
+        {
+          "slug": "bolas",
+          "name": "Bolas",
+          "href": "/categorias/bolas",
+          "count": 491
+        },
+        {
+          "slug": "interativos",
+          "name": "Brinquedos interativos",
+          "href": "/categorias/interativos",
+          "count": 466
+        },
+        {
+          "slug": "mordedores",
+          "name": "Mordedores",
+          "href": "/categorias/mordedores",
+          "count": 473
+        },
+        {
+          "slug": "pelucia",
+          "name": "Pelúcia",
+          "href": "/categorias/pelucia",
+          "count": 487
+        }
+      ]
+    },
+    {
+      "slug": "higiene",
+      "name": "Higiene e Cuidados",
+      "href": "/categorias/higiene",
+      "count": 1586,
+      "children": [
+        {
+          "slug": "cortadores",
+          "name": "Cortadores de unha",
+          "href": "/categorias/cortadores",
+          "count": 395
+        },
+        {
+          "slug": "escovas",
+          "name": "Escovas e pentes",
+          "href": "/categorias/escovas",
+          "count": 407
+        },
+        {
+          "slug": "shampoo",
+          "name": "Shampoo e condicionador",
+          "href": "/categorias/shampoo",
+          "count": 400
+        },
+        {
+          "slug": "tapetes",
+          "name": "Tapetes higiênicos",
+          "href": "/categorias/tapetes",
+          "count": 384
+        }
+      ]
+    },
+    {
+      "slug": "acessorios",
+      "name": "Acessórios",
+      "href": "/categorias/acessorios",
+      "count": 1425,
+      "children": [
+        {
+          "slug": "coleiras",
+          "name": "Coleiras",
+          "href": "/categorias/coleiras",
+          "count": 381
+        },
+        {
+          "slug": "comedouros",
+          "name": "Comedouros e bebedouros",
+          "href": "/categorias/comedouros",
+          "count": 340
+        },
+        {
+          "slug": "guias",
+          "name": "Guias",
+          "href": "/categorias/guias",
+          "count": 348
+        },
+        {
+          "slug": "peitorais",
+          "name": "Peitorais",
+          "href": "/categorias/peitorais",
+          "count": 356
+        }
+      ]
+    },
+    {
+      "slug": "camas-e-casinhas",
+      "name": "Camas e Casinhas",
+      "href": "/categorias/camas-e-casinhas",
+      "count": 894,
+      "children": [
+        {
+          "slug": "camas",
+          "name": "Camas",
+          "href": "/categorias/camas",
+          "count": 292
+        },
+        {
+          "slug": "casinhas",
+          "name": "Casinhas",
+          "href": "/categorias/casinhas",
+          "count": 294
+        },
+        {
+          "slug": "colchonetes",
+          "name": "Colchonetes",
+          "href": "/categorias/colchonetes",
+          "count": 308
+        }
+      ]
+    },
+    {
+      "slug": "farmacia",
+      "name": "Farmácia",
+      "href": "/categorias/farmacia",
+      "count": 523,
+      "children": [
+        {
+          "slug": "antipulgas",
+          "name": "Antipulgas",
+          "href": "/categorias/antipulgas",
+          "count": 162
+        },
+        {
+          "slug": "vermifugos",
+          "name": "Vermífugos",
+          "href": "/categorias/vermifugos",
+          "count": 170
+        },
+        {
+          "slug": "vitaminas",
+          "name": "Vitaminas",
+          "href": "/categorias/vitaminas",
+          "count": 191
+        }
+      ]
+    },
+    {
+      "slug": "lancamentos",
+      "name": "Lançamentos",
+      "href": "/categorias/lancamentos",
+      "count": 185,
+      "children": [
+        {
+          "slug": "novidades",
+          "name": "Novidades",
+          "href": "/categorias/novidades",
+          "count": 185
+        }
+      ]
+    }
+  ],
+  "featured": [
+    {
+      "slug": "alimentacao",
+      "name": "Alimentação",
+      "href": "/categorias/alimentacao",
+      "count": 3470
+    },
+    {
+      "slug": "racao-seca",
+      "name": "Ração seca",
+      "href": "/categorias/racao-seca",
+      "count": 881
+    },
+    {
+      "slug": "petiscos",
+      "name": "Petiscos",
+      "href": "/categorias/petiscos",
+      "count": 881
+    },
+    {
+      "slug": "brinquedos",
+      "name": "Brinquedos",
+      "href": "/categorias/brinquedos",
+      "count": 1917
+    },
+    {
+      "slug": "higiene",
+      "name": "Higiene e Cuidados",
+      "href": "/categorias/higiene",
+      "count": 1586
+    },
+    {
+      "slug": "lancamentos",
+      "name": "Lançamentos",
+      "href": "/categorias/lancamentos",
+      "count": 185
+    }
+  ]
+}
