@@ -56,6 +56,3 @@ packages/*/www/
 # `.esm.js` são o artefato publicado — o projeto da Vercel é estático e serve
 # exatamente o que está versionado. Ignorá-los faria o deploy sair vazio.
 
-
-# Cache local do Turborepo. Sem barra inicial: cada workspace gera o seu.
-.turbo/

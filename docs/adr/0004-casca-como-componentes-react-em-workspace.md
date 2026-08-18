@@ -89,6 +89,13 @@ aceito conscientemente, e e a razao de esta ADR existir. Com o Turborepo e o
 skip automatico da Vercel, o fan-out e automatico: mexeu em `ui-patterns`, as
 duas zonas rebuildam; mexeu so no catalogo, uma so.
 
+> **Nota (2026-08-18): Turborepo removido.** O monorepo era pequeno demais para
+> justificar a ferramenta — dois apps, tres pacotes. `build`/`dev`/`lint` agora
+> rodam via scripts `npm --workspaces` na raiz, com `@repo/nav` explicitamente
+> antes dos demais para preservar a ordem que o `dependsOn: ["^build"]`
+> garantia. O fan-out automatico da Vercel (skip de deploy) nao dependia do
+> Turborepo e continua igual; o que se perde e so o cache incremental local.
+
 **Consequencia nova, e a mais importante de lembrar:** a casca so pode ser
 consumida por zonas React/Next. Se algum dia entrar uma zona em outro framework,
 Web Component era o caminho certo e esta decisao precisa ser revisitada — nao
@@ -284,5 +291,7 @@ catalogo.
 
 **O preco.** A projecao e um snapshot: mexer em `big.json` sem rodar
 `npm run generate:categories` deixa o menu defasado. E o mesmo contrato do
-`data/posts.json` do blog, e por isso o gerador esta no `build` do pacote — com
-`dependsOn: ["^build"]` no turbo, ele roda antes das duas zonas.
+`data/posts.json` do blog, e por isso o gerador esta no `build` do pacote —
+antes rodava primeiro via `dependsOn: ["^build"]` no turbo; hoje o script
+`build` da raiz chama `npm run build --workspace=@repo/nav` explicitamente
+antes de `--workspaces` (ver nota de remocao do Turborepo acima).

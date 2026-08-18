@@ -19,7 +19,7 @@ a partir da raiz:**
 
 ```bash
 npm install                # uma vez, na raiz — instala os dois apps e os pacotes
-npm run dev                # turbo: storefront em :3000 e blog em :3001
+npm run dev                # storefront em :3000 e blog em :3001
 ```
 
 Depois disso, `http://localhost:3000/blog` serve a zona blog de forma

@@ -1,0 +1,46 @@
+
+> blog@0.1.0 build
+> npm run generate:posts && npm run verify:posts && next build
+
+
+> blog@0.1.0 generate:posts
+> node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-posts.ts
+
+posts gerados: 10000 (seed 42)
+  data/posts.json                    corpo completo, lido por fs
+  public/blog-data/posts-index.json  resumos, asset estático
+
+> blog@0.1.0 verify:posts
+> node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-posts.ts
+
+conteúdo verificado: 10000 posts, índice com 3.1 MB, sanitização ativa.
+▲ Next.js 16.3.0 (Turbopack)
+✓ Running next.config.ts took 46ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1033ms
+  Running TypeScript ...
+  Finished TypeScript in 4.5s ...
+  Collecting page data using 8 workers ...
+  Generating static pages using 8 workers (0/56) ...
+  Generating static pages using 8 workers (14/56) 
+  Generating static pages using 8 workers (28/56) 
+  Generating static pages using 8 workers (42/56) 
+✓ Generating static pages using 8 workers (56/56) in 3.3s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├   /[slug]
+│ ├ ● /repellat-suscipit-expedita-laboriosam-consequuntur-occaecati
+│ ├ ● /ipsam-dolores-possimus-dolore-unde-magnam-occaecati
+│ ├ ● /id-ad-quae-laboriosam-sit-autem
+│ └ ● [+47 more paths]
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+
