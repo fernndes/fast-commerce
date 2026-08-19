@@ -1,5 +1,7 @@
 # fast-commerce
 
+**🔗 Site live:** https://fast-commerce-ten.vercel.app/
+
 > A loja de e-commerce mais performática que eu conseguir construir —
 > **incluindo tudo que uma loja real possui**, inclusive o que atrapalha a
 > performance: scripts de terceiro, consent, analytics, imagens de CDN,
