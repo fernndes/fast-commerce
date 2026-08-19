@@ -11,13 +11,13 @@
     "verify:posts": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-posts.ts"
   },
   "dependencies": {
-    "@next/third-parties": "16.3.0",
+    "@next/third-parties": "16.3.1",
     "@repo/nav": "*",
     "@repo/ui": "*",
     "@repo/ui-patterns": "*",
     "@tanstack/react-virtual": "3.14.9",
     "@vercel/speed-insights": "2.0.0",
-    "next": "16.3.0",
+    "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
