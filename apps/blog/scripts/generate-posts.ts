@@ -43,9 +43,9 @@ const PUBLISHED_FROM = new Date('2019-01-01T00:00:00.000Z');
 const PUBLISHED_TO = new Date('2026-06-30T00:00:00.000Z');
 
 const TAGS = [
-  'nutricao', 'comportamento', 'saude', 'adestramento', 'filhotes',
-  'gatos', 'caes', 'bem-estar', 'higiene', 'passeio',
-  'racas', 'veterinaria', 'brinquedos', 'adocao', 'viagem',
+  'receitas', 'promocoes', 'hortifruti', 'padaria', 'acougue',
+  'laticinios', 'mercearia', 'bebidas', 'economia-domestica', 'sustentabilidade',
+  'nutricao', 'organizacao-da-despensa', 'sazonais', 'culinaria', 'compras-inteligentes',
 ];
 
 const ROOT = path.join(import.meta.dirname, '..');

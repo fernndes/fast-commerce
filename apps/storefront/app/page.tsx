@@ -15,7 +15,7 @@ export default async function Home() {
     // `page-width` e não `page-shell`: a calha é aplicada bloco a bloco, porque
     // os carrosséis precisam sangrar até a borda do trilho para rolar.
     <main className="page-width flex flex-1 flex-col gap-12 pb-16">
-      <h1 className="sr-only">Fast Commerce — tudo para o seu pet</h1>
+      <h1 className="sr-only">Fast Commerce — tudo para o seu supermercado</h1>
 
       <Hero banners={getHeroBanners()} />
 
@@ -36,8 +36,8 @@ export default async function Home() {
 
       {/* Faixa larga, banner único: o respiro visual do meio da página. */}
       <BannerSection
-        id="semana-do-pet"
-        banners={getPromoBanners('semana-do-pet')}
+        id="semana-de-ofertas"
+        banners={getPromoBanners('semana-de-ofertas')}
         columns={1}
       />
 

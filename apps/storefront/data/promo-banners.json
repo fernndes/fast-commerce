@@ -2,19 +2,19 @@
   "atalhos": [
     {
       "id": "a1",
-      "title": "Ração",
-      "href": "/categorias/racao-seca",
+      "title": "Mercearia",
+      "href": "/categorias/mercearia",
       "image": "https://dummyimage.com/400x400/8b4513/ffffff",
-      "alt": "Saco de ração premium sobre fundo marrom",
+      "alt": "Prateleira de mercearia sobre fundo marrom",
       "width": 400,
       "height": 400
     },
     {
       "id": "a2",
-      "title": "Ração úmida",
-      "href": "/categorias/racao-umida",
+      "title": "Hortifruti",
+      "href": "/categorias/hortifruti",
       "image": "https://dummyimage.com/400x400/4338ca/ffffff",
-      "alt": "Sachês de ração úmida sobre fundo azul",
+      "alt": "Frutas e verduras frescas sobre fundo azul",
       "width": 400,
       "height": 400
     },
@@ -29,64 +29,64 @@
     },
     {
       "id": "a4",
-      "title": "Petiscos",
-      "href": "/categorias/petiscos",
+      "title": "Açougue",
+      "href": "/categorias/acougue-e-peixaria",
       "image": "https://dummyimage.com/400x400/c2410c/ffffff",
-      "alt": "Bifinhos e petiscos empilhados sobre fundo laranja",
+      "alt": "Cortes de carne selecionados sobre fundo laranja",
       "width": 400,
       "height": 400
     },
     {
       "id": "a5",
-      "title": "Higiene e Banho",
-      "href": "/categorias/higiene",
+      "title": "Higiene e Limpeza",
+      "href": "/categorias/higiene-e-limpeza",
       "image": "https://dummyimage.com/400x400/0369a1/ffffff",
-      "alt": "Frascos de shampoo pet sobre fundo azul claro",
+      "alt": "Produtos de limpeza sobre fundo azul claro",
       "width": 400,
       "height": 400
     },
     {
       "id": "a6",
-      "title": "Brinquedos",
-      "href": "/categorias/brinquedos",
+      "title": "Bebidas",
+      "href": "/categorias/bebidas",
       "image": "https://dummyimage.com/400x400/be123c/ffffff",
-      "alt": "Bolinhas e mordedores coloridos sobre fundo vermelho",
+      "alt": "Garrafas de bebidas coloridas sobre fundo vermelho",
       "width": 400,
       "height": 400
     },
     {
       "id": "a7",
-      "title": "Passeio",
-      "href": "/categorias/acessorios",
+      "title": "Laticínios",
+      "href": "/categorias/laticinios-e-frios",
       "image": "https://dummyimage.com/400x400/15803d/ffffff",
-      "alt": "Coleira e guia penduradas sobre fundo verde",
+      "alt": "Leite e queijos sobre fundo verde",
       "width": 400,
       "height": 400
     },
     {
       "id": "a8",
-      "title": "Casa e Conforto",
-      "href": "/categorias/camas-e-casinhas",
+      "title": "Peixaria",
+      "href": "/categorias/acougue-e-peixaria",
       "image": "https://dummyimage.com/400x400/78350f/ffffff",
-      "alt": "Caminha de pet ao lado de uma casinha de madeira",
+      "alt": "Peixes frescos sobre bancada de gelo",
       "width": 400,
       "height": 400
     },
     {
       "id": "a9",
-      "title": "Saúde",
-      "href": "/categorias/farmacia",
+      "title": "Café e Chá",
+      "href": "/categorias/bebidas",
       "image": "https://dummyimage.com/400x400/7c3aed/ffffff",
-      "alt": "Frascos de suplemento e antipulgas sobre fundo roxo",
+      "alt": "Pacotes de café e caixas de chá sobre fundo roxo",
       "width": 400,
       "height": 400
     },
     {
       "id": "a10",
-      "title": "Comedouros",
-      "href": "/categorias/comedouros",
+      "title": "Produtos de Limpeza",
+      "href": "/categorias/produtos-de-limpeza",
       "image": "https://dummyimage.com/400x400/9d174d/ffffff",
-      "alt": "Comedouro duplo de inox sobre fundo rosa escuro",
+      "alt": "Frascos de produtos de limpeza sobre fundo rosa escuro",
       "width": 400,
       "height": 400
     }
@@ -95,48 +95,48 @@
   "ofertas-por-categoria": [
     {
       "id": "oc1",
-      "title": "Ração com até 30% off",
-      "subtitle": "Golden, Premier, Royal Canin e mais",
-      "cta": "Ver rações",
-      "href": "/categorias/racao-seca",
+      "title": "Mercearia com até 30% off",
+      "subtitle": "Arroz, feijão, massas e molhos selecionados",
+      "cta": "Ver mercearia",
+      "href": "/categorias/mercearia",
       "image": "https://dummyimage.com/900x600/1f3a5f/ffffff",
-      "alt": "Sacos de ração premium empilhados",
+      "alt": "Prateleiras de mercearia com produtos empilhados",
       "width": 900,
       "height": 600
     },
     {
       "id": "oc2",
-      "title": "Semana do petisco",
-      "subtitle": "Bifinhos, sachês e snacks selecionados",
+      "title": "Semana do hortifruti",
+      "subtitle": "Frutas, verduras e legumes selecionados",
       "cta": "Aproveitar",
-      "href": "/categorias/petiscos",
+      "href": "/categorias/hortifruti",
       "image": "https://dummyimage.com/900x600/6b3410/ffffff",
-      "alt": "Petiscos variados sobre fundo marrom",
+      "alt": "Frutas e verduras variadas sobre fundo marrom",
       "width": 900,
       "height": 600
     },
     {
       "id": "oc3",
-      "title": "Higiene em promoção",
-      "subtitle": "Shampoos, tapetes e escovas a partir de R$ 15",
+      "title": "Limpeza em promoção",
+      "subtitle": "Sabão, detergente e desinfetantes a partir de R$ 2,49",
       "cta": "Ver ofertas",
-      "href": "/categorias/higiene",
+      "href": "/categorias/higiene-e-limpeza",
       "image": "https://dummyimage.com/900x600/0f766e/ffffff",
-      "alt": "Kit de banho pet com shampoo, escova e toalha",
+      "alt": "Kit de produtos de limpeza doméstica",
       "width": 900,
       "height": 600
     }
   ],
 
-  "semana-do-pet": [
+  "semana-de-ofertas": [
     {
       "id": "sp1",
-      "title": "Semana do Pet: até 50% off",
+      "title": "Semana de Ofertas: até 50% off",
       "subtitle": "Milhares de itens com desconto real, só até domingo",
       "cta": "Ver toda a campanha",
       "href": "/produtos?sort=discount",
       "image": "https://dummyimage.com/2400x600/8b1a4b/ffffff",
-      "alt": "Faixa promocional da Semana do Pet com cães e gatos",
+      "alt": "Faixa promocional da Semana de Ofertas com produtos de supermercado",
       "width": 2400,
       "height": 600
     }
@@ -146,22 +146,22 @@
     {
       "id": "mp1",
       "title": "Marcas premium",
-      "subtitle": "Nutrição de alto padrão para cada fase da vida",
+      "subtitle": "Qualidade de alto padrão para o dia a dia",
       "cta": "Conhecer marcas",
       "href": "/produtos?minPrice=15000&sort=price-desc",
       "image": "https://dummyimage.com/1200x600/1e293b/ffffff",
-      "alt": "Vitrine com embalagens de marcas premium de ração",
+      "alt": "Vitrine com embalagens de marcas premium de supermercado",
       "width": 1200,
       "height": 600
     },
     {
       "id": "mp2",
-      "title": "Outlet pet: até 60% off",
+      "title": "Outlet: até 60% off",
       "subtitle": "Últimas unidades das coleções passadas",
       "cta": "Garimpar",
       "href": "/produtos?maxPrice=5000&sort=price-asc",
       "image": "https://dummyimage.com/1200x600/b45309/ffffff",
-      "alt": "Etiquetas de liquidação sobre produtos para pets",
+      "alt": "Etiquetas de liquidação sobre produtos de supermercado",
       "width": 1200,
       "height": 600
     }
@@ -170,45 +170,45 @@
   "colecoes": [
     {
       "id": "cl1",
-      "title": "Kit primeiro filhote",
-      "subtitle": "Tudo que o novo morador precisa",
+      "title": "Kit primeira compra",
+      "subtitle": "Tudo que a sua casa nova precisa",
       "cta": "Montar kit",
-      "href": "/categorias/camas-e-casinhas",
+      "href": "/categorias/mercearia",
       "image": "https://dummyimage.com/600x750/2e8b57/ffffff",
-      "alt": "Filhote de cachorro ao lado de comedouro e brinquedos",
+      "alt": "Sacola de compras cheia de itens de mercearia",
       "width": 600,
       "height": 750
     },
     {
       "id": "cl2",
-      "title": "Cantinho do gato",
-      "subtitle": "Camas, colchonetes e casinhas para o descanso dele",
+      "title": "Cantinho da cozinha",
+      "subtitle": "Grãos, massas e temperos para o dia a dia",
       "cta": "Ver seleção",
-      "href": "/categorias/camas-e-casinhas",
+      "href": "/categorias/mercearia",
       "image": "https://dummyimage.com/600x750/7c3aed/ffffff",
-      "alt": "Gato dormindo enrolado em uma caminha redonda",
+      "alt": "Bancada de cozinha organizada com potes de mantimentos",
       "width": 600,
       "height": 750
     },
     {
       "id": "cl3",
-      "title": "Passeio completo",
-      "subtitle": "Peitoral, guia e coleira que combinam",
-      "cta": "Ver acessórios",
-      "href": "/categorias/acessorios",
+      "title": "Churrasco completo",
+      "subtitle": "Carnes, linguiças e bebidas que combinam",
+      "cta": "Ver açougue",
+      "href": "/categorias/acougue-e-peixaria",
       "image": "https://dummyimage.com/600x750/0369a1/ffffff",
-      "alt": "Cachorro usando peitoral durante um passeio",
+      "alt": "Cortes de carne prontos para o churrasco",
       "width": 600,
       "height": 750
     },
     {
       "id": "cl4",
-      "title": "Adotou? A gente equipa",
-      "subtitle": "Enxoval completo com preço de custo",
-      "cta": "Ver enxoval",
+      "title": "Mudou de casa? A gente equipa",
+      "subtitle": "Itens essenciais com preço de custo",
+      "cta": "Ver essenciais",
       "href": "/produtos?sort=price-asc",
       "image": "https://dummyimage.com/600x750/be123c/ffffff",
-      "alt": "Pessoa abraçando um cachorro recém-adotado",
+      "alt": "Caixas de mudança ao lado de sacolas de compras",
       "width": 600,
       "height": 750
     }
@@ -218,11 +218,11 @@
     {
       "id": "cb1",
       "title": "Clube Fast: 10% off em toda recompra",
-      "subtitle": "Assine a ração do seu pet e nunca mais fique sem",
+      "subtitle": "Assine os itens de mercearia da sua casa e nunca mais fique sem",
       "cta": "Quero assinar",
-      "href": "/categorias/alimentacao",
+      "href": "/categorias/mercearia",
       "image": "https://dummyimage.com/2400x600/065f46/ffffff",
-      "alt": "Entrega recorrente de ração chegando na porta de casa",
+      "alt": "Entrega recorrente de compras de supermercado chegando na porta de casa",
       "width": 2400,
       "height": 600
     }
@@ -243,7 +243,7 @@
     {
       "id": "cp2",
       "title": "R$ 20 off na primeira compra",
-      "subtitle": "Cupom PRIMEIRAPATA no carrinho",
+      "subtitle": "Cupom PRIMEIRACOMPRA no carrinho",
       "cta": "Pegar cupom",
       "href": "/produtos",
       "image": "https://dummyimage.com/900x600/9d174d/ffffff",
@@ -253,12 +253,12 @@
     },
     {
       "id": "cp3",
-      "title": "Black Friday Pet",
+      "title": "Black Friday do Supermercado",
       "subtitle": "Cadastre-se e receba as ofertas antes de todo mundo",
       "cta": "Avise-me",
       "href": "/produtos?sort=discount",
       "image": "https://dummyimage.com/900x600/1e293b/ffffff",
-      "alt": "Etiqueta preta de Black Friday sobre produtos para pets",
+      "alt": "Etiqueta preta de Black Friday sobre produtos de supermercado",
       "width": 900,
       "height": 600
     }

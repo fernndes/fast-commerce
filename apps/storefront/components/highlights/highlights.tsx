@@ -16,12 +16,12 @@ const ITEMS = [
   },
   {
     title: 'R$ 20 na primeira compra',
-    text: 'Use PRIMEIRAPATA no carrinho e economize já.',
+    text: 'Use PRIMEIRACOMPRA no carrinho e economize já.',
     href: '/lp/primeira-compra',
   },
   {
     title: 'Assine e ganhe 10%',
-    text: 'A ração do seu pet chega sozinha, todo mês.',
+    text: 'A compra de mercearia da sua casa chega sozinha, todo mês.',
     href: '/lp/clube-fast',
   },
   {

@@ -1,182 +1,182 @@
 {
   "departments": [
     {
-      "slug": "alimentacao",
-      "name": "Alimentação",
-      "href": "/categorias/alimentacao",
+      "slug": "mercearia",
+      "name": "Mercearia",
+      "href": "/categorias/mercearia",
       "count": 3470,
       "children": [
         {
-          "slug": "petiscos",
-          "name": "Petiscos",
-          "href": "/categorias/petiscos",
-          "count": 881
-        },
-        {
-          "slug": "racao-seca",
-          "name": "Ração seca",
-          "href": "/categorias/racao-seca",
-          "count": 881
-        },
-        {
-          "slug": "racao-umida",
-          "name": "Ração úmida",
-          "href": "/categorias/racao-umida",
-          "count": 849
-        },
-        {
-          "slug": "suplementos",
-          "name": "Suplementos",
-          "href": "/categorias/suplementos",
+          "slug": "enlatados-e-conservas",
+          "name": "Enlatados e conservas",
+          "href": "/categorias/enlatados-e-conservas",
           "count": 859
+        },
+        {
+          "slug": "graos-e-cereais",
+          "name": "Grãos e cereais",
+          "href": "/categorias/graos-e-cereais",
+          "count": 881
+        },
+        {
+          "slug": "macarrao-e-massas",
+          "name": "Macarrão e massas",
+          "href": "/categorias/macarrao-e-massas",
+          "count": 881
+        },
+        {
+          "slug": "oleos-e-molhos",
+          "name": "Óleos e molhos",
+          "href": "/categorias/oleos-e-molhos",
+          "count": 849
         }
       ]
     },
     {
-      "slug": "brinquedos",
-      "name": "Brinquedos",
-      "href": "/categorias/brinquedos",
+      "slug": "bebidas",
+      "name": "Bebidas",
+      "href": "/categorias/bebidas",
       "count": 1917,
       "children": [
         {
-          "slug": "bolas",
-          "name": "Bolas",
-          "href": "/categorias/bolas",
-          "count": 491
-        },
-        {
-          "slug": "interativos",
-          "name": "Brinquedos interativos",
-          "href": "/categorias/interativos",
+          "slug": "aguas",
+          "name": "Águas",
+          "href": "/categorias/aguas",
           "count": 466
         },
         {
-          "slug": "mordedores",
-          "name": "Mordedores",
-          "href": "/categorias/mordedores",
+          "slug": "cafes-e-chas",
+          "name": "Cafés e chás",
+          "href": "/categorias/cafes-e-chas",
+          "count": 487
+        },
+        {
+          "slug": "cervejas-e-vinhos",
+          "name": "Cervejas e vinhos",
+          "href": "/categorias/cervejas-e-vinhos",
           "count": 473
         },
         {
-          "slug": "pelucia",
-          "name": "Pelúcia",
-          "href": "/categorias/pelucia",
-          "count": 487
+          "slug": "sucos-e-refrigerantes",
+          "name": "Sucos e refrigerantes",
+          "href": "/categorias/sucos-e-refrigerantes",
+          "count": 491
         }
       ]
     },
     {
-      "slug": "higiene",
-      "name": "Higiene e Cuidados",
-      "href": "/categorias/higiene",
+      "slug": "higiene-e-limpeza",
+      "name": "Higiene e Limpeza",
+      "href": "/categorias/higiene-e-limpeza",
       "count": 1586,
       "children": [
         {
-          "slug": "cortadores",
-          "name": "Cortadores de unha",
-          "href": "/categorias/cortadores",
-          "count": 395
-        },
-        {
-          "slug": "escovas",
-          "name": "Escovas e pentes",
-          "href": "/categorias/escovas",
+          "slug": "higiene-pessoal",
+          "name": "Higiene pessoal",
+          "href": "/categorias/higiene-pessoal",
           "count": 407
         },
         {
-          "slug": "shampoo",
-          "name": "Shampoo e condicionador",
-          "href": "/categorias/shampoo",
+          "slug": "lavanderia",
+          "name": "Lavanderia",
+          "href": "/categorias/lavanderia",
+          "count": 384
+        },
+        {
+          "slug": "papel-e-descartaveis",
+          "name": "Papel e descartáveis",
+          "href": "/categorias/papel-e-descartaveis",
           "count": 400
         },
         {
-          "slug": "tapetes",
-          "name": "Tapetes higiênicos",
-          "href": "/categorias/tapetes",
-          "count": 384
+          "slug": "produtos-de-limpeza",
+          "name": "Produtos de limpeza",
+          "href": "/categorias/produtos-de-limpeza",
+          "count": 395
         }
       ]
     },
     {
-      "slug": "acessorios",
-      "name": "Acessórios",
-      "href": "/categorias/acessorios",
+      "slug": "acougue-e-peixaria",
+      "name": "Açougue e Peixaria",
+      "href": "/categorias/acougue-e-peixaria",
       "count": 1425,
       "children": [
         {
-          "slug": "coleiras",
-          "name": "Coleiras",
-          "href": "/categorias/coleiras",
-          "count": 381
-        },
-        {
-          "slug": "comedouros",
-          "name": "Comedouros e bebedouros",
-          "href": "/categorias/comedouros",
+          "slug": "aves",
+          "name": "Aves",
+          "href": "/categorias/aves",
           "count": 340
         },
         {
-          "slug": "guias",
-          "name": "Guias",
-          "href": "/categorias/guias",
-          "count": 348
+          "slug": "carnes-bovinas",
+          "name": "Carnes bovinas",
+          "href": "/categorias/carnes-bovinas",
+          "count": 381
         },
         {
-          "slug": "peitorais",
-          "name": "Peitorais",
-          "href": "/categorias/peitorais",
+          "slug": "embutidos",
+          "name": "Embutidos",
+          "href": "/categorias/embutidos",
           "count": 356
+        },
+        {
+          "slug": "peixes-e-frutos-do-mar",
+          "name": "Peixes e frutos do mar",
+          "href": "/categorias/peixes-e-frutos-do-mar",
+          "count": 348
         }
       ]
     },
     {
-      "slug": "camas-e-casinhas",
-      "name": "Camas e Casinhas",
-      "href": "/categorias/camas-e-casinhas",
+      "slug": "hortifruti",
+      "name": "Hortifruti",
+      "href": "/categorias/hortifruti",
       "count": 894,
       "children": [
         {
-          "slug": "camas",
-          "name": "Camas",
-          "href": "/categorias/camas",
+          "slug": "frutas",
+          "name": "Frutas",
+          "href": "/categorias/frutas",
           "count": 292
         },
         {
-          "slug": "casinhas",
-          "name": "Casinhas",
-          "href": "/categorias/casinhas",
-          "count": 294
+          "slug": "legumes",
+          "name": "Legumes",
+          "href": "/categorias/legumes",
+          "count": 308
         },
         {
-          "slug": "colchonetes",
-          "name": "Colchonetes",
-          "href": "/categorias/colchonetes",
-          "count": 308
+          "slug": "verduras",
+          "name": "Verduras",
+          "href": "/categorias/verduras",
+          "count": 294
         }
       ]
     },
     {
-      "slug": "farmacia",
-      "name": "Farmácia",
-      "href": "/categorias/farmacia",
+      "slug": "laticinios-e-frios",
+      "name": "Laticínios e Frios",
+      "href": "/categorias/laticinios-e-frios",
       "count": 523,
       "children": [
         {
-          "slug": "antipulgas",
-          "name": "Antipulgas",
-          "href": "/categorias/antipulgas",
+          "slug": "iogurtes",
+          "name": "Iogurtes",
+          "href": "/categorias/iogurtes",
+          "count": 191
+        },
+        {
+          "slug": "leites",
+          "name": "Leites",
+          "href": "/categorias/leites",
           "count": 162
         },
         {
-          "slug": "vermifugos",
-          "name": "Vermífugos",
-          "href": "/categorias/vermifugos",
+          "slug": "queijos",
+          "name": "Queijos",
+          "href": "/categorias/queijos",
           "count": 170
-        },
-        {
-          "slug": "vitaminas",
-          "name": "Vitaminas",
-          "href": "/categorias/vitaminas",
-          "count": 191
         }
       ]
     },
@@ -197,33 +197,33 @@
   ],
   "featured": [
     {
-      "slug": "alimentacao",
-      "name": "Alimentação",
-      "href": "/categorias/alimentacao",
+      "slug": "mercearia",
+      "name": "Mercearia",
+      "href": "/categorias/mercearia",
       "count": 3470
     },
     {
-      "slug": "racao-seca",
-      "name": "Ração seca",
-      "href": "/categorias/racao-seca",
-      "count": 881
+      "slug": "hortifruti",
+      "name": "Hortifruti",
+      "href": "/categorias/hortifruti",
+      "count": 894
     },
     {
-      "slug": "petiscos",
-      "name": "Petiscos",
-      "href": "/categorias/petiscos",
-      "count": 881
+      "slug": "acougue-e-peixaria",
+      "name": "Açougue e Peixaria",
+      "href": "/categorias/acougue-e-peixaria",
+      "count": 1425
     },
     {
-      "slug": "brinquedos",
-      "name": "Brinquedos",
-      "href": "/categorias/brinquedos",
+      "slug": "bebidas",
+      "name": "Bebidas",
+      "href": "/categorias/bebidas",
       "count": 1917
     },
     {
-      "slug": "higiene",
-      "name": "Higiene e Cuidados",
-      "href": "/categorias/higiene",
+      "slug": "higiene-e-limpeza",
+      "name": "Higiene e Limpeza",
+      "href": "/categorias/higiene-e-limpeza",
       "count": 1586
     },
     {

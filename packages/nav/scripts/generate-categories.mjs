@@ -33,37 +33,37 @@ const SAIDA = path.join(aqui, '..', 'data', 'categories.json');
 // Rótulo editorial: sem entrada aqui, a categoria não aparece no menu. Ver ADR 0010.
 const LABELS = {
   // departamentos
-  alimentacao: 'Alimentação',
-  brinquedos: 'Brinquedos',
-  higiene: 'Higiene e Cuidados',
-  acessorios: 'Acessórios',
-  'camas-e-casinhas': 'Camas e Casinhas',
-  farmacia: 'Farmácia',
+  mercearia: 'Mercearia',
+  bebidas: 'Bebidas',
+  'higiene-e-limpeza': 'Higiene e Limpeza',
+  'acougue-e-peixaria': 'Açougue e Peixaria',
+  hortifruti: 'Hortifruti',
+  'laticinios-e-frios': 'Laticínios e Frios',
   lancamentos: 'Lançamentos',
 
   // subcategorias
-  'racao-seca': 'Ração seca',
-  'racao-umida': 'Ração úmida',
-  petiscos: 'Petiscos',
-  suplementos: 'Suplementos',
-  mordedores: 'Mordedores',
-  bolas: 'Bolas',
-  pelucia: 'Pelúcia',
-  interativos: 'Brinquedos interativos',
-  shampoo: 'Shampoo e condicionador',
-  escovas: 'Escovas e pentes',
-  tapetes: 'Tapetes higiênicos',
-  cortadores: 'Cortadores de unha',
-  coleiras: 'Coleiras',
-  peitorais: 'Peitorais',
-  guias: 'Guias',
-  comedouros: 'Comedouros e bebedouros',
-  camas: 'Camas',
-  casinhas: 'Casinhas',
-  colchonetes: 'Colchonetes',
-  antipulgas: 'Antipulgas',
-  vermifugos: 'Vermífugos',
-  vitaminas: 'Vitaminas',
+  'graos-e-cereais': 'Grãos e cereais',
+  'macarrao-e-massas': 'Macarrão e massas',
+  'oleos-e-molhos': 'Óleos e molhos',
+  'enlatados-e-conservas': 'Enlatados e conservas',
+  'sucos-e-refrigerantes': 'Sucos e refrigerantes',
+  aguas: 'Águas',
+  'cervejas-e-vinhos': 'Cervejas e vinhos',
+  'cafes-e-chas': 'Cafés e chás',
+  'produtos-de-limpeza': 'Produtos de limpeza',
+  'higiene-pessoal': 'Higiene pessoal',
+  'papel-e-descartaveis': 'Papel e descartáveis',
+  lavanderia: 'Lavanderia',
+  'carnes-bovinas': 'Carnes bovinas',
+  aves: 'Aves',
+  'peixes-e-frutos-do-mar': 'Peixes e frutos do mar',
+  embutidos: 'Embutidos',
+  frutas: 'Frutas',
+  verduras: 'Verduras',
+  legumes: 'Legumes',
+  leites: 'Leites',
+  queijos: 'Queijos',
+  iogurtes: 'Iogurtes',
   novidades: 'Novidades',
 };
 
@@ -73,17 +73,24 @@ const LABELS = {
  * desta lista é ordenado depois, pelo tamanho.
  */
 const DEPT_ORDER = [
-  'alimentacao',
-  'brinquedos',
-  'higiene',
-  'acessorios',
-  'camas-e-casinhas',
-  'farmacia',
+  'mercearia',
+  'bebidas',
+  'higiene-e-limpeza',
+  'acougue-e-peixaria',
+  'hortifruti',
+  'laticinios-e-frios',
   'lancamentos',
 ];
 
 /** Atalhos da barra horizontal do header — não a árvore inteira. */
-const FEATURED = ['alimentacao', 'racao-seca', 'petiscos', 'brinquedos', 'higiene', 'lancamentos'];
+const FEATURED = [
+  'mercearia',
+  'hortifruti',
+  'acougue-e-peixaria',
+  'bebidas',
+  'higiene-e-limpeza',
+  'lancamentos',
+];
 
 const categoryHref = (slug) => `/categorias/${slug}`;
 

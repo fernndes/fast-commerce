@@ -19,7 +19,7 @@ import { FIRST_WINDOW_SIZE } from '@/lib/post-types';
 export const metadata: Metadata = {
   title: 'Blog — Fast Commerce',
   description:
-    'Conteúdo editorial sobre nutrição, comportamento e saúde animal. 10.000 posts.',
+    'Conteúdo editorial sobre alimentação, economia doméstica e vida no supermercado. 10.000 posts.',
   alternates: { canonical: '/blog' },
 };
 
@@ -31,7 +31,8 @@ export default async function BlogIndex() {
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Blog</h1>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          {total.toLocaleString('pt-BR')} posts sobre nutrição, comportamento e saúde animal.
+          {total.toLocaleString('pt-BR')} posts sobre alimentação, economia doméstica e vida no
+          supermercado.
         </p>
       </header>
 

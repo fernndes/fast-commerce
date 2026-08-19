@@ -33,8 +33,8 @@ export default async function Product({ params }: PageProps<'/produtos/[slug]'>)
   // 404 real, não um `<h1>` de desculpa com status 200 — ver ADR 0008.
   if (!produto) notFound();
 
-  // A trilha mostra o RÓTULO editorial ("Ração úmida"), não o slug cru
-  // ("racao-umida"). Categoria sem rótulo cai no slug em vez de sumir: numa
+  // A trilha mostra o RÓTULO editorial ("Óleos e molhos"), não o slug cru
+  // ("oleos-e-molhos"). Categoria sem rótulo cai no slug em vez de sumir: numa
   // trilha, o degrau intermediário faltando é pior que um nome feio.
   const [departamento, subcategoria] = await Promise.all([
     findCategory(produto.department),

@@ -87,7 +87,7 @@ export type Catalog = {
 
 // ------------------------------------------------------------------ leitura
 
-/** Acento e caixa fora: `"Ração"` e `"racao"` têm que casar na busca. */
+/** Acento e caixa fora: `"Açúcar"` e `"acucar"` têm que casar na busca. */
 export function normalize(value: string): string {
   return value
     .toLowerCase()

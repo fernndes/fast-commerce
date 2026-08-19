@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     default: 'Blog — Fast Commerce',
     template: '%s — Blog Fast Commerce',
   },
-  description: 'Conteúdo editorial sobre nutrição, comportamento e saúde animal.',
+  description: 'Conteúdo editorial sobre alimentação, economia doméstica e vida no supermercado.',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
