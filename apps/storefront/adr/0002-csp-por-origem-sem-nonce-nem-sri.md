@@ -76,7 +76,7 @@ A sequência de commits abaixo, todos em `next.config.ts` (e um em
 | `script-src` | `'self' 'unsafe-inline'` + `googletagmanager.com` + `*.clarity.ms` (+ `'unsafe-eval'` e `va.vercel-scripts.com` só em dev) | GTM bootstrap; Clarity via Custom HTML do GTM; `'unsafe-inline'` para o payload RSC do Next e o init inline do Silktide; Vercel Speed Insights só em dev. |
 | `style-src` | `'self' 'unsafe-inline'` | Estilos inline do Next/Tailwind. |
 | `img-src` | `'self' blob: data:` + `dummyimage.com` + `*.googletagmanager.com` + `*.google-analytics.com` | `dummyimage.com` é o placeholder de imagem de produto (`images.remotePatterns`); os demais são pixels/beacons de GTM/GA4. |
-| `connect-src` | `'self'` + `*.google-analytics.com` + `*.analytics.google.com` + `*.googletagmanager.com` + `*.clarity.ms` | XHR/beacon do GA4 e do Clarity. |
+| `connect-src` | `'self'` + `*.google-analytics.com` + `*.analytics.google.com` + `*.googletagmanager.com` + `*.clarity.ms` + `o4511865256214528.ingest.us.sentry.io` | XHR/beacon do GA4 e do Clarity; envelope de erro/trace do Sentry client-side. |
 | `object-src` | `'none'` | Mata `<object>`/`<embed>`. |
 | `base-uri` | `'self'` | Anti hijack de `<base>`. |
 | `form-action` | `'self'` | Formulários só submetem ao próprio domínio. |
@@ -87,16 +87,20 @@ preload), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
 `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`
 desabilitando câmera/microfone/geolocalização.
 
-### 4. Lacuna observada, não resolvida
+### 4. Lacuna do Sentry — confirmada e corrigida
 
-Nenhuma diretiva cobre `ingest.us.sentry.io`, o endpoint para onde o SDK
-`@sentry/nextjs` reporta erros e traces (ver
-[[0003-observabilidade-com-sentry]]). Captura de erro client-side
-(`instrumentation-client.ts`) faria requests do browser para esse domínio.
-Isso não bloqueou nada visivelmente até agora — não está confirmado se é uma
-lacuna real (talvez o report saia majoritariamente do runtime Node/edge,
-sem passar pelo `connect-src` do browser) ou um item que passou batido.
-Registrado aqui para validação futura, não como bug confirmado.
+A lacuna registrada aqui era real: o `connect-src` não cobria
+`ingest.us.sentry.io`, o endpoint para onde o SDK `@sentry/nextjs` reporta
+erros e traces do browser (ver [[0003-observabilidade-com-sentry]]). O
+console acusava bloqueio de CSP no envelope enviado por
+`instrumentation-client.ts` (`Sentry.init` roda no client, não só no
+runtime Node/edge). Corrigido adicionando a origem exata do DSN —
+`https://o4511865256214528.ingest.us.sentry.io` — ao `connect-src`, em vez
+de um wildcard `*.ingest.us.sentry.io`: o projeto Sentry é fixo (hardcoded
+no DSN em `instrumentation-client.ts`), então a origem exata é suficiente e
+mantém a superfície mínima, ao contrário de `*.clarity.ms`/
+`*.googletagmanager.com`, que precisam de wildcard por servirem de
+subdomínios variáveis.
 
 ## Consequências
 
