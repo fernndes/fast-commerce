@@ -27,7 +27,7 @@ const columns = [
       { label: 'Sobre a fastcommerce', href: '/institucional/sobre' },
       { label: 'Trabalhe conosco', href: '/institucional/carreiras' },
       { label: 'Nossas lojas', href: '/institucional/lojas' },
-      { label: 'Blog do pet', href: '/blog' },
+      { label: 'Blog', href: '/blog' },
     ],
   },
   {
