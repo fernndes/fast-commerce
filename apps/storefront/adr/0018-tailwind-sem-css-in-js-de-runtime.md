@@ -88,6 +88,21 @@ Component para o CSS.
 e curva de aprendizado de utilitários. Para alguém com background em Sass, a
 transição tem atrito real, e produtividade importa num projeto de horas vagas.
 
+### 4.1 Consequência prática do "varre o código como texto": classes têm que ser literais
+
+O compilador do Tailwind não executa JavaScript — ele varre os arquivos-fonte
+como **texto** procurando por strings que casem com classes válidas. Uma
+classe montada em runtime (`` `grid-cols-${n}` ``) nunca aparece como
+substring literal no código-fonte, então é varrida do CSS final: a classe
+existe em tempo de execução mas não tem regra correspondente, e o layout
+quebra silenciosamente — sem erro de build, sem aviso, só uma grade que não
+vira grade. `components/banner/banner-section.tsx` é o exemplo do projeto:
+o número de colunas do layout (`grid-cols-3`, `grid-cols-1 sm:grid-cols-2`
+etc.) e o `sizes` da imagem correspondente moram na mesma tabela, escritos
+como classes completas por chave — nunca interpolados — porque são a mesma
+decisão dita em duas linguagens (CSS e o atributo `sizes`) e o Tailwind só
+enxerga a primeira se ela estiver escrita por extenso.
+
 ### 5. Coexistência com Sass/CSS Modules em casos específicos
 
 Os dois pertencem à mesma família ("custo no build"), então convivem sem

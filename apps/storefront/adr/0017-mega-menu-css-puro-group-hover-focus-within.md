@@ -111,6 +111,22 @@ no Lighthouse de uma página isolada, mas significativo na experiência real de
 navegação. Os 6 destaques da barra superior mantêm prefetch ativo porque são
 de alta intenção.
 
+### 3.1 `<details>` no mobile: widget nativo, não `useState`
+
+`MegaMenuMobile` é o mesmo conteúdo (`CategoryColumns`) sobre `<details>`/
+`<summary>` em vez de CSS de hover — hover não existe em touch, então o
+`group-hover` do desktop não serve. `<details>` é o disclosure nativo: abre
+e fecha sem JS, responde a Enter/Espaço, e o browser já expõe
+`aria-expanded` correto na árvore de acessibilidade sozinho. Um `useState`
+aqui não faria nada que o HTML não faça de graça — só cobraria hidratação em
+toda página para reimplementar o que `<details>` já resolve.
+
+`/categorias` (`app/categorias/page.tsx`) é o destino de dois caminhos que
+não têm hover para abrir o painel: é o que o usuário de touch vê ao tocar
+"Todas as categorias", e o que o crawler encontra ao seguir aquele mesmo
+`<Link>` — a árvore inteira de categorias em HTML, num só lugar, sem depender
+de CSS de hover nenhum.
+
 ### 4. A única ilha client: `close-on-navigate.tsx`
 
 O CSS resolve o abrir/fechar para mouse e teclado. O único caso que CSS não
@@ -132,6 +148,19 @@ A alternativa de unificar forçando `<details open>` por CSS no desktop foi
 descartada: `<details open>` via CSS não é confiável entre browsers (o
 atributo `open` não responde a CSS de forma padronizada). A duplicação de 1 KB
 é o custo aceito pelo comportamento correto.
+
+### 5.1 O `sticky` do header vira o bloco de contenção do painel mobile
+
+O painel do `<details>` mobile é `absolute inset-x-0`, ancorado no
+`<header>` — não no próprio `<details>` — para ocupar a largura toda abaixo
+da barra. Isso só funciona porque o header já é `sticky` (posicionado): CSS
+define que qualquer `position` diferente de `static` no ancestral vira o
+bloco de contenção de um `absolute` descendente. No desenho anterior, um
+`relative` era aplicado a propósito num wrapper interno só para isso.
+Empilhar os dois hoje (`sticky` no header, `relative` de novo em algum
+wrapper) seria redundante — dois valores de `position` na mesma cascata,
+decidido por ordem de especificidade de forma frágil. O `sticky` do header
+já é suficiente sozinho.
 
 ## Consequências
 

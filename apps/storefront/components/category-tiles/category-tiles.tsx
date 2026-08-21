@@ -7,16 +7,9 @@ import type { PromoBanner } from '@/lib/banners';
 const TILES_ID = 'atalhos-categorias';
 
 /**
- * Atalhos visuais logo abaixo do hero — a primeira decisão de navegação que a
- * home oferece, e por isso a que mais recebe clique.
- *
- * Mesmo primitivo do hero e das prateleiras (`Carousel`): no mobile vira régua
- * rolável, no desktop cabe inteiro na linha. Sem setas — dez alvos de 100px não
- * justificam uma ilha client só para empurrá-los.
- *
- * Aqui o prefetch fica LIGADO (padrão do Next): são poucos links, sempre
- * visíveis, e apontam para rotas de categoria já pré-renderizadas. É o inverso
- * dos banners mais abaixo, onde `prefetch={false}` evita dezenas de requests.
+ * Atalhos visuais logo abaixo do hero. Mesmo primitivo do carrossel do hero e
+ * das prateleiras, prefetch ligado — ver ADR 0001 (raiz) e ADR 0011
+ * (adr/0011-convencao-prefetch-false-em-links-de-baixa-intencao.md).
  */
 export function CategoryTiles({ banners, title }: { banners: PromoBanner[]; title: string }) {
   if (banners.length === 0) return null;
@@ -43,8 +36,6 @@ export function CategoryTiles({ banners, title }: { banners: PromoBanner[]; titl
                 alt=""
                 width={banner.width}
                 height={banner.height}
-                // O tile é minúsculo e de tamanho fixo: sem `sizes`, o browser
-                // assumiria 100vw e baixaria a arte inteira para 96px de tela.
                 sizes="112px"
                 loading="lazy"
                 className="size-24 rounded-full bg-zinc-200 object-cover transition-transform duration-200 motion-safe:group-hover:scale-105 sm:size-28 dark:bg-zinc-800"

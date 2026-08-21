@@ -5,28 +5,15 @@ import type { PromoBanner } from '@/lib/banners';
 
 type BannerCardProps = {
   banner: PromoBanner;
-  /**
-   * Precisa casar com a largura em que o banner é RENDERIZADO na grade de quem
-   * o chama. Sem isso o browser baixa a arte em tamanho cheio para um card de
-   * um terço de tela — o desperdício de banda mais caro de uma home.
-   */
+  /** Precisa casar com a largura RENDERIZADA na grade de quem chama — ver ADR 0018, §4.1. */
   sizes: string;
   className?: string;
   prefetch?: boolean;
 };
 
-/**
- * Banner clicável: arte + copy sobreposta. É só um `LinkBox` com um filho —
- * toda a mecânica de link (âncora certa, foco, `group`) mora lá.
- *
- * Nenhum banner leva `preload`: o hero já é o candidato a LCP da página, e um
- * segundo preload competindo pela banda inicial só atrasa o primeiro.
- */
+// Banner clicável: arte + copy sobreposta, sobre `LinkBox` — ver ADR 0019
+// (adr/0019-linkbox-primitivo-de-link-generico.md), §6.
 export function BannerCard({ banner, sizes, className = '', prefetch = false }: BannerCardProps) {
-  // Quando a copy aparece sobre a arte, ela é que nomeia o link — a imagem vira
-  // decorativa (`alt=""`). Repetir a descrição da foto faria o leitor de tela
-  // anunciar a mesma promoção duas vezes. Banner sem copy (arte com texto já
-  // embutido) cai no caso oposto: o `alt` é o único nome que o link tem.
   const temCopy = Boolean(banner.title || banner.subtitle || banner.cta);
 
   return (

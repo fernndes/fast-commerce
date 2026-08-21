@@ -54,7 +54,7 @@ Se tolera, o Eixo 1 decide se vale pré-gerar; o Eixo 3 decide o
 | `/` (home) | Baixa | Tolera | Fechado | SSG/ISR | — |
 | `/produtos` | Alta (filtros) | Tolera | — | Dinâmico (`searchParams`) | — |
 | `/produtos/[slug]` | Alta (10k slugs) | Tolera | Aberto | ISR sob demanda (`generateStaticParams: []`, `revalidate: 3600`) | `true` (padrão) |
-| `/categorias/[slug]` | Baixa (~7 dept + 23 sub) | Tolera | Fechado | ISR com `generateStaticParams` | `false` |
+| `/categorias/[slug]` | Baixa (~7 dept + 23 sub) | Tolera | Fechado | Dinâmico (`searchParams`) — ver correção abaixo | — |
 | `/busca` | Alta (query livre) | Tolera | — | Dinâmico (`searchParams`) | — |
 
 ### 3. Por que `dynamicParams: true` não precisa ser declarado na PDP
@@ -86,12 +86,40 @@ aparece nas rotas de API (`/api/produtos`, `/api/busca/sugestoes`) porque ali
 o Next 16 não cacheia por padrão (ver ADR 0006), e a declaração é de
 intenção, não de workaround.
 
+### 6. CORREÇÃO — `/categorias/[slug]` não é ISR com `generateStaticParams`
+
+A tabela acima registrava `/categorias/[slug]` como ISR pré-gerada
+(`generateStaticParams`, `dynamicParams: false`), pela leitura inicial dos
+três eixos: cardinalidade baixa (~30 slugs), conteúdo que tolera defasagem,
+conjunto fechado — os mesmos três que levam `/` a SSG/ISR. Essa leitura
+ignorava um quarto fato: a rota também lê `searchParams` para paginar
+(`?page=`, `?sort=`, filtros), e ler `searchParams` num Server Component
+torna a rota dinâmica automaticamente (mesma regra do §5 para `/produtos` e
+`/busca`), independentemente do que os três eixos concluíam.
+
+Medido no `next build`: o `generateStaticParams` desta rota gerava **zero**
+páginas. Não é um bug silencioso — é o Next respeitando a regra corretamente
+— mas o código anunciava um prerender que nunca acontecia, e a tabela desta
+ADR registrava uma estratégia que o build já não produzia. `generateStaticParams`
+e `revalidate` foram removidos; a rota é servida sob demanda como `/produtos`
+e `/busca`, e o custo é baixo porque o catálogo já está indexado em memória
+(`byDept`/`bySub`, ver
+[[0005-camada-de-dados-do-catalogo-leitura-via-fs]]) — a página é uma fatia
+de array, não uma varredura.
+
+**A lição para o modelo de três eixos:** os três eixos decidem a estratégia
+*se nenhum outro fator forçar dinâmico*. Ler `searchParams` é esse fator, e
+tem prioridade sobre a conclusão dos três eixos — não é um quarto eixo
+independente, é uma pré-condição que os antecede. Se a paginação desta rota
+um dia sair da query string para o path (`/categorias/[slug]/pagina/[n]`),
+a conclusão original dos três eixos volta a valer.
+
 ## Consequências
 
 **Positivas**
 
-- A home e as categorias são estáticas — servidas do edge sem invocar nenhuma
-  função serverless na maioria dos requests.
+- A home é estática — servida do edge sem invocar nenhuma função serverless
+  na maioria dos requests.
 - A PDP escala com ISR: o primeiro acesso a qualquer slug gera e cacheia a
   página; os subsequentes servem do cache. Com 10.000 produtos, gerar todos
   no build seria inviável (ver [[0008-pdp-generatestaticparams-vazio-isr-sob-demanda]]).
@@ -100,8 +128,8 @@ intenção, não de workaround.
 
 **Negativas / limitações aceitas**
 
-- Rotas dinâmicas (`/produtos`, `/busca`) pagam o custo de execução em cada
-  request, sem cache de resposta — mitigado pelo rate limiting
+- Rotas dinâmicas (`/produtos`, `/categorias/[slug]`, `/busca`) pagam o custo
+  de execução em cada request, sem cache de resposta — mitigado pelo rate limiting
   (ver `docs/adr/0002-rate-limit-em-memoria-nas-rotas-de-api.md`) e
   pela indexação em memória do catálogo.
 - O `revalidate: 3600` da PDP é um valor arbitrário — não há dado de

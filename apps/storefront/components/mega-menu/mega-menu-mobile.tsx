@@ -6,20 +6,8 @@ import { getCategoryTree } from '@/lib/categories';
 
 const ID = 'mega-menu-mobile';
 
-/**
- * O mesmo mega menu, outra casca — Server Component sobre `<details>/<summary>`.
- *
- * Hover não existe em touch, então o `<MegaMenu>` de desktop não serve aqui. O
- * que **é** compartilhado é o que importa: `<CategoryColumns>`, o conteúdo. As
- * duas cascas só decidem onde e quando ele aparece.
- *
- * `<details>` é o widget de disclosure nativo: abre e fecha sem JS, responde a
- * Enter/Espaço, e o browser já expõe `aria-expanded` correto na árvore de
- * acessibilidade. Um `useState` aqui não faria nada que o HTML não faça — só
- * cobraria hidratação em toda página.
- *
- * A única parcela de JS é o `<CloseOnNavigate>`, que não renderiza markup nenhum.
- */
+// O mesmo mega menu, outra casca — `<details>/<summary>`, sem `useState`. Ver
+// ADR 0017 (adr/0017-mega-menu-css-puro-group-hover-focus-within.md), §3.1.
 export async function MegaMenuMobile() {
   const departamentos = await getCategoryTree();
 
@@ -43,10 +31,7 @@ export async function MegaMenuMobile() {
         </svg>
       </summary>
 
-      {/*
-        Ancora no `<header>` (que é `sticky`, logo posicionado), não no
-        `<details>`: o painel ocupa a largura toda abaixo da barra.
-      */}
+      {/* Ancora no `<header>` sticky, não no `<details>` — ver ADR 0017, §5.1. */}
       <nav
         aria-label="Todas as categorias"
         className="absolute inset-x-0 top-full max-h-[calc(100dvh-100%)] overflow-y-auto border-b border-black/10 bg-[var(--background)] p-5 shadow-xl dark:border-white/15"

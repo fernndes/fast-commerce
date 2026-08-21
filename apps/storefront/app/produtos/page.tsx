@@ -4,18 +4,9 @@ import { SortSelect } from '@/components/product-grid/sort-select';
 import { listProducts } from '@/lib/catalog';
 import { parseProductQuery, toURLSearchParams } from '@/lib/query';
 
-/**
- * PLP — a listagem geral do catálogo, 10.000 produtos.
- *
- * Não há `revalidate`: a página é função de `searchParams` (`page`, `sort`,
- * `q`, faixa de preço), e cada combinação é uma resposta diferente. O que se
- * cacheia aqui é o CATÁLOGO, não a página — `getCatalog()` lê o arquivo uma
- * vez por processo e todo request depois disso só fatia índices em memória.
- *
- * A query passa pelo MESMO parser de `/api/produtos` (`lib/query.ts`), então
- * a primeira página renderizada no servidor e as páginas que o cliente venha a
- * buscar pela API concordam sobre o que `?sort=` significa.
- */
+// PLP — a listagem geral do catálogo, 10.000 produtos. Dinâmica por
+// `searchParams` — ver ADR 0012 (adr/0012-estrategia-de-renderizacao-por-rota.md)
+// e ADR 0007 (adr/0007-busca-parser-unico-ranking-e-correcao-do-host-externo.md).
 export const metadata = {
   title: 'Todos os produtos — Fast Commerce',
 };

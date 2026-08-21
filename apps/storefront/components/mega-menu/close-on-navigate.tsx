@@ -3,19 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-/**
- * Ilha client mínima, no mesmo padrão do ADR 0001: ela é **irmã** do elemento
- * que controla e o acha por `getElementById` — não envolve nada, então nenhum
- * conteúdo atravessa a fronteira server/client.
- *
- * Existe por um motivo só: numa transição client-side o header persiste, então
- * um `<details open>` continuaria aberto por cima da página nova. Não há como
- * fechar isso em CSS — é a única coisa no menu que realmente precisa de JS.
- *
- * Não renderiza nada (`null`): zero markup no HTML, zero espaço no primeiro
- * paint, e nada quebra se a hidratação nunca acontecer — o `<details>` continua
- * abrindo e fechando pelo comportamento nativo do browser.
- */
+// Ilha client mínima, ilha irmã (ver ADR 0001, raiz) — ver ADR 0017
+// (adr/0017-mega-menu-css-puro-group-hover-focus-within.md), §4.
 export function CloseOnNavigate({ targetId }: { targetId: string }) {
   const pathname = usePathname();
 

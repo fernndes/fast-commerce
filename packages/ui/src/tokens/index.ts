@@ -1,22 +1,5 @@
-/*
- * Os tokens de cor da casca, agora como STRINGS DE CLASSE Tailwind.
- *
- * No desenho anterior (Shadow DOM) eles eram custom properties no `:host`, e o
- * bloco de dark mode redefinia só os tokens em vez de repetir cada seletor. Sem
- * Shadow DOM esse mecanismo some, mas o problema que ele resolvia não: com mega
- * menu e barra de categorias, o número de elementos que precisa de cor é grande
- * o bastante para que repetir `dark:` em cada um seja como este código passa a
- * divergir de si mesmo.
- *
- * A saída equivalente aqui é constante de módulo. Os valores são os MESMOS
- * hexadecimais/rgba do CSS antigo, escritos como arbitrary values, e não os
- * aliases do Tailwind — a paleta zinc coincide, mas depender da coincidência
- * faria a casca mudar de cor se a escala do Tailwind mudasse.
- *
- * Importante para a purga: o Tailwind extrai classes por regex sobre o texto do
- * arquivo, então estas constantes são encontradas normalmente — desde que
- * `@source` aponte para `src` do pacote (ver o `globals.css` de cada zona).
- */
+// Os tokens de cor da casca, como STRINGS DE CLASSE Tailwind — ver ui-0001
+// (adr/0001-primitivas-sem-shadow-dom-tokens-como-classes.md), §4.
 
 /** Texto principal. */
 export const fgText = 'text-[#18181b] dark:text-[#fafafa]';
@@ -54,19 +37,9 @@ export const accent =
 export const panelShadow =
   'shadow-[0_20px_25px_-5px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.5)]';
 
-/**
- * O anel de foco visível. Era uma regra única no CSS do Shadow DOM
- * (`a:focus-visible, button:focus-visible, ...`); sem shadow root não há mais
- * onde escrever "todos os focáveis daqui dentro", então cada elemento focável
- * da casca aplica esta constante explicitamente.
- */
+/** O anel de foco visível, aplicado explicitamente por elemento — ver ui-0001, §4. */
 export const focusRing =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#18181b] dark:focus-visible:outline-[#fafafa]';
 
-/**
- * O trilho de conteúdo: mesma largura (80rem) das utilities `page-*` das zonas.
- * Não usamos `page-shell` de propósito — a calha da casca é fixa em 1rem, sem o
- * degrau para 1.5rem em `sm`, e herdar a utility da zona amarraria o pacote a um
- * CSS que ele não controla.
- */
+/** O trilho de conteúdo — largura própria, não herdada de `page-shell` — ver ui-0001, §5. */
 export const railWidth = 'box-border mx-auto w-[min(100%,80rem)]';

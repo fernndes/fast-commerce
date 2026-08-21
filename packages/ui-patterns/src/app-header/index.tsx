@@ -20,25 +20,10 @@ import type { NavCategory, NavDepartment, NavZone } from '../types';
 import { CategoryColumns } from './category-columns';
 import { MobileMenuAutoClose } from './mobile-menu-auto-close';
 
-/**
- * Header compartilhado pelas duas zonas — UM header, não dois. O modo simples
- * que o blog usava (barra única com nav de três links) foi removido: as zonas
- * dividem o mesmo domínio e a mesma marca, e duas cascas diferentes faziam a
- * travessia storefront → blog parecer troca de site.
- *
- * Por consequência, `departments`/`featuredCategories` são OBRIGATÓRIOS. Os
- * dados vêm por prop porque o pacote não pode buscá-los — ele roda igual nas
- * duas zonas e não conhece a origem. Quem busca é o layout de cada zona, via
- * `@repo/nav`, que é a fonte única de navegação das duas. Como isto é um
- * Server Component (ver ADR 0004), os dados são consumidos NO SERVIDOR e nunca
- * são serializados para o cliente — é por isso que a zona pode passar a árvore
- * inteira, com `count` e tudo, sem custo de payload.
- *
- * Abrir/fechar o mega menu é CSS (`:hover` / `:focus-within`, aqui como
- * `group-hover:` / `group-focus-within:`), não estado: o painel existe no HTML
- * servido em toda página, e é justamente por isso que os links de categoria são
- * rastreáveis. O menu mobile é `<details>` nativo.
- */
+// Header compartilhado pelas duas zonas — UM header, não dois; sem estado
+// (mega menu em CSS). Ver ADR 0004, raiz
+// (docs/adr/0004-casca-como-componentes-react-em-workspace.md), e ADR 0017 do
+// storefront (apps/storefront/adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 export function AppHeader({
   activeZone = 'storefront',
   userLoggedIn = false,
@@ -58,24 +43,15 @@ export function AppHeader({
   const actionButton = `grid h-9 w-9 place-items-center rounded-md ${hoverBg} ${focusRing}`;
 
   return (
-    /*
-     * `sticky` também resolve o que o wrapper interno fazia com `relative` no
-     * desenho antigo: qualquer `position` diferente de `static` torna o bloco
-     * de contenção dos painéis `absolute` do menu mobile — eles ancoram no
-     * header inteiro, ocupando a largura toda, não no `<details>`. Empilhar
-     * `relative` junto seria um segundo `position` na mesma classe, com a
-     * ordem do CSS gerado decidindo qual vence.
-     */
+    // `sticky` também vira o bloco de contenção dos painéis `absolute` do menu
+    // mobile — ver ADR 0017 do storefront, §5.1.
     <header
       className={`sticky top-0 z-40 border-b font-sans backdrop-blur-[14px] ${border} ${barBg} ${fgText}`}
     >
       <div
         className={`flex flex-wrap items-center gap-4 px-4 py-3 max-[760px]:gap-y-3 ${railWidth}`}
       >
-        {/*
-         * `group/menu` é o que permite ao ícone (em `@repo/ui`) alternar
-         * hambúrguer/X a partir de `[open]` sem JS — `group-open/menu:*`.
-         */}
+        {/* `group/menu` liga o ícone (`@repo/ui`) ao `[open]` — ver ui-0001, §2. */}
         <details className="group/menu lg:hidden">
           <summary
             aria-label="Abrir menu de categorias"
@@ -84,7 +60,7 @@ export function AppHeader({
             <MenuToggleIcon />
           </summary>
 
-          {/* Ancora no `<header>`, não no `<details>`: ocupa a largura toda. */}
+          {/* Ancora no `<header>` sticky, não no `<details>` — ver ADR 0017 do storefront, §5.1. */}
           <MobileMenuAutoClose
             aria-label="Todas as categorias"
             className={`absolute inset-x-0 top-full z-50 box-border max-h-[calc(100dvh-100%)] overflow-y-auto border-b px-4 py-5 ${border} ${surfaceBg} ${panelShadow}`}
@@ -160,23 +136,8 @@ export function AppHeader({
   );
 }
 
-/*
- * O gatilho é um `<a>`, não um `<button>`: ele tem destino próprio
- * (`/categorias`) e funciona antes de qualquer JS. Em touch, onde não há
- * hover, tocar nele NAVEGA para a listagem completa — degradação correta, não
- * um botão morto. Por isso também não há `aria-expanded`: não existe estado
- * que o HTML servido possa declarar com honestidade.
- *
- * Abrir/fechar sem JS. `group-focus-within` é o caminho do teclado: o painel
- * começa `invisible`, o que TIRA os links da ordem de tabulação; focar o gatilho
- * o torna visível e os links passam a ser alcançáveis por Tab. Sair do último
- * fecha. Por isso `visibility` — `opacity-0` sozinho deixaria links invisíveis
- * porém focáveis.
- *
- * O `group-hover` do Tailwind v4 já vive dentro de `@media (hover: hover)`, que
- * é exatamente a guarda que o CSS antigo escrevia à mão: touch não dispara
- * abertura por acidente, e lá tocar o gatilho navega para `/categorias`.
- */
+// Gatilho `<a>`, abrir/fechar sem JS via `group-focus-within` — ver ADR 0017
+// do storefront (apps/storefront/adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 function MegaMenu({ departments }: { departments: NavDepartment[] }) {
   return (
     <div className="group/mega relative">

@@ -3,37 +3,13 @@ import Link from 'next/link';
 import { CategoryColumns } from '@/components/mega-menu/category-columns';
 import { getCategoryTree } from '@/lib/categories';
 
-/**
- * Mega menu — Server Component, zero JS.
- *
- * O ADR 0001 já descartou "ilha client envolvendo o conteúdo": passar os
- * departamentos como `children` de um componente `'use client'` tiraria os
- * links do HTML servido e os jogaria no payload RSC. Num menu de navegação isso
- * custa caro duas vezes: perde-se o link rastreável (o motivo de o mega menu
- * existir para SEO) e o custo se repete em toda página, porque o header está em
- * todas.
- *
- * Então o estado abrir/fechar não é estado de React — é CSS:
- *
- * - `group-hover`  → abre no mouse (Tailwind já embrulha `hover` em
- *   `@media (hover: hover)`, então touch não dispara isso por acidente).
- * - `group-focus-within` → abre no teclado. O painel começa `invisible`, o que
- *   tira os links da ordem de tabulação; focar o gatilho torna o painel
- *   visível e os links passam a ser alcançáveis por Tab. Sair do último link
- *   fecha. Sem `useState`, sem hidratação, sem armadilha de foco.
- * - Touch: sem hover, tocar o gatilho **navega** para `/categorias`, a listagem
- *   completa. É a degradação correta — não um botão morto.
- *
- * O gatilho é um `<Link>`, não um `<button>`: ele tem destino próprio e funciona
- * antes de qualquer JS. Por isso também não há `aria-expanded` aqui — não existe
- * estado que o servidor possa declarar com honestidade no HTML.
- */
+// Mega menu — Server Component, zero JS. Abrir/fechar é CSS puro
+// (`group-hover`/`group-focus-within`), não estado — ver ADR 0017
+// (adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 export async function MegaMenu() {
   const departamentos = await getCategoryTree();
 
   return (
-    // `hidden lg:block`: hover só faz sentido onde há mouse. No mobile o mesmo
-    // conteúdo aparece pelo `<MegaMenuMobile>`, também sem JS.
     <div className="group relative hidden lg:block">
       <Link
         href="/categorias"

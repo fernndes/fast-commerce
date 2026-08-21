@@ -1,13 +1,8 @@
 import { LinkBox } from '@/components/link-box/link-box';
 
-/**
- * Faixa de vantagens — frete, cupom, assinatura, atendimento. Conteúdo
- * editorial curto e estável, então mora no componente e não num JSON: não há
- * arte, não há variação por campanha, e um arquivo de dados só para quatro
- * frases seria indireção sem ganho.
- *
- * É o caso mais simples do `LinkBox`: o filho é texto puro, sem imagem.
- */
+// Faixa de vantagens — conteúdo editorial curto e estável, mora no componente
+// e não num JSON. Caso mais simples do `LinkBox` — ver ADR 0019
+// (adr/0019-linkbox-primitivo-de-link-generico.md).
 const ITEMS = [
   {
     title: 'Frete grátis acima de R$ 99',

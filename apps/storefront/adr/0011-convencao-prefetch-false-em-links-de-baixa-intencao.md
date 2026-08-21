@@ -36,6 +36,20 @@ Também no lado da paginação: a página 1 nunca recebe `?page=1` explícito na
 URL (`components/pagination/pagination.tsx`) — a URL canônica é a limpa, para
 `/produtos` e `/produtos?page=1` não virarem conteúdo duplicado para SEO.
 
+### A convenção inversa: prefetch fica LIGADO em links de alta intenção
+
+A mesma leitura do problema — poucos links versus muitos — produz a decisão
+oposta em dois lugares: `CategoryTiles` (atalhos redondos abaixo do hero) e
+`CategoryLinks` (barra horizontal de categorias em destaque). Os dois deixam
+o prefetch padrão do Next ligado, de propósito: são poucos links, sempre
+visíveis, e apontam para as rotas mais prováveis do site — o inverso do
+painel do mega menu (`components/mega-menu/category-columns.tsx`, ver
+[[0017-mega-menu-css-puro-group-hover-focus-within]]), onde ~30 links com
+prefetch ligado viravam 30 requests inúteis por página. `prefetch={false}`
+não é a regra — é a resposta certa quando a contagem de links é alta e a
+chance de clique em cada um é baixa; nos dois sentidos, a convenção é a
+mesma pergunta.
+
 ## Consequências
 
 **Positivas**

@@ -10,18 +10,7 @@ const OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'name', label: 'Nome (A–Z)' },
 ];
 
-/**
- * Ordenação sem JS, no mesmo espírito do `<SearchForm>`: um `<form
- * method="get">` com um `<select name="sort">` e um botão de aplicar. O
- * browser monta a query string e navega.
- *
- * O `<button>` existe porque sem JS um `<select>` não submete sozinho. Um
- * `onChange` seria mais fluido e custaria transformar isto numa ilha client
- * presente em três páginas de listagem — não paga.
- *
- * Os campos escondidos preservam o resto da query (`q`, filtros): sem eles,
- * ordenar uma busca jogaria o termo fora.
- */
+// Ordenação sem JS — ver ADR 0009 (adr/0009-fronteira-server-client-e-acessibilidade.md), §5.
 export function SortSelect({
   action,
   current,

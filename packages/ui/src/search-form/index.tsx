@@ -1,14 +1,7 @@
 import { accent, border, focusRing, fgText, inputBg } from '../tokens';
 
-/*
- * A busca. `<form action="/busca" method="get">` puro: submete com JS
- * desabilitado, o termo vira `?q=` na URL, e o resultado é uma página com
- * endereço próprio — compartilhável e indexável. Não há `onSubmit`, e é por isso
- * que nada aqui precisa de `'use client'`.
- *
- * O `<label>` é visualmente escondido (`sr-only`), não ausente: `placeholder`
- * não é nome acessível.
- */
+// A busca: `<form method="get">` puro, sem `'use client'` — ver ADR 0009 do
+// storefront (apps/storefront/adr/0009-fronteira-server-client-e-acessibilidade.md), §2.
 
 type Props = {
   action?: string;

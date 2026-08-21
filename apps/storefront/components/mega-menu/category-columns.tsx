@@ -7,14 +7,8 @@ type CategoryColumnsProps = {
   className?: string;
 };
 
-/**
- * Conteúdo da navegação por categorias: colunas de departamento com suas
- * subcategorias. Server Component puro — sai como `<a href>` no HTML servido,
- * que é o que o Google segue para chegar nas páginas de categoria.
- *
- * Reaproveitado pelo mega menu (desktop) e pelo menu mobile. As duas cascas
- * mudam só o layout; o conteúdo — e o custo dele — é o mesmo e é server.
- */
+// Conteúdo da navegação por categorias, reaproveitado por desktop e mobile —
+// ver ADR 0017 (adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 export function CategoryColumns({ departments, className = '' }: CategoryColumnsProps) {
   return (
     <ul className={`grid gap-x-8 gap-y-6 ${className}`}>
@@ -22,11 +16,7 @@ export function CategoryColumns({ departments, className = '' }: CategoryColumns
         <li key={dept.slug} className="flex flex-col gap-2">
           <Link
             href={dept.href}
-            // `prefetch={false}` em todo o painel: são ~30 links dentro de um
-            // elemento que existe no DOM de toda página. Com prefetch ligado,
-            // cada carregamento disparava 30 requests de rotas que o usuário
-            // provavelmente não vai visitar. Na barra em destaque (6 links) o
-            // prefetch continua ligado — ali ele paga.
+            // `prefetch={false}` no painel — ver ADR 0011 e ADR 0017, §3.
             prefetch={false}
             className="text-sm font-semibold text-zinc-950 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-zinc-50"
           >

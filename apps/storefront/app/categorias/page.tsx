@@ -7,11 +7,8 @@ export const metadata = {
   title: 'Todas as categorias — Fast Commerce',
 };
 
-/**
- * Destino do gatilho do mega menu. É o que o usuário de touch vê ao tocar
- * "Todas as categorias" (onde não há hover) e o que o crawler encontra ao
- * seguir aquele link — a árvore inteira em HTML, num só lugar.
- */
+// Destino do gatilho do mega menu — ver ADR 0017
+// (adr/0017-mega-menu-css-puro-group-hover-focus-within.md), §3.1.
 export default async function Categorias() {
   const departamentos = await getCategoryTree();
 

@@ -1,23 +1,9 @@
 import { NavList } from '@repo/ui/nav-list';
 import { border, fgText, fgTextHover, focusRing, mutedText, railWidth } from '@repo/ui/tokens';
 
-/*
- * Ano do copyright resolvido UMA vez, no carregamento do módulo — não a cada
- * render.
- *
- * ATENÇÃO — o raciocínio original mudou de forma no RSC, e vale relê-lo. Antes,
- * o risco era divergência entre o HTML do SSR e a re-renderização na hidratação
- * na virada do ano. Como Server Component não há hidratação deste componente, e
- * o risco vira outro, maior: numa página estaticamente gerada, o valor é
- * congelado no BUILD. Um site buildado em dezembro mostra o ano velho em
- * janeiro, e nada o corrige até o próximo deploy.
- *
- * A escolha aqui é deliberada: `CURRENT_YEAR` continua sendo o DEFAULT, porque
- * é o que faz o pacote funcionar sem cerimônia; a zona que se importa com a
- * virada passa `year` explicitamente, ou mantém o footer fora do caminho
- * estático. Trocar por `new Date()` dentro do componente não resolveria o
- * problema real — numa página estática ele roda no build do mesmo jeito.
- */
+// `CURRENT_YEAR` como DEFAULT, resolvido no carregamento do módulo — ver ADR
+// 0004, raiz (docs/adr/0004-casca-como-componentes-react-em-workspace.md),
+// seção "`CURRENT_YEAR` muda de forma".
 const CURRENT_YEAR = new Date().getFullYear();
 
 const columns = [

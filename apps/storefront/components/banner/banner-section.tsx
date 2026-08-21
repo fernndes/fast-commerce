@@ -3,14 +3,9 @@ import Link from 'next/link';
 import { BannerCard } from '@/components/banner/banner-card';
 import type { PromoBanner } from '@/lib/banners';
 
-/**
- * Colunas no desktop → classes da grade + `sizes` das imagens. Os dois moram
- * juntos de propósito: são a MESMA decisão dita em duas linguagens, e separá-los
- * é como se erra o `sizes` (o card encolhe, a imagem continua gigante).
- *
- * As classes são literais completos porque o Tailwind lê o código-fonte como
- * texto — `grid-cols-${n}` seria varrido do CSS final.
- */
+// Colunas do desktop + `sizes` das imagens: a MESMA decisão em duas
+// linguagens, por isso classes literais — ver ADR 0018
+// (adr/0018-tailwind-sem-css-in-js-de-runtime.md), §4.1.
 const COLUMNS = {
   1: { grid: 'grid-cols-1', sizes: '100vw' },
   2: { grid: 'grid-cols-1 sm:grid-cols-2', sizes: '(min-width: 640px) 50vw, 100vw' },
@@ -31,14 +26,8 @@ type BannerSectionProps = {
   href?: string;
 };
 
-/**
- * Bloco editorial de banners. Grade estática, Server Component, zero JS: os
- * banners não rolam nem trocam sozinhos, ao contrário do hero e das prateleiras.
- *
- * Uma seção sem título não ganha `aria-label` artificial — ela não é um marco
- * de navegação, é uma faixa de imagem, e nomear tudo só entope a lista de
- * regiões de quem usa leitor de tela.
- */
+// Bloco editorial de banners: grade estática, sem rotação. Seção sem título
+// não ganha `aria-label` artificial — não é um marco de navegação.
 export function BannerSection({ id, banners, columns = 3, title, href }: BannerSectionProps) {
   if (banners.length === 0) return null;
 

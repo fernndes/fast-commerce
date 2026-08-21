@@ -2,11 +2,8 @@ import { focusRing, fgTextHover, mutedText } from '@repo/ui/tokens';
 
 import type { NavDepartment } from '../types';
 
-/**
- * Colunas de departamento com suas subcategorias — o CONTEÚDO da navegação
- * por categorias, compartilhado pelas duas cascas (mega menu de desktop e
- * disclosure de mobile). As cascas mudam só onde e quando ele aparece.
- */
+// Colunas de departamento, reaproveitadas por desktop e mobile — ver ADR 0017
+// do storefront (apps/storefront/adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 export function CategoryColumns({
   departments,
   variant,

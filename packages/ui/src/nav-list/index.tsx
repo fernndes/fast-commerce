@@ -1,28 +1,14 @@
 import { focusRing } from '../tokens';
 
-/*
- * `<ul>` de links — a forma que se repete no header (categorias em destaque,
- * colunas do mega menu) e no footer (colunas institucionais).
- *
- * O que a primitiva garante e o consumidor não precisa lembrar: a lista é uma
- * lista de verdade (`<ul>`/`<li>`, não `<div>`s), cada item tem `key`, e todo
- * link recebe o anel de foco.
- *
- * O que ela NÃO decide: layout. Direção, gaps e tipografia entram por
- * `className`/`linkClassName` — a mesma lista vira linha horizontal no trilho de
- * destaques e coluna vertical no footer.
- */
+// `<ul>` de links, reaproveitado por header e footer — ver ui-0001
+// (adr/0001-primitivas-sem-shadow-dom-tokens-como-classes.md), §3.
 
 export type NavLink = {
   href: string;
   label: string;
   /** Chave estável. Sem ela, o `href` serve — é único dentro de uma lista. */
   key?: string;
-  /**
-   * `true` marca a página atual. `undefined`/`false` OMITE o atributo: o React
-   * não serializa `aria-current={undefined}`, que é o comportamento correto —
-   * `aria-current="false"` seria uma afirmação, não uma ausência.
-   */
+  /** `true` marca a página atual; `undefined`/`false` omite o atributo — ver ui-0001, §3. */
   current?: boolean;
 };
 

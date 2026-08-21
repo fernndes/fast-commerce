@@ -1,11 +1,7 @@
 import type { ReactNode } from 'react';
 
 type CarouselProps = {
-  /**
-   * Id do scroller. Obrigatório: as ilhas client (setas, dots, autoplay) acham
-   * o elemento por `getElementById` — assim nenhuma ref precisa atravessar a
-   * fronteira server/client e o carrossel continua Server Component.
-   */
+  /** Id do scroller — as ilhas client acham o elemento por `getElementById`. Ver ADR 0001 (raiz). */
   id: string;
   /** Rótulo acessível do scroller (ele é focável para navegação por teclado). */
   label: string;
@@ -16,11 +12,8 @@ type CarouselProps = {
   scrollerClassName?: string;
 };
 
-/**
- * Carrossel horizontal de CSS puro: `overflow-x` + `scroll-snap`, zero JS.
- * O scroll é o nativo do browser (touch, trackpad, teclado, barra de rolagem),
- * então nada aqui depende de hidratação para funcionar.
- */
+// Carrossel horizontal de CSS puro — ver ADR 0001 (raiz,
+// docs/adr/0001-carrossel-css-scroll-snap-e-ilhas-client.md).
 export function Carousel({
   id,
   label,
@@ -33,8 +26,6 @@ export function Carousel({
     <div data-carousel-root className={`relative ${className}`}>
       <ul
         id={id}
-        // Scroll containers focáveis: sem isso, quem navega por teclado não
-        // consegue rolar a régua.
         tabIndex={0}
         aria-label={label}
         className={`no-scrollbar flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current motion-safe:scroll-smooth ${scrollerClassName}`}

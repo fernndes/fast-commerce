@@ -72,6 +72,18 @@ acessibilidade.
 conteúdo principal, e sem o skip link cada visita por teclado precisaria
 tabular por todos eles primeiro.
 
+### 5. `SortSelect` prova o caso oposto: zero client, de propósito
+
+`components/product-grid/sort-select.tsx` — usado pela PLP, por categoria e
+pela busca — é a mesma família de decisão que `SearchForm`, do lado
+contrário: um `<form method="get">` com `<select name="sort">`, campos
+escondidos para preservar o resto da query (`q`, filtros) e um `<button>`
+porque sem JS um `<select>` não submete sozinho ao mudar de valor. Um
+`onChange` seria mais fluido, mas custaria uma ilha client presente em três
+páginas de listagem para um ganho que não paga — o mesmo cálculo de
+`SearchSuggestions`, com o resultado oposto: aqui a resposta é não virar
+client.
+
 ## Consequências
 
 **Positivas**

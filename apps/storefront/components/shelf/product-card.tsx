@@ -4,15 +4,9 @@ import Link from 'next/link';
 import { discountOf, type Product } from '@/lib/catalog';
 import { toBRL, toPercent } from '@/lib/format';
 
-/**
- * Server Component: dados + imagem, nenhum byte de JS. Nenhuma imagem de card
- * leva `preload` — todas são lazy por padrão, o oposto do slide 0 do hero.
- *
- * O card mostra `priceFrom` / `listPriceFrom`, o "a partir de" do SKU mais
- * barato — NÃO um preço do produto, que não existe: preço vive em
- * `items[].offer`. Por isso o prefixo "A partir de" aparece quando o produto
- * tem mais de um SKU; sem ele o número seria uma meia-verdade.
- */
+// Server Component: mostra `priceFrom`/`listPriceFrom` — nunca um "preço do
+// produto", que não existe. Ver ADR 0005
+// (adr/0005-camada-de-dados-do-catalogo-leitura-via-fs.md), §6.
 export function ProductCard({ product, index }: { product: Product, index?: number }) {
   const discount = discountOf(product);
   const multiSku = product.items.length > 1;
@@ -29,8 +23,6 @@ export function ProductCard({ product, index }: { product: Product, index?: numb
           width={600}
           height={600}
           priority={index !== undefined && index < 4}
-          // Casa com as larguras de slide definidas no Shelf, para o browser
-          // não baixar um 600px onde cabe um 240px.
           sizes="(min-width: 1024px) 23vw, (min-width: 640px) 38vw, 60vw"
           className="h-auto w-full rounded-xl bg-zinc-100 object-cover dark:bg-zinc-900"
         />

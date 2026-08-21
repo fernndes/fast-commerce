@@ -48,23 +48,7 @@ export const POSTS_INDEX_URL = '/blog/blog-data/posts-index.json';
  */
 export const FIRST_WINDOW_SIZE = 24;
 
-/**
- * Altura de uma linha da lista, em px. É o chute inicial do virtualizador —
- * cada linha renderizada é medida de verdade (`measureElement`) e corrige a
- * estimativa.
- *
- * O número foi MEDIDO, não chutado: 113px, e o mesmo valor em 390px, 768px e
- * 1280px de largura (o `line-clamp` do `PostCard` é o que trava a altura; a
- * miniatura, que só aparece a partir de `sm`, é mais baixa que o bloco de texto
- * e não manda na altura da linha).
- *
- * Por que a precisão importa: só as linhas já renderizadas são medidas; as
- * outras 9.900 e tantas continuam valendo esta estimativa na conta da altura
- * total. Estimativa errada faz a altura do documento — e portanto o tamanho da
- * barra de rolagem — mudar sozinha conforme se rola. Com 140 aqui, a lista
- * reservava 1.399.620px para um conteúdo real de ~1.130.000px, e a barra
- * encolhia durante a rolagem.
- */
+/** Chute inicial do virtualizador, MEDIDO (não estimado) — ver Blog-0002, §5. */
 export const ESTIMATED_ROW_HEIGHT = 113;
 
 /**

@@ -11,11 +11,7 @@ type CarouselArrowsProps = {
   label: string;
 };
 
-/**
- * Ilha client opcional para prateleiras. O scroll já funciona sem ela (é o
- * scroll nativo do browser); as setas são só um atalho de mouse, por isso só
- * aparecem depois da hidratação e somem quando não há transbordo.
- */
+// Ilha client opcional para prateleiras — ver ADR 0001 (raiz).
 export function CarouselArrows({ targetId, label }: CarouselArrowsProps) {
   const hydrated = useHydrated();
   const [edges, setEdges] = useState({ atStart: true, atEnd: true });

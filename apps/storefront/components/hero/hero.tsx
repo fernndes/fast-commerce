@@ -13,17 +13,8 @@ type HeroProps = {
   autoRotate?: boolean;
 };
 
-/**
- * Hero — normalmente o elemento de LCP da home.
- *
- * Server Component puro: imagem + texto, zero JS no caminho crítico. Só o
- * primeiro slide é pré-carregado; os demais ficam lazy, porque o usuário ainda
- * não os viu. Carregar os N banners de uma vez é o erro de LCP clássico aqui.
- *
- * A rotação é uma ilha client irmã (`CarouselAutoplay`) que acha o scroller por
- * id — os slides nunca atravessam a fronteira client, então a primeira imagem
- * está no HTML servido e não espera hidratação para aparecer.
- */
+// Hero — normalmente o elemento de LCP da home. Ver ADR 0013
+// (adr/0013-hero-preload-slide-zero-lazy-demais-ilha-irma.md).
 export function Hero({ banners, autoRotate = true }: HeroProps) {
   if (banners.length === 0) return null;
 
@@ -58,26 +49,14 @@ function HeroSlide({ banner, index, total }: { banner: Banner; index: number; to
       <Link
         href={banner.href}
         aria-label={`${banner.title} — ${banner.cta}`}
-        // A arte é panorâmica (~12:5). Deixar essa proporção valer no celular
-        // espreme o hero em ~160px de altura e a copy vaza para fora da imagem.
-        // Então quem manda na altura é o container, não o arquivo: no mobile a
-        // caixa é mais alta e o `object-cover` corta as laterais; a partir de
-        // `lg` a proporção intrínseca volta e nada é cortado.
         className="group relative block aspect-[4/3] focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white sm:aspect-[2/1] lg:aspect-[12/5]"
       >
         <Image
           src={banner.image}
           alt={banner.alt}
-          // `fill` + proporção fixa no pai: o espaço já está reservado antes do
-          // byte chegar, então continua zero CLS mesmo sem width/height aqui.
           fill
           sizes="100vw"
           className="bg-zinc-200 object-cover dark:bg-zinc-800"
-          // A regra do hero, em uma linha: só o slide 0 é candidato a LCP.
-          // `preload` insere o <link rel="preload"> no <head> e desliga o lazy;
-          // combinado ao preconnect da CDN no layout, o cano já está aberto.
-          // (Em Next 16 `priority` foi depreciado em favor de `preload`, e
-          // `preload` + `loading="lazy"` no mesmo Image agora lança erro.)
           {...(isFirst ? { preload: true, fetchPriority: "high" } : { loading: 'lazy' as const })}
         />
 

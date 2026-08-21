@@ -9,25 +9,8 @@ import "./globals.css";
 
 import { getCategoryTree, getFeaturedCategories } from "@/lib/categories";
 
-/*
- * Aqui existia um `semContagem()` que removia o campo `count` de ~34 categorias
- * antes de passá-las ao header. Ele foi REMOVIDO junto com o Stencil (ADR 0004),
- * e o motivo é a diferença central do novo desenho.
- *
- * O `<AppHeader>` era Client Component, e prop de Client Component atravessa
- * SERIALIZADA no payload RSC — tudo que fosse passado ia no payload de toda
- * página, além de já estar no HTML do menu. Cortar `count` (que o header não lê)
- * era como se pagava menos por isso.
- *
- * Como Server Component, os dados são consumidos NO SERVIDOR e nunca são
- * serializados. Não há payload a economizar, e a árvore vai inteira — inclusive
- * o `count`, que o header continua ignorando.
- *
- * A condição para isso continuar verdadeiro: as colunas de categoria chegam ao
- * único Client Component da casca (`MobileMenuAutoClose`) como `children`, não
- * como prop de dados. Passá-las como prop traria a árvore de volta ao payload,
- * silenciosamente.
- */
+// Casca como Server Components — ver ADR 0004, raiz
+// (docs/adr/0004-casca-como-componentes-react-em-workspace.md).
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,27 +32,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  /*
-   * A navegação por categorias é dado do catálogo DESTA zona, e o `<AppHeader>`
-   * é compartilhado com o blog — ele não pode buscá-la. Então quem busca é o
-   * layout, e o header recebe pronto. Ver ADR 0004.
-   *
-   * `Promise.all` porque as duas leituras são independentes; as duas caem no
-   * mesmo cache de módulo de `lib/categories.ts`, então isto não dobra trabalho.
-   *
-   * Sem `try/catch` de propósito: sem categorias não existe storefront
-   * navegável, e mascarar a falha aqui esconderia um catálogo quebrado atrás de
-   * um header pela metade. Fail loud — ver ADR 0010.
-   *
-   * Aqui existia um `ShellBoundary` em volta do header e do footer. Ele foi
-   * REMOVIDO porque não fazia o que prometia: error boundary é mecanismo de
-   * cliente, e `<AppHeader>` é Server Component — o throw acontece no passe RSC,
-   * que termina antes de o boundary existir. Medido: rota estática quebrava o
-   * build, rota dinâmica devolvia 500 com `<body>` vazio, COM o boundary no
-   * lugar. Pior, os fallbacks eram props de Client Component e iam serializados
-   * no payload de toda página. Quem cobre este caso hoje é o
-   * `app/global-error.tsx`. Ver ADR 0004.
-   */
+  // Busca no layout (não no pacote da casca), sem try/catch (fail loud) — ver
+  // ADR 0004 (raiz) e ADR 0010 (adr/0010-navegacao-e-curadoria-editorial-fail-loud.md).
   const [departamentos, destaques] = await Promise.all([
     getCategoryTree(),
     getFeaturedCategories(),
@@ -83,12 +47,7 @@ export default async function RootLayout({
       <GoogleTagManager gtmId="GTM-W48GGZQP" />
       <head>
         <link rel="preconnect" href="https://dummyimage.com" crossOrigin="" />
-        {/*
-          A casca NÃO carrega mais script nenhum. Header e footer são Server
-          Components de `@repo/ui-patterns`: chegam como HTML, sem runtime, sem
-          bundle em CDN e sem a exceção de `script-src` que isso exigia na CSP.
-          Ver ADR 0004.
-        */}
+        {/* A casca não carrega script nenhum — ver ADR 0004 (raiz). */}
       </head>
       <body className="min-h-full flex flex-col">
         <a

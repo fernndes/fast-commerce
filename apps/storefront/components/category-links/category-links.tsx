@@ -2,18 +2,8 @@ import Link from 'next/link';
 
 import { getFeaturedCategories } from '@/lib/categories';
 
-/**
- * Barra horizontal de categorias em destaque — Server Component, o caso mais
- * simples da divisão: é conteúdo e navegação, não interação.
- *
- * Não há estado nenhum aqui. Clicar num link navega, e navegação é do browser
- * (com transição client-side de brinde, via `<Link>`). Nada disso exige um
- * `'use client'`, então nenhum byte de lógica é enviado.
- *
- * Aqui o prefetch fica LIGADO (padrão): são poucos links, sempre visíveis, e
- * são justamente as rotas mais prováveis do site. É o inverso do painel do mega
- * menu, onde ~30 links com prefetch viravam 30 requests inúteis por página.
- */
+// Barra horizontal de categorias em destaque — prefetch ligado, ver ADR 0011
+// (adr/0011-convencao-prefetch-false-em-links-de-baixa-intencao.md).
 export async function CategoryLinks({ className = '' }: { className?: string }) {
   const categorias = await getFeaturedCategories();
 

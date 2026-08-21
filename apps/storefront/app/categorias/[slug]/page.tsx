@@ -6,22 +6,9 @@ import { SortSelect } from '@/components/product-grid/sort-select';
 import { findCategory, getProductsByCategory } from '@/lib/categories';
 import { parseProductQuery, toURLSearchParams } from '@/lib/query';
 
-/**
- * Uma rota serve departamento (`/categorias/alimentacao`) e subcategoria
- * (`/categorias/racao-seca`) — `findCategory` resolve os dois.
- *
- * SEM `generateStaticParams` e sem `revalidate`, e isso é uma correção de
- * rumo: os ~30 slugs até que caberiam num prerender, mas esta página lê
- * `searchParams` para paginar, e ler `searchParams` torna a rota dinâmica.
- * Medido no `next build`, o `generateStaticParams` daqui gerava ZERO páginas —
- * era código morto anunciando um prerender que não acontecia.
- *
- * Servir sob demanda custa pouco: o catálogo já está indexado em memória
- * (`byDept`/`bySub`), então a página é uma fatia de array, não uma varredura.
- * Se um dia a primeira página precisar ser estática, o caminho é tirar a
- * paginação da query string (`/categorias/[slug]/pagina/[n]`), não ressuscitar
- * esta função.
- */
+// Uma rota serve departamento e subcategoria — `findCategory` resolve os
+// dois. Dinâmica por ler `searchParams`, sem `generateStaticParams` — ver
+// ADR 0012 (adr/0012-estrategia-de-renderizacao-por-rota.md), §6.
 
 export async function generateMetadata({ params }: PageProps<'/categorias/[slug]'>) {
   const { slug } = await params;

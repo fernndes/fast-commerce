@@ -1,14 +1,5 @@
-/*
- * Os SVGs inline da casca, num lugar só.
- *
- * Todos usam a mesma caixa `0 0 16 16`, `fill: none` e `stroke: currentColor` —
- * era a regra `.icon` do CSS antigo, agora embutida no componente. Quem precisa
- * de outro tamanho passa `className` (o chevron do mega menu é menor).
- *
- * `aria-hidden` é fixo: nenhum destes ícones carrega significado próprio. O
- * nome acessível vem sempre do elemento que os contém (`aria-label` do link ou
- * do `<summary>`).
- */
+// Os SVGs inline da casca, num lugar só — ver ui-0001
+// (adr/0001-primitivas-sem-shadow-dom-tokens-como-classes.md), §2.
 
 type IconProps = {
   className?: string;
@@ -51,12 +42,7 @@ export function ChevronDownIcon({ className }: IconProps) {
   );
 }
 
-/**
- * Hambúrguer e "X" no MESMO svg, alternados por CSS a partir do estado do
- * `<details>` ancestral — é isso que mantém o menu mobile sem JS. As classes de
- * alternância (`group-open/menu:*`) ficam aqui e dependem do `group/menu` que o
- * `<details>` declara em `ui-patterns`.
- */
+// Hambúrguer e "X" no MESMO svg, alternados por CSS — ver ui-0001, §2.
 export function MenuToggleIcon({ className }: IconProps) {
   return (
     <Svg className={className}>

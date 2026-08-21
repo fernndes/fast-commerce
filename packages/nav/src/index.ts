@@ -1,17 +1,9 @@
 import categorias from '../data/categories.json';
 
-/*
- * Navegação por categorias — a fonte ÚNICA para as duas zonas.
- *
- * O arquivo é importado, não lido por `fs`. Isso é deliberado: import estático
- * é visto pelo grafo do bundler, então não há `outputFileTracingIncludes` a
- * manter em cada zona (a pegadinha do ADR 0005 / Blog-0003) e não há I/O em
- * runtime. Só se paga porque a projeção é pequena — ~30 categorias, alguns KB.
- * O catálogo (13 MB) continua sendo lido por `fs`, e continua só no storefront.
- *
- * Quem materializa esta projeção é `scripts/generate-categories.mjs`. Editar
- * `data/categories.json` à mão funciona até a próxima geração.
- */
+// Navegação por categorias — a fonte ÚNICA para as duas zonas. Import
+// estático, materializado por `scripts/generate-categories.mjs`. Ver ADR
+// 0004, raiz (docs/adr/0004-casca-como-componentes-react-em-workspace.md),
+// seção "um header só, e packages/nav como fonte da navegação".
 
 export type Category = {
   slug: string;

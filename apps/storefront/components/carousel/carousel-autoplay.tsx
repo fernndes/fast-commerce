@@ -16,11 +16,8 @@ type CarouselAutoplayProps = {
   slideLabels?: string[];
 };
 
-/**
- * Ilha client mínima: rotação automática + dots. Não envolve nada — os slides
- * ficam inteiros na árvore server e são achados por id. O HTML servido já tem
- * a primeira imagem; o JS só passa a mexer no `scrollLeft` depois da hidratação.
- */
+// Ilha client mínima: rotação automática + dots — ver ADR 0001 (raiz) e
+// ADR 0013 (adr/0013-hero-preload-slide-zero-lazy-demais-ilha-irma.md).
 export function CarouselAutoplay({
   targetId,
   count,
