@@ -34,7 +34,7 @@ export default async function RootLayout({
 }>) {
   // Busca no layout (não no pacote da casca), sem try/catch (fail loud) — ver
   // ADR 0004 (raiz) e ADR 0010 (adr/0010-navegacao-e-curadoria-editorial-fail-loud.md).
-  const [departamentos, destaques] = await Promise.all([
+  const [departments, featuredCategories] = await Promise.all([
     getCategoryTree(),
     getFeaturedCategories(),
   ]);
@@ -58,8 +58,8 @@ export default async function RootLayout({
         </a>
         <AppHeader
           activeZone="storefront"
-          departments={departamentos}
-          featuredCategories={destaques}
+          departments={departments}
+          featuredCategories={featuredCategories}
         />
         {/* Alvo do skip link — ver ADR 0009 (adr/0009-fronteira-server-client-e-acessibilidade.md). */}
         <div id="conteudo" className="flex flex-1 flex-col">

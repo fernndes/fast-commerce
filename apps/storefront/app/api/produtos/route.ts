@@ -22,7 +22,7 @@ const toListItem = (product: Product): ListItem => ({
   subcategory: product.subcategory,
   thumb_image: product.thumb_image,
   images: product.images,
-  tipoOpcao: product.tipoOpcao,
+  optionType: product.optionType,
   priceFrom: product.priceFrom,
   listPriceFrom: product.listPriceFrom,
   inStock: product.inStock,

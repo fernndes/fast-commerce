@@ -1,4 +1,4 @@
-import categorias from '../data/categories.json';
+import categories from '../data/categories.json';
 
 // Navegação por categorias — a fonte ÚNICA para as duas zonas. Import
 // estático, materializado por `scripts/generate-categories.mjs`. Ver ADR
@@ -17,16 +17,16 @@ export type Department = Category & { children: Category[] };
 
 export const categoryHref = (slug: string) => `/categorias/${slug}`;
 
-const dados = categorias as { departments: Department[]; featured: Category[] };
+const data = categories as { departments: Department[]; featured: Category[] };
 
 /** Árvore completa: departamentos e suas subcategorias. Usada pelo mega menu. */
 export function getCategoryTree(): Department[] {
-  return dados.departments;
+  return data.departments;
 }
 
 /** Subconjunto em destaque, plano, para a barra de links do header. */
 export function getFeaturedCategories(): Category[] {
-  return dados.featured;
+  return data.featured;
 }
 
 /**
@@ -34,7 +34,7 @@ export function getFeaturedCategories(): Category[] {
  * categoria válidas. Retorna `null` para que a rota chame `notFound()`.
  */
 export function findCategory(slug: string): Category | null {
-  for (const dept of dados.departments) {
+  for (const dept of data.departments) {
     if (dept.slug === slug) {
       return {
         slug: dept.slug,
@@ -43,14 +43,14 @@ export function findCategory(slug: string): Category | null {
         count: dept.count,
       };
     }
-    const filho = dept.children.find((child) => child.slug === slug);
-    if (filho) return filho;
+    const child = dept.children.find((child) => child.slug === slug);
+    if (child) return child;
   }
   return null;
 }
 
 export function getAllCategorySlugs(): string[] {
-  return dados.departments.flatMap((dept) => [
+  return data.departments.flatMap((dept) => [
     dept.slug,
     ...dept.children.map((child) => child.slug),
   ]);

@@ -15,10 +15,10 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
   const params = await searchParams;
   const parsed = parseProductQuery(toURLSearchParams(params));
   const query = parsed.ok ? parsed.query : {};
-  const termo = query.q ?? '';
+  const term = query.q ?? '';
 
   // Busca sem termo é convite para buscar, não erro — ver ADR 0007.
-  if (!termo) {
+  if (!term) {
     return (
       <main className="page-shell flex flex-1 flex-col gap-4 py-10">
         <h1 className="text-2xl font-semibold tracking-tight">Busca</h1>
@@ -33,13 +33,13 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
     );
   }
 
-  const page = await searchProducts(termo, query);
+  const page = await searchProducts(term, query);
 
   return (
     <main className="page-shell flex flex-1 flex-col gap-6 py-10">
       <header className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Resultados para <span className="text-zinc-500">“{termo}”</span>
+          Resultados para <span className="text-zinc-500">"{term}"</span>
         </h1>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -47,7 +47,7 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
             {page.total.toLocaleString('pt-BR')} {page.total === 1 ? 'produto' : 'produtos'}
           </p>
           {page.total > 0 && (
-            <SortSelect action="/busca" current={query.sort ?? 'relevance'} hidden={{ q: termo }} />
+            <SortSelect action="/busca" current={query.sort ?? 'relevance'} hidden={{ q: term }} />
           )}
         </div>
       </header>
@@ -63,7 +63,7 @@ export default async function SearchResult({ searchParams }: PageProps<'/busca'>
       ) : (
         <>
           <ProductGrid products={page.items} />
-          <Pagination basePath="/busca" params={{ q: termo, sort: query.sort }} page={page} />
+          <Pagination basePath="/busca" params={{ q: term, sort: query.sort }} page={page} />
         </>
       )}
     </main>

@@ -113,10 +113,10 @@ export function AppHeader({
           <NavList
             className="flex items-center gap-5"
             linkClassName={featuredLink}
-            items={featuredCategories.map((categoria) => ({
-              key: categoria.slug,
-              href: categoria.href,
-              label: categoria.name,
+            items={featuredCategories.map((category) => ({
+              key: category.slug,
+              href: category.href,
+              label: category.name,
             }))}
           >
             {/* Cruza zona (storefront → blog): sempre navegação de página inteira. */}

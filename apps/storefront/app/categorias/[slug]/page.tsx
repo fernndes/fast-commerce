@@ -12,15 +12,15 @@ import { parseProductQuery, toURLSearchParams } from '@/lib/query';
 
 export async function generateMetadata({ params }: PageProps<'/categorias/[slug]'>) {
   const { slug } = await params;
-  const categoria = await findCategory(slug);
-  return { title: categoria ? `${categoria.name} — Fast Commerce` : 'Categoria não encontrada' };
+  const category = await findCategory(slug);
+  return { title: category ? `${category.name} — Fast Commerce` : 'Categoria não encontrada' };
 }
 
-export default async function Categoria({ params, searchParams }: PageProps<'/categorias/[slug]'>) {
+export default async function CategoryPage({ params, searchParams }: PageProps<'/categorias/[slug]'>) {
   const { slug } = await params;
 
-  const categoria = await findCategory(slug);
-  if (!categoria) notFound();
+  const category = await findCategory(slug);
+  if (!category) notFound();
 
   const parsed = parseProductQuery(toURLSearchParams(await searchParams));
   const query = parsed.ok ? parsed.query : {};
@@ -43,14 +43,14 @@ export default async function Categoria({ params, searchParams }: PageProps<'/ca
   return (
     <main className="page-shell flex flex-1 flex-col gap-6 py-10">
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">{categoria.name}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{category.name}</h1>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-zinc-500">
             {page.total.toLocaleString('pt-BR')} {page.total === 1 ? 'produto' : 'produtos'}
           </p>
           <SortSelect
-            action={categoria.href}
+            action={category.href}
             current={query.sort ?? 'relevance'}
             hidden={{ q: current.q, minPrice: current.minPrice, maxPrice: current.maxPrice }}
           />
@@ -65,7 +65,7 @@ export default async function Categoria({ params, searchParams }: PageProps<'/ca
 
       <ProductGrid products={page.items} />
 
-      <Pagination basePath={categoria.href} params={current} page={page} />
+      <Pagination basePath={category.href} params={current} page={page} />
     </main>
   );
 }

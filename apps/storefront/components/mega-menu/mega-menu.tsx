@@ -7,7 +7,7 @@ import { getCategoryTree } from '@/lib/categories';
 // (`group-hover`/`group-focus-within`), não estado — ver ADR 0017
 // (adr/0017-mega-menu-css-puro-group-hover-focus-within.md).
 export async function MegaMenu() {
-  const departamentos = await getCategoryTree();
+  const departments = await getCategoryTree();
 
   return (
     <div className="group relative hidden lg:block">
@@ -35,7 +35,7 @@ export async function MegaMenu() {
           aria-label="Todas as categorias"
           className="max-h-[70vh] w-max max-w-[min(56rem,calc(100vw-3rem))] overflow-y-auto rounded-xl border border-black/10 bg-[var(--background)] p-6 shadow-xl dark:border-white/15"
         >
-          <CategoryColumns departments={departamentos} className="grid-cols-3" />
+          <CategoryColumns departments={departments} className="grid-cols-3" />
         </nav>
       </div>
     </div>

@@ -18,8 +18,8 @@ export type Sku = {
   itemId: string;
   sku: string;
   name: string;
-  /** Valor da variação: `P`/`M`/`G` ou `500g`/`1kg`. O rótulo é `tipoOpcao`. */
-  opcao: string;
+  /** Valor da variação: `P`/`M`/`G` ou `500g`/`1kg`. O rótulo é `optionType`. */
+  option: string;
   images: string[];
   offer: Offer;
 };
@@ -57,7 +57,7 @@ export type Product = {
   subcategory: string;
   thumb_image: string;
   images: string[];
-  tipoOpcao: string;
+  optionType: string;
   items: Sku[];
   /** Menor `offer.price` entre os SKUs — o "a partir de" da listagem. */
   priceFrom: number;
@@ -118,7 +118,7 @@ function toProduct(raw: RawProduct): Product {
     subcategory: raw.categories[1] ?? '',
     thumb_image: raw.thumb_image,
     images: raw.images,
-    tipoOpcao: raw.tipoOpcao,
+    optionType: raw.tipoOpcao,
     items: raw.items,
     // Produto sem SKU: cai como indisponível/preço zero. Ver ADR 0005.
     priceFrom: cheapest?.offer.price ?? 0,

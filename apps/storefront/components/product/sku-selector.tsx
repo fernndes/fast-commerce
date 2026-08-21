@@ -7,11 +7,11 @@ import { toBRL, toPercent } from '@/lib/format';
 
 // Seletor de variação da PDP — a única ilha client da página. Ver ADR 0009
 // (adr/0009-fronteira-server-client-e-acessibilidade.md).
-export function SkuSelector({ items, tipoOpcao }: { items: Sku[]; tipoOpcao: string }) {
+export function SkuSelector({ items, optionType }: { items: Sku[]; optionType: string }) {
   // Abre no SKU disponível mais barato; sem estoque, cai no primeiro. Ver ADR 0009.
   const [selectedId, setSelectedId] = useState(() => {
-    const comprável = items.filter((item) => item.offer.availableQuantity > 0);
-    const pool = comprável.length > 0 ? comprável : items;
+    const purchasable = items.filter((item) => item.offer.availableQuantity > 0);
+    const pool = purchasable.length > 0 ? purchasable : items;
     return pool.reduce((cheap, item) => (item.offer.price < cheap.offer.price ? item : cheap))
       .itemId;
   });
@@ -24,34 +24,34 @@ export function SkuSelector({ items, tipoOpcao }: { items: Sku[]; tipoOpcao: str
     <div className="flex flex-col gap-5">
       <fieldset className="flex flex-col gap-2">
         <legend className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          {/* `tipoOpcao` é 'peso' ou 'tamanho' — o rótulo é dado, não chute. */}
-          Escolha o {tipoOpcao}
+          {/* `optionType` é 'peso' ou 'tamanho' — o rótulo é dado, não chute. */}
+          Escolha o {optionType}
         </legend>
 
         <div className="flex flex-wrap gap-2">
           {items.map((item) => {
-            const esgotado = item.offer.availableQuantity === 0;
-            const ativo = item.itemId === selected.itemId;
+            const soldOut = item.offer.availableQuantity === 0;
+            const active = item.itemId === selected.itemId;
 
             return (
               <label
                 key={item.itemId}
                 className={`cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 ${
-                  ativo
+                  active
                     ? 'border-zinc-950 font-semibold dark:border-zinc-50'
                     : 'border-black/15 hover:border-black/40 dark:border-white/20 dark:hover:border-white/50'
-                } ${esgotado ? 'text-zinc-400 line-through dark:text-zinc-600' : ''}`}
+                } ${soldOut ? 'text-zinc-400 line-through dark:text-zinc-600' : ''}`}
               >
                 <input
                   type="radio"
                   name="sku"
                   value={item.itemId}
-                  checked={ativo}
+                  checked={active}
                   onChange={() => setSelectedId(item.itemId)}
                   // `sr-only`, não `hidden`: input continua focável/anunciável. Ver ADR 0009.
                   className="sr-only"
                 />
-                {item.opcao}
+                {item.option}
               </label>
             );
           })}

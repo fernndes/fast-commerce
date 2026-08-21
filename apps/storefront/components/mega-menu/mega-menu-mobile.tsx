@@ -9,7 +9,7 @@ const ID = 'mega-menu-mobile';
 // O mesmo mega menu, outra casca — `<details>/<summary>`, sem `useState`. Ver
 // ADR 0017 (adr/0017-mega-menu-css-puro-group-hover-focus-within.md), §3.1.
 export async function MegaMenuMobile() {
-  const departamentos = await getCategoryTree();
+  const departments = await getCategoryTree();
 
   return (
     <details id={ID} className="group lg:hidden">
@@ -36,7 +36,7 @@ export async function MegaMenuMobile() {
         aria-label="Todas as categorias"
         className="absolute inset-x-0 top-full max-h-[calc(100dvh-100%)] overflow-y-auto border-b border-black/10 bg-[var(--background)] p-5 shadow-xl dark:border-white/15"
       >
-        <CategoryColumns departments={departamentos} className="grid-cols-2 sm:grid-cols-3" />
+        <CategoryColumns departments={departments} className="grid-cols-2 sm:grid-cols-3" />
 
         <Link
           href="/categorias"
