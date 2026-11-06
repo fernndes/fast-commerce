@@ -84,7 +84,7 @@ export function SkuSelector({ items, optionType }: { items: Sku[]; optionType: s
         disabled={availableQuantity === 0}
         // TODO: a rota /carrinho ainda não existe — o botão prova a troca de
         // SKU, não o checkout.
-        className="w-full rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-zinc-300 sm:w-auto dark:bg-zinc-50 dark:text-zinc-950 dark:disabled:bg-zinc-700"
+        className="w-full cursor-pointer rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:bg-zinc-300 sm:w-auto dark:bg-zinc-50 dark:text-zinc-950 dark:disabled:bg-zinc-700"
       >
         {availableQuantity > 0 ? 'Adicionar ao carrinho' : 'Esgotado'}
       </button>

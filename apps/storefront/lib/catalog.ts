@@ -37,8 +37,11 @@ export type RawProduct = {
   images: string[];
   /** O que a variação significa: `'peso'` ou `'tamanho'`. */
   tipoOpcao: string;
-  items: Sku[];
+  items: RawSku[];
 };
+
+/** SKU como vem do JSON: a variação chega em `opcao`, normalizada para `option`. */
+type RawSku = Omit<Sku, 'option'> & { opcao: string };
 
 // -------------------------------------------------------- shape normalizado
 
@@ -99,7 +102,9 @@ function toProduct(raw: RawProduct): Product {
   let cheapest: Sku | null = null;
   let totalAvailable = 0;
 
-  for (const item of raw.items) {
+  const items: Sku[] = raw.items.map(({ opcao, ...rest }) => ({ ...rest, option: opcao }));
+
+  for (const item of items) {
     totalAvailable += item.offer.availableQuantity;
     if (!cheapest || item.offer.price < cheapest.offer.price) cheapest = item;
   }
@@ -119,7 +124,7 @@ function toProduct(raw: RawProduct): Product {
     thumb_image: raw.thumb_image,
     images: raw.images,
     optionType: raw.tipoOpcao,
-    items: raw.items,
+    items,
     // Produto sem SKU: cai como indisponível/preço zero. Ver ADR 0005.
     priceFrom: cheapest?.offer.price ?? 0,
     listPriceFrom: cheapest?.offer.listPrice ?? 0,
